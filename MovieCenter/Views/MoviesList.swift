@@ -25,6 +25,11 @@ struct MoviesList: View {
             .onAppear {
                 viewModel.fetchMovies()
             }
+            .overlay(Group {
+                if self.viewModel.movies.isEmpty {
+                    Loading()
+                }
+            })
         }
     }
 }
