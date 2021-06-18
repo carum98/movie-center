@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F75E8D10267C287B00940C62 /* ApiError.swift in Sources */ = {isa = PBXBuildFile; fileRef = F75E8D0E267C287B00940C62 /* ApiError.swift */; };
+		F75E8D11267C287B00940C62 /* NetworkGeneric.swift in Sources */ = {isa = PBXBuildFile; fileRef = F75E8D0F267C287B00940C62 /* NetworkGeneric.swift */; };
+		F75E8D1F267C2CA700940C62 /* Client.swift in Sources */ = {isa = PBXBuildFile; fileRef = F75E8D1E267C2CA700940C62 /* Client.swift */; };
+		F75E8D24267C2D2F00940C62 /* Movie.swift in Sources */ = {isa = PBXBuildFile; fileRef = F75E8D23267C2D2F00940C62 /* Movie.swift */; };
 		F7D2A91F267C25270035F173 /* MovieCenterApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7D2A91E267C25270035F173 /* MovieCenterApp.swift */; };
 		F7D2A921267C25270035F173 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7D2A920267C25270035F173 /* ContentView.swift */; };
 		F7D2A923267C25280035F173 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F7D2A922267C25280035F173 /* Assets.xcassets */; };
@@ -14,6 +18,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		F75E8D0E267C287B00940C62 /* ApiError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiError.swift; sourceTree = "<group>"; };
+		F75E8D0F267C287B00940C62 /* NetworkGeneric.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkGeneric.swift; sourceTree = "<group>"; };
+		F75E8D1E267C2CA700940C62 /* Client.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Client.swift; sourceTree = "<group>"; };
+		F75E8D23267C2D2F00940C62 /* Movie.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Movie.swift; sourceTree = "<group>"; };
 		F7D2A91B267C25270035F173 /* MovieCenter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MovieCenter.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F7D2A91E267C25270035F173 /* MovieCenterApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieCenterApp.swift; sourceTree = "<group>"; };
 		F7D2A920267C25270035F173 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -33,6 +41,31 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		F75E8D09267C287200940C62 /* NetworkEndpoints */ = {
+			isa = PBXGroup;
+			children = (
+				F75E8D1E267C2CA700940C62 /* Client.swift */,
+			);
+			path = NetworkEndpoints;
+			sourceTree = "<group>";
+		};
+		F75E8D0D267C287B00940C62 /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				F75E8D0E267C287B00940C62 /* ApiError.swift */,
+				F75E8D0F267C287B00940C62 /* NetworkGeneric.swift */,
+			);
+			path = Network;
+			sourceTree = "<group>";
+		};
+		F75E8D22267C2D1200940C62 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				F75E8D23267C2D2F00940C62 /* Movie.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 		F7D2A912267C25270035F173 = {
 			isa = PBXGroup;
 			children = (
@@ -52,6 +85,9 @@
 		F7D2A91D267C25270035F173 /* MovieCenter */ = {
 			isa = PBXGroup;
 			children = (
+				F75E8D22267C2D1200940C62 /* Models */,
+				F75E8D0D267C287B00940C62 /* Network */,
+				F75E8D09267C287200940C62 /* NetworkEndpoints */,
 				F7D2A91E267C25270035F173 /* MovieCenterApp.swift */,
 				F7D2A920267C25270035F173 /* ContentView.swift */,
 				F7D2A922267C25280035F173 /* Assets.xcassets */,
@@ -139,6 +175,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				F7D2A921267C25270035F173 /* ContentView.swift in Sources */,
+				F75E8D11267C287B00940C62 /* NetworkGeneric.swift in Sources */,
+				F75E8D24267C2D2F00940C62 /* Movie.swift in Sources */,
+				F75E8D1F267C2CA700940C62 /* Client.swift in Sources */,
+				F75E8D10267C287B00940C62 /* ApiError.swift in Sources */,
 				F7D2A91F267C25270035F173 /* MovieCenterApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
