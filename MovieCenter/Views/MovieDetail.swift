@@ -12,19 +12,31 @@ struct MovieDetail: View {
     
     var body: some View {
         NavigationView {
-            VStack {
-                Image(systemName: "pencil")
+            ZStack(alignment: .leading) {
+                VStack {
+                    Image(uiImage: "https://image.tmdb.org/t/p/w500\(movie.backdropPath)".load())
+                        .resizable()
+                        .frame(width: 400, height: 300)
+                    Text(movie.originalTitle)
+                    Text(movie.overview)
+                    Spacer()
+                }
+                Image(uiImage: "https://image.tmdb.org/t/p/w500\(movie.posterPath)".load())
                     .resizable()
-                    .frame(width: 60, height: 60, alignment: .center)
-                Text(movie.overview)
-            }.navigationBarTitle(movie.original_title)
+                    .frame(width: 200, height: 300, alignment: .center)
+            }
+            .navigationBarTitle(movie.originalTitle)
         }
-
+        
     }
 }
 
 struct MovieDetail_Previews: PreviewProvider {
     static var previews: some View {
-        MovieDetail(movie: Movies(id: 1, original_title: "Cruella", overview: "\"Cruella\" se sumerge en la juventud rebelde de uno de los villanos más conocidos -y más de moda-, nada menos que la legendaria Cruella de Vil. Emma Stone encarna a Estella, alias Cruella, junto a Emma Thompson como la Baronesa, la directora de una prestigiosa firma de moda que convierte a Estella en una incipiente diseñadora. La cinta está ambientada en el contexto del punk-rock londinense de los 70.  ( https://stream4k.xyz/en/movie/337404/cruella )"))
+        MovieDetail(movie: Movies(id: 1,
+          originalTitle: "Cruella",
+          overview: "\"Cruella\" se sumerge en la juventud rebelde de uno de los villanos más conocidos -y más de moda-, nada menos que la legendaria Cruella de Vil. Emma Stone encarna a Estella, alias Cruella, junto a Emma Thompson como la Baronesa, la directora de una prestigiosa firma de moda que convierte a Estella en una incipiente diseñadora. La cinta está ambientada en el contexto del punk-rock londinense de los 70.  ( https://stream4k.xyz/en/movie/337404/cruella )",
+          backdropPath: "/6MKr3KgOLmzOP6MSuZERO41Lpkt.jpg",
+          posterPath: "/qb28nkLZV0v6yJZZRpJYl0LE35N.jpg"))
     }
 }

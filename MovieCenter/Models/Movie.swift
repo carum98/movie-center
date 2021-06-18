@@ -9,6 +9,16 @@ import Foundation
 
 struct Movies : Identifiable, Codable {
     var id: Int
-    var original_title : String
+    var originalTitle : String
     var overview : String
+    var backdropPath : String
+    var posterPath : String
+    
+    enum CodingKeys: String, CodingKey {
+        case id
+        case originalTitle = "original_title"
+        case overview
+        case backdropPath = "backdrop_path"
+        case posterPath = "poster_path"
+    }
 }

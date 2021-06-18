@@ -26,4 +26,6 @@ class Client: NetworkGeneric {
         
         self.fetch(type: T.self, with: request, completion: complete)
     }
+    
+    
 }

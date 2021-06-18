@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		F72C884A267C367F003119C8 /* Results.swift in Sources */ = {isa = PBXBuildFile; fileRef = F72C8849267C367F003119C8 /* Results.swift */; };
 		F72C884C267C3AB1003119C8 /* MovieDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = F72C884B267C3AB1003119C8 /* MovieDetail.swift */; };
+		F72C884F267C42B2003119C8 /* LoadImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = F72C884E267C42B2003119C8 /* LoadImage.swift */; };
 		F75E8D10267C287B00940C62 /* ApiError.swift in Sources */ = {isa = PBXBuildFile; fileRef = F75E8D0E267C287B00940C62 /* ApiError.swift */; };
 		F75E8D11267C287B00940C62 /* NetworkGeneric.swift in Sources */ = {isa = PBXBuildFile; fileRef = F75E8D0F267C287B00940C62 /* NetworkGeneric.swift */; };
 		F75E8D1F267C2CA700940C62 /* Client.swift in Sources */ = {isa = PBXBuildFile; fileRef = F75E8D1E267C2CA700940C62 /* Client.swift */; };
@@ -24,6 +25,7 @@
 /* Begin PBXFileReference section */
 		F72C8849267C367F003119C8 /* Results.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Results.swift; sourceTree = "<group>"; };
 		F72C884B267C3AB1003119C8 /* MovieDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDetail.swift; sourceTree = "<group>"; };
+		F72C884E267C42B2003119C8 /* LoadImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadImage.swift; sourceTree = "<group>"; };
 		F75E8D0E267C287B00940C62 /* ApiError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiError.swift; sourceTree = "<group>"; };
 		F75E8D0F267C287B00940C62 /* NetworkGeneric.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkGeneric.swift; sourceTree = "<group>"; };
 		F75E8D1E267C2CA700940C62 /* Client.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Client.swift; sourceTree = "<group>"; };
@@ -49,6 +51,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		F72C884D267C422C003119C8 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				F72C884E267C42B2003119C8 /* LoadImage.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 		F75E8D09267C287200940C62 /* NetworkEndpoints */ = {
 			isa = PBXGroup;
 			children = (
@@ -111,6 +121,7 @@
 		F7D2A91D267C25270035F173 /* MovieCenter */ = {
 			isa = PBXGroup;
 			children = (
+				F72C884D267C422C003119C8 /* Extensions */,
 				F75E8D2B267C31E900940C62 /* Views */,
 				F75E8D26267C2F2B00940C62 /* ViewModel */,
 				F75E8D22267C2D1200940C62 /* Models */,
@@ -206,6 +217,7 @@
 				F7D2A921267C25270035F173 /* ContentView.swift in Sources */,
 				F75E8D11267C287B00940C62 /* NetworkGeneric.swift in Sources */,
 				F75E8D2D267C320700940C62 /* MoviesList.swift in Sources */,
+				F72C884F267C42B2003119C8 /* LoadImage.swift in Sources */,
 				F75E8D24267C2D2F00940C62 /* Movie.swift in Sources */,
 				F75E8D1F267C2CA700940C62 /* Client.swift in Sources */,
 				F75E8D28267C2FA300940C62 /* MoviesViewModel.swift in Sources */,

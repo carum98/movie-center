@@ -17,7 +17,7 @@ struct MoviesList: View {
                     NavigationLink(
                         destination: MovieDetail(movie: item) ,
                         label: {
-                            Text(item.original_title)
+                            Text(item.originalTitle)
                         })
                 }
             }
