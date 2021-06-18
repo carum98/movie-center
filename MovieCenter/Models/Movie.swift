@@ -7,7 +7,8 @@
 
 import Foundation
 
-struct Movies : Codable {
-    var originalTitle : String
+struct Movies : Identifiable, Codable {
+    var id: Int
+    var original_title : String
     var overview : String
 }

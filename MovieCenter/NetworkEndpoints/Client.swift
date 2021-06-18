@@ -21,7 +21,7 @@ class Client: NetworkGeneric {
     
     func getMovies<T: Decodable>(type:T.Type, complete: @escaping (Result<T, ApiError>) -> Void) {
         let path = "movie/now_playing"
-        let url = URL(string: "\(baseURL)\(path)?api_key=\(apiKey)")
+        let url = URL(string: "\(baseURL)\(path)?api_key=\(apiKey)&language=es-ES")
         let request = URLRequest(url: url!)
         
         self.fetch(type: T.self, with: request, completion: complete)
