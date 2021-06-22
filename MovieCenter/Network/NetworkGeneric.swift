@@ -35,6 +35,10 @@ extension NetworkGeneric {
             do {
                 let decoder = JSONDecoder()
                 let genericModel = try decoder.decode(T.self, from: data)
+//                
+//                let str = String(decoding: data, as: UTF8.self)
+//                print(str)
+//
                 complete(.success(genericModel))
             }catch let error {
                 complete(.failure(.jsonConversionFailure(description: error.localizedDescription)))

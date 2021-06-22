@@ -25,6 +25,7 @@
 		F7EEA73E2681882500F7DA9B /* TVShowList.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7EEA73D2681882500F7DA9B /* TVShowList.swift */; };
 		F7EEA7402681887800F7DA9B /* TVShowViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7EEA73F2681887800F7DA9B /* TVShowViewModel.swift */; };
 		F7EEA742268189A700F7DA9B /* TVShow.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7EEA741268189A700F7DA9B /* TVShow.swift */; };
+		F7EEA74426818E0B00F7DA9B /* TVShowsDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7EEA74326818E0B00F7DA9B /* TVShowsDetail.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -48,6 +49,7 @@
 		F7EEA73D2681882500F7DA9B /* TVShowList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TVShowList.swift; sourceTree = "<group>"; };
 		F7EEA73F2681887800F7DA9B /* TVShowViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TVShowViewModel.swift; sourceTree = "<group>"; };
 		F7EEA741268189A700F7DA9B /* TVShow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TVShow.swift; sourceTree = "<group>"; };
+		F7EEA74326818E0B00F7DA9B /* TVShowsDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TVShowsDetail.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -113,6 +115,7 @@
 				F72C8850267C4C0A003119C8 /* Loading.swift */,
 				F7EEA73B2681869A00F7DA9B /* MainMenu.swift */,
 				F7EEA73D2681882500F7DA9B /* TVShowList.swift */,
+				F7EEA74326818E0B00F7DA9B /* TVShowsDetail.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -232,6 +235,7 @@
 				F72C884A267C367F003119C8 /* Results.swift in Sources */,
 				F7EEA742268189A700F7DA9B /* TVShow.swift in Sources */,
 				F7D2A921267C25270035F173 /* ContentView.swift in Sources */,
+				F7EEA74426818E0B00F7DA9B /* TVShowsDetail.swift in Sources */,
 				F75E8D11267C287B00940C62 /* NetworkGeneric.swift in Sources */,
 				F75E8D2D267C320700940C62 /* MoviesList.swift in Sources */,
 				F72C884F267C42B2003119C8 /* LoadImage.swift in Sources */,

@@ -34,4 +34,20 @@ class Client: NetworkGeneric {
         
         self.fetch(type: T.self, with: request, completion: complete)
     }
+    
+    func getMoviesRecomendation<T: Decodable>(type:T.Type, movieId : Int,complete: @escaping (Result<T, ApiError>) -> Void) {
+        let path = "/movie/\(movieId)/recommendations"
+        let url = URL(string: "\(baseURL)\(path)?api_key=\(apiKey)&language=es-ES")
+        let request = URLRequest(url: url!)
+        
+        self.fetch(type: T.self, with: request, completion: complete)
+    }
+    
+    func getTVShowsRecomendation<T: Decodable>(type:T.Type, tvId : Int,complete: @escaping (Result<T, ApiError>) -> Void) {
+        let path = "/tv/\(tvId)/recommendations"
+        let url = URL(string: "\(baseURL)\(path)?api_key=\(apiKey)&language=es-ES")
+        let request = URLRequest(url: url!)
+        
+        self.fetch(type: T.self, with: request, completion: complete)
+    }
 }

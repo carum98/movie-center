@@ -14,7 +14,7 @@ struct MoviesList: View {
         List {
             ForEach(self.viewModel.movies, id: \.id) { item in
                 NavigationLink(
-                    destination: MovieDetail(movie: item) ,
+                    destination: MovieDetail(movie: item, viewModel: viewModel) ,
                     label: {
                         Text(item.originalTitle)
                     })

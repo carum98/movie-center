@@ -13,22 +13,22 @@ struct TVShowList: View {
     var body: some View {
         List {
             ForEach(self.viewModel.tvShows, id: \.id) { item in
-//                NavigationLink(
-//                    destination: MovieDetail(movie: item) ,
-//                    label: {
+                NavigationLink(
+                    destination: TVShowsDetail(tvShow: item, viewModel: viewModel) ,
+                    label: {
                         Text(item.originalName)
-//                    })
+                    })
             }
         }
         .navigationBarTitle("Lista de Series")
         .onAppear {
             viewModel.fetchTVShows()
         }
-//        .overlay(Group {
-//            if self.viewModel.movies.isEmpty {
-//                Loading()
-//            }
-//        })
+        .overlay(Group {
+            if self.viewModel.tvShows.isEmpty {
+                Loading()
+            }
+        })
     }
 }
 

@@ -9,6 +9,7 @@ import Foundation
 
 class TVShowViewModel : ObservableObject {
     @Published var tvShows = [TVShow]()
+    @Published var recomendations = [TVShow]()
     
     var session = URLSession.shared
     var client:Client
@@ -22,6 +23,17 @@ class TVShowViewModel : ObservableObject {
             switch result {
             case .success(let data):
                 self.tvShows = data.results
+            case .failure(let error):
+                print(error)
+            }
+        })
+    }
+    
+    func fetchRecomendation(tvId : Int) {
+        client.getTVShowsRecomendation(type: ResultTVShows.self, tvId: tvId, complete: { result in
+            switch result {
+            case .success(let data):
+                self.recomendations = data.results
             case .failure(let error):
                 print(error)
             }
