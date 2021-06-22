@@ -11,26 +11,24 @@ struct MoviesList: View {
     @ObservedObject var viewModel : MoviesViewModel = MoviesViewModel()
     
     var body: some View {
-        NavigationView {
-            List {
-                ForEach(self.viewModel.movies, id: \.id) { item in
-                    NavigationLink(
-                        destination: MovieDetail(movie: item) ,
-                        label: {
-                            Text(item.originalTitle)
-                        })
-                }
+        List {
+            ForEach(self.viewModel.movies, id: \.id) { item in
+                NavigationLink(
+                    destination: MovieDetail(movie: item) ,
+                    label: {
+                        Text(item.originalTitle)
+                    })
             }
-            .navigationBarTitle("Lista de peliculas")
-            .onAppear {
-                viewModel.fetchMovies()
-            }
-            .overlay(Group {
-                if self.viewModel.movies.isEmpty {
-                    Loading()
-                }
-            })
         }
+        .navigationBarTitle("Lista de peliculas")
+        .onAppear {
+            viewModel.fetchMovies()
+        }
+        .overlay(Group {
+            if self.viewModel.movies.isEmpty {
+                Loading()
+            }
+        })
     }
 }
 

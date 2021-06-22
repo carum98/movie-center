@@ -10,3 +10,7 @@ import Foundation
 struct Results : Codable {
     let results : [Movies]
 }
+
+struct ResultTVShows : Codable {
+    let results : [TVShow]
+}
