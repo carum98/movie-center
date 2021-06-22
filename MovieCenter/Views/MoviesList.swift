@@ -9,7 +9,12 @@ import SwiftUI
 
 struct MoviesList: View {
     @ObservedObject var viewModel : MoviesViewModel = MoviesViewModel()
-    
+    @ObservedObject var Location : LocationViewModel = LocationViewModel()
+  
+    func goToRegionList() {
+        viewModel.fetchRegion(region: Location.region!)
+     
+    }
     var body: some View {
         TabView {
             List {
@@ -40,6 +45,15 @@ struct MoviesList: View {
             }
             
             Text("Ubicacion")
+                .onAppear{
+                    self.Location.$region.sink(
+                    receiveValue: {_ in
+                        goToRegionList()
+                    })
+
+                   
+                
+                }
             .tabItem {
                 Label("Ubicacion", systemImage: "network")
             }
