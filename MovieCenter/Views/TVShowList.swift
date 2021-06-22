@@ -11,24 +11,40 @@ struct TVShowList: View {
     @ObservedObject var viewModel : TVShowViewModel = TVShowViewModel()
     
     var body: some View {
-        List {
-            ForEach(self.viewModel.tvShows, id: \.id) { item in
-                NavigationLink(
-                    destination: TVShowsDetail(tvShow: item, viewModel: viewModel) ,
-                    label: {
-                        Text(item.originalName)
-                    })
+        TabView {
+            List {
+                ForEach(self.viewModel.tvShows, id: \.id) { item in
+                    NavigationLink(
+                        destination: TVShowsDetail(tvShow: item, viewModel: viewModel) ,
+                        label: {
+                            Text(item.originalName)
+                        })
+                }
+            }
+            .onAppear {
+                viewModel.fetchTVShows()
+            }
+            .overlay(Group {
+                if self.viewModel.tvShows.isEmpty {
+                    Loading()
+                }
+            })
+            .tabItem {
+                Label("List", systemImage: "list.dash")
+            }
+            
+            
+            Text("Lista Favoritos")
+            .tabItem {
+                Label("Favoritos", systemImage: "heart.fill")
+            }
+            
+            Text("Ubicacion")
+            .tabItem {
+                Label("Ubicacion", systemImage: "network")
             }
         }
-        .navigationBarTitle("Lista de Series")
-        .onAppear {
-            viewModel.fetchTVShows()
-        }
-        .overlay(Group {
-            if self.viewModel.tvShows.isEmpty {
-                Loading()
-            }
-        })
+        .navigationBarTitle("Series")
     }
 }
 
