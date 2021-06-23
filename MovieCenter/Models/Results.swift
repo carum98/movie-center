@@ -14,3 +14,6 @@ struct Results : Codable {
 struct ResultTVShows : Codable {
     let results : [TVShow]
 }
+struct ResultGenre : Codable{
+    let genres : [Genre]
+}
