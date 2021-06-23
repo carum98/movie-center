@@ -10,13 +10,8 @@ import CoreLocation
 class LocationViewModel: NSObject, ObservableObject, CLLocationManagerDelegate {
     let manager = CLLocationManager()
     let geoCoder = CLGeocoder()
-//    @Published var  region:String? {
-//        willSet {
-//            objectWillChange.send()
-//        }
-//    }
-    @Published var  region:String? 
-    
+ 
+    @Published var region:String = "CR"
     override init() {
         super.init()
         manager.delegate = self
@@ -34,7 +29,7 @@ class LocationViewModel: NSObject, ObservableObject, CLLocationManagerDelegate {
         guard let currentLocation = locations.first else { return }
         geoCoder.reverseGeocodeLocation(currentLocation) { [self] (placemarks, error) in
             guard let currentLocPlacemark = placemarks?.first else { return }
-            self.region = currentLocPlacemark.isoCountryCode
+            self.region = currentLocPlacemark.isoCountryCode!
        
       
         }

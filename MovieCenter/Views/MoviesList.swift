@@ -5,7 +5,7 @@ struct MoviesList: View {
     @ObservedObject var Location : LocationViewModel = LocationViewModel()
     
     func goToRegionList() {
-        viewModel.fetchRegion(region: Location.region!)
+        viewModel.fetchRegion(region: Location.region)
     }
     var body: some View {
         TabView {
@@ -36,7 +36,7 @@ struct MoviesList: View {
                     Label("Favoritos", systemImage: "heart.fill")
                 }
             
-            MoviesRegionList(movies:self.viewModel.movies,  viewModel:self.viewModel )
+            MoviesRegionList(viewModel: self.viewModel, laRegion:Location.region )
                 .tabItem {
                     Label("Ubicacion", systemImage: "network")
                 }
