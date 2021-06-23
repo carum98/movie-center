@@ -13,6 +13,7 @@ struct Movies : Identifiable, Codable {
     var overview : String
     var backdropPath : String
     var posterPath : String
+    var generes : [Int]
     
     enum CodingKeys: String, CodingKey {
         case id
@@ -20,5 +21,6 @@ struct Movies : Identifiable, Codable {
         case overview
         case backdropPath = "backdrop_path"
         case posterPath = "poster_path"
+        case generes =  "genre_ids"
     }
 }
