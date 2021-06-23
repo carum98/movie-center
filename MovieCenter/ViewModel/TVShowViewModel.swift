@@ -39,4 +39,17 @@ class TVShowViewModel : ObservableObject {
             }
         })
     }
+    
+    func fetchDatail(tvId : Int) {
+        client.getTVShowsDetail(type: TVShowDetail.self, tvId: tvId, complete: { result in
+            switch result {
+            case .success(let data):
+                if let i = self.tvShows.firstIndex(where: { $0.id == tvId } ) {
+                    self.tvShows[i].detail = data
+                }
+            case .failure(let error):
+                print(error)
+            }
+        })
+    }
 }
