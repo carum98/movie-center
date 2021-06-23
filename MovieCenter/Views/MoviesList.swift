@@ -20,6 +20,8 @@ struct MoviesList: View {
             }
             .onAppear {
                 viewModel.fetchMovies()
+                viewModel.fetchGenreMovies()
+                viewModel.fetchRegion(region: Location.region)
             }
             .overlay(Group {
                 if self.viewModel.movies.isEmpty {
@@ -36,7 +38,7 @@ struct MoviesList: View {
                     Label("Favoritos", systemImage: "heart.fill")
                 }
             
-            MoviesRegionList(viewModel: self.viewModel, laRegion:Location.region )
+            MoviesRegionList(viewModel: self.viewModel, laRegion:Location.region,generos: viewModel.genres, peliculas: viewModel.regionMovies)
                 .tabItem {
                     Label("Ubicacion", systemImage: "network")
                 }

@@ -52,8 +52,8 @@ class MoviesViewModel : ObservableObject {
             }
         })
     }
-    func fetchGenreMovies(region : String) {
-        client.getGenreMovies(type: ResultGenre.self, codRegion: region, complete: { result in
+    func fetchGenreMovies() {
+        client.getGenreMovies(type: ResultGenre.self, complete: { result in
             switch result {
             case .success(let data):
                 self.genres = data.genres

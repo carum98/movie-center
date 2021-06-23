@@ -30,7 +30,8 @@ class LocationViewModel: NSObject, ObservableObject, CLLocationManagerDelegate {
         geoCoder.reverseGeocodeLocation(currentLocation) { [self] (placemarks, error) in
             guard let currentLocPlacemark = placemarks?.first else { return }
             self.region = currentLocPlacemark.isoCountryCode!
-       
+            print(region)
+            Stop()
       
         }
     }
