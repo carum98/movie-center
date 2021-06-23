@@ -10,6 +10,7 @@ import Foundation
 class MoviesViewModel : ObservableObject {
     @Published var movies = [Movies]()
     @Published var recomendations = [Movies]()
+    @Published var regionMovies = [Movies]()
     
     var session = URLSession.shared
     var client:Client
@@ -35,6 +36,16 @@ class MoviesViewModel : ObservableObject {
             switch result {
             case .success(let data):
                 self.recomendations = data.results
+            case .failure(let error):
+                print(error)
+            }
+        })
+    }
+    func fetchRegion(region : String) {
+        client.getMoviesRecomendationRegion(type: Results.self, codRegion: region, complete: { result in
+            switch result {
+            case .success(let data):
+                self.regionMovies = data.results
             case .failure(let error):
                 print(error)
             }

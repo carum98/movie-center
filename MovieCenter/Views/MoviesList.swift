@@ -1,19 +1,11 @@
-//
-//  MoviesList.swift
-//  MovieCenter
-//
-//  Created by Carlos Eduardo Umaña Acevedo on 17/6/21.
-//
-
 import SwiftUI
 
 struct MoviesList: View {
     @ObservedObject var viewModel : MoviesViewModel = MoviesViewModel()
     @ObservedObject var Location : LocationViewModel = LocationViewModel()
-  
+    
     func goToRegionList() {
         viewModel.fetchRegion(region: Location.region!)
-     
     }
     var body: some View {
         TabView {
@@ -40,23 +32,14 @@ struct MoviesList: View {
             
             
             Text("Lista Favoritos")
-            .tabItem {
-                Label("Favoritos", systemImage: "heart.fill")
-            }
-            
-            Text("Ubicacion")
-                .onAppear{
-                    self.Location.$region.sink(
-                    receiveValue: {_ in
-                        goToRegionList()
-                    })
-
-                   
-                
+                .tabItem {
+                    Label("Favoritos", systemImage: "heart.fill")
                 }
-            .tabItem {
-                Label("Ubicacion", systemImage: "network")
-            }
+            
+            MoviesRegionList(movies:self.viewModel.movies,  viewModel:self.viewModel )
+                .tabItem {
+                    Label("Ubicacion", systemImage: "network")
+                }
         }
         .navigationTitle("Peliculas")
     }

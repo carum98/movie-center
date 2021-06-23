@@ -50,4 +50,12 @@ class Client: NetworkGeneric {
         
         self.fetch(type: T.self, with: request, completion: complete)
     }
+    
+    func getMoviesRecomendationRegion<T: Decodable>(type:T.Type, codRegion : String,complete: @escaping (Result<T, ApiError>) -> Void) {
+        let path = "movie/popular"
+        let url = URL(string: "\(baseURL)\(path)?api_key=\(apiKey)&language=es-ES&region=\(codRegion)")
+        let request = URLRequest(url: url!)
+        
+        self.fetch(type: T.self, with: request, completion: complete)
+    }
 }
