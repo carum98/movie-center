@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct TVShowsDetail: View {
+    @EnvironmentObject var viewModel : TVShowViewModel
     let tvShow : TVShow
-    var viewModel : TVShowViewModel
     
     var body: some View {
         ScrollView {
@@ -42,7 +42,7 @@ struct TVShowsDetail: View {
                         LazyHStack(spacing: 20) {
                             ForEach(viewModel.recomendations) { item in
                                 NavigationLink(
-                                    destination: TVShowsDetail(tvShow: item, viewModel: viewModel) ,
+                                    destination: TVShowsDetail(tvShow: item) ,
                                     label: {
                                         Image(uiImage: "https://image.tmdb.org/t/p/w200\(item.posterPath)".load())
                                             .resizable()
@@ -53,20 +53,21 @@ struct TVShowsDetail: View {
                         }
                     }
                 }
-
             }
             .navigationTitle(tvShow.originalName)
-            .onAppear {
-                viewModel.recomendations.removeAll()
-                viewModel.fetchRecomendation(tvId: tvShow.id)
         }
+        .onAppear() {
+            viewModel.fetchRecomendation(tvId: tvShow.id)
+        }
+        .onDisappear() {
+            viewModel.recomendations.removeAll()
         }
     }
 }
 
 struct TVShowsDetail_Previews: PreviewProvider {
     static var previews: some View {
-        TVShowsDetail(tvShow: TVShow(id: 1, originalName: "Loki", overview: "Loki, el impredecible villano Loki (Hiddleston) regresa como el Dios del engaño en una nueva serie tras los acontecimientos de Avengers", backdropPath: "/ykElAtsOBoArgI1A8ATVH0MNve0.jpg", posterPath: "/kAHPDqUUciuObEoCgYtHttt6L2Q.jpg", firstAirDate: "2021-02-13", voteAverage: 3), viewModel: TVShowViewModel())
+        TVShowsDetail(tvShow: TVShow(id: 1, originalName: "Loki", overview: "Loki, el impredecible villano Loki (Hiddleston) regresa como el Dios del engaño en una nueva serie tras los acontecimientos de Avengers", backdropPath: "/ykElAtsOBoArgI1A8ATVH0MNve0.jpg", posterPath: "/kAHPDqUUciuObEoCgYtHttt6L2Q.jpg", firstAirDate: "2021-02-13", voteAverage: 3))
             .preferredColorScheme(.dark)
     }
 }

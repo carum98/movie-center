@@ -8,24 +8,26 @@
 import SwiftUI
 
 struct TVShowList: View {
-    @ObservedObject var viewModel : TVShowViewModel = TVShowViewModel()
+    @EnvironmentObject var viewModel : TVShowViewModel
     
     var body: some View {
         TabView {
             List {
-                ForEach(self.viewModel.tvShows, id: \.id) { item in
+                ForEach(viewModel.tvShows, id: \.id) { item in
                     NavigationLink(
-                        destination: TVShowsDetail(tvShow: item, viewModel: viewModel) ,
+                        destination: TVShowsDetail(tvShow: item),
                         label: {
                             Text(item.originalName)
                         })
                 }
             }
             .onAppear {
-                viewModel.fetchTVShows()
+                if (viewModel.tvShows.isEmpty) {
+                    viewModel.fetchTVShows()
+                }
             }
             .overlay(Group {
-                if self.viewModel.tvShows.isEmpty {
+                if viewModel.tvShows.isEmpty {
                     Loading()
                 }
             })
@@ -51,5 +53,6 @@ struct TVShowList: View {
 struct TVShowList_Previews: PreviewProvider {
     static var previews: some View {
         TVShowList()
+            .environmentObject(TVShowViewModel())
     }
 }

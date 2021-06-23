@@ -26,6 +26,9 @@ struct MainMenu: View {
                 Spacer()
             }.navigationTitle("MovieCenter")
         }
+        .navigationViewStyle(StackNavigationViewStyle())
+        .environmentObject(TVShowViewModel())
+        
     }
 }
 
