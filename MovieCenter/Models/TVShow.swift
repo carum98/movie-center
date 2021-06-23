@@ -13,6 +13,8 @@ struct TVShow : Identifiable, Codable {
     var overview : String
     var backdropPath : String
     var posterPath : String
+    var firstAirDate : String
+    var voteAverage : Double
     
     enum CodingKeys: String, CodingKey {
         case id
@@ -20,5 +22,7 @@ struct TVShow : Identifiable, Codable {
         case overview
         case backdropPath = "backdrop_path"
         case posterPath = "poster_path"
+        case firstAirDate = "first_air_date"
+        case voteAverage = "vote_average"
     }
 }

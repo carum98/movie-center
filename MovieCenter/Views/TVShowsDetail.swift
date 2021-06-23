@@ -12,37 +12,61 @@ struct TVShowsDetail: View {
     var viewModel : TVShowViewModel
     
     var body: some View {
-        ZStack(alignment: .leading) {
-            VStack {
-                Image(uiImage: "https://image.tmdb.org/t/p/w500\(tvShow.backdropPath)".load())
-                    .resizable()
-                    .frame(width: 400, height: 300)
-                Text(tvShow.originalName)
-                Text(tvShow.overview)
-                Spacer()
-                ScrollView(.horizontal) {
-                    LazyHStack(spacing: 20) {
-                        ForEach(viewModel.recomendations) { item in
-                            Image(uiImage: "https://image.tmdb.org/t/p/w500\(item.posterPath)".load())
-                                .resizable()
-                                .frame(width: 200, height: 300, alignment: .center)
+        ScrollView {
+            ZStack(alignment: .leading) {
+                VStack {
+                    Image(uiImage: "https://image.tmdb.org/t/p/w300\(tvShow.backdropPath)".load())
+                        .resizable()
+                        .frame(height: 200)
+                    HStack(alignment: .bottom) {
+                        Image(uiImage: "https://image.tmdb.org/t/p/w200\(tvShow.posterPath)".load())
+                        .resizable()
+                        .frame(width: 100, height: 150, alignment: .center)
+                        VStack(alignment: .leading, spacing: 10.0) {
+                            Text(tvShow.originalName)
+                            Text(tvShow.firstAirDate)
+                            HStack {
+                                ForEach(0..<Int(tvShow.voteAverage)) { _ in
+                                    Image(systemName: "star.fill")
+                                        .foregroundColor(.yellow)
+                                }
+                            }
+                        }
+                        Spacer()
+                        Image(systemName: "star.fill")
+                            .padding(20)
+                    }
+                    Text(tvShow.overview)
+                    Spacer()
+                    ScrollView(.horizontal) {
+                        LazyHStack(spacing: 20) {
+                            ForEach(viewModel.recomendations) { item in
+                                NavigationLink(
+                                    destination: TVShowsDetail(tvShow: item, viewModel: viewModel) ,
+                                    label: {
+                                        Image(uiImage: "https://image.tmdb.org/t/p/w200\(item.posterPath)".load())
+                                            .resizable()
+                                            .frame(width: 150, height: 250, alignment: .center)
+                                    })
+
+                            }
                         }
                     }
                 }
+
             }
-            Image(uiImage: "https://image.tmdb.org/t/p/w500\(tvShow.posterPath)".load())
-                .resizable()
-                .frame(width: 200, height: 300, alignment: .center)
+            .navigationTitle(tvShow.originalName)
+            .onAppear {
+                viewModel.recomendations.removeAll()
+                viewModel.fetchRecomendation(tvId: tvShow.id)
         }
-        .navigationBarTitle(tvShow.originalName)
-        .onAppear {
-            viewModel.fetchRecomendation(tvId: tvShow.id)
         }
     }
 }
 
 struct TVShowsDetail_Previews: PreviewProvider {
     static var previews: some View {
-        TVShowsDetail(tvShow: TVShow(id: 1, originalName: "Loki", overview: "Loki, el impredecible villano Loki (Hiddleston) regresa como el Dios del engaño en una nueva serie tras los acontecimientos de Avengers", backdropPath: "/ykElAtsOBoArgI1A8ATVH0MNve0.jpg", posterPath: "/kAHPDqUUciuObEoCgYtHttt6L2Q.jpg"), viewModel: TVShowViewModel())
+        TVShowsDetail(tvShow: TVShow(id: 1, originalName: "Loki", overview: "Loki, el impredecible villano Loki (Hiddleston) regresa como el Dios del engaño en una nueva serie tras los acontecimientos de Avengers", backdropPath: "/ykElAtsOBoArgI1A8ATVH0MNve0.jpg", posterPath: "/kAHPDqUUciuObEoCgYtHttt6L2Q.jpg", firstAirDate: "2021-02-13", voteAverage: 3), viewModel: TVShowViewModel())
+            .preferredColorScheme(.dark)
     }
 }
