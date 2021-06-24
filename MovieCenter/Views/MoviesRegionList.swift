@@ -4,11 +4,7 @@ struct MoviesRegionList: View {
     var viewModel : MoviesViewModel
     var laRegion:String
     var generos:[Genre]
-    var peliculas:[Movies]
-    func GetData(){
-        self.viewModel.fetchGenreMovies()
-        self.viewModel.fetchRegion(region: "CR")
-    }
+    var peliculas:[Movies]  
     func ObtengaLasPeliculasPorGenero(lasPelicula:[Movies], genero:Int) -> [Movies]{
         let peliculas:[Movies] = lasPelicula.filter({ (movie) -> Bool in
             if(movie.generes.contains(genero)){
@@ -22,11 +18,10 @@ struct MoviesRegionList: View {
         ScrollView(.vertical){
             LazyVStack(spacing: 20) {
                 ForEach(generos, id: \.id){ genere in
-                    var lasPeliculas:[Movies] = ObtengaLasPeliculasPorGenero(lasPelicula: peliculas,genero: genere.id)
+                    let lasPeliculas:[Movies] = ObtengaLasPeliculasPorGenero(lasPelicula: peliculas,genero: genere.id)
                     if (lasPeliculas.count > 0){
                         VStack(alignment: .leading, spacing: 6) {
                         Text(genere.name).font(.title).frame(alignment: .leading)
-                        //Section(header: Text(genere.name).font(.title)) {
                             ScrollView(.horizontal){
                                 LazyHStack(spacing: 20) {
                                     ForEach(lasPeliculas, id: \.id){ movie in
@@ -34,10 +29,9 @@ struct MoviesRegionList: View {
                                             destination: MovieDetail(movie: movie) ,
                                             label: {
                                                 LazyVStack(spacing: 1) {
-                                                    Image(uiImage: "https://image.tmdb.org/t/p/w500\(movie.posterPath)".load())
+                                                    Image(uiImage: "https://image.tmdb.org/t/p/w200\(movie.posterPath)".load())
                                                         .resizable()
                                                         .frame(width: 100, height: 150, alignment: .center)
-//                                                    Text(movie.originalTitle).font(.title).lineLimit(0)
                                                 }
                                             }
                                         )
@@ -48,7 +42,11 @@ struct MoviesRegionList: View {
                     }
                 }
             }
-        }
+        }.overlay(Group {
+            if self.peliculas.isEmpty {
+                Loading()
+            }
+        })
     }
 }
 

@@ -32,18 +32,21 @@ struct MoviesList: View {
             })
             .tabItem {
                 Label("List", systemImage: "list.dash")
-            }
-            
-            
+            }                        
             Text("Lista Favoritos")
                 .tabItem {
                     Label("Favoritos", systemImage: "heart.fill")
                 }
             
             MoviesRegionList(viewModel: self.viewModel, laRegion:Location.region,generos: viewModel.genres, peliculas: viewModel.regionMovies)
-                .tabItem {
-                    Label("Ubicacion", systemImage: "network")
-                }
+            .tabItem {
+                Label("Ubicacion", systemImage: "network")
+                    .overlay(Group {
+                        if (self.viewModel.regionMovies.isEmpty || self.viewModel.genres.isEmpty){
+                            Loading()
+                        }
+                    })
+            }
         }
         .navigationTitle("Peliculas")
     }
