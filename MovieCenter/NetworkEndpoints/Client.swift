@@ -20,58 +20,62 @@ class Client: NetworkGeneric {
     }
     
     func getMovies<T: Decodable>(type:T.Type, complete: @escaping (Result<T, ApiError>) -> Void) {
-        let path = "movie/now_playing"
-        let url = URL(string: "\(baseURL)\(path)?api_key=\(apiKey)&language=es-ES")
-        let request = URLRequest(url: url!)
+        let url = buildPath(path: "movie/now_playing")
+        let request = URLRequest(url: url)
         
         self.fetch(type: T.self, with: request, completion: complete)
     }
     
     func getTVShows<T: Decodable>(type:T.Type, complete: @escaping (Result<T, ApiError>) -> Void) {
-        let path = "tv/on_the_air"
-        let url = URL(string: "\(baseURL)\(path)?api_key=\(apiKey)&language=es-ES")
-        let request = URLRequest(url: url!)
+        let url = buildPath(path: "tv/on_the_air")
+        let request = URLRequest(url: url)
         
         self.fetch(type: T.self, with: request, completion: complete)
     }
     
     func getMoviesRecomendation<T: Decodable>(type:T.Type, movieId : Int,complete: @escaping (Result<T, ApiError>) -> Void) {
-        let path = "/movie/\(movieId)/recommendations"
-        let url = URL(string: "\(baseURL)\(path)?api_key=\(apiKey)&language=es-ES")
-        let request = URLRequest(url: url!)
+        let url = buildPath(path: "/movie/\(movieId)/recommendations")
+        let request = URLRequest(url: url)
         
         self.fetch(type: T.self, with: request, completion: complete)
     }
     
     func getTVShowsRecomendation<T: Decodable>(type:T.Type, tvId : Int,complete: @escaping (Result<T, ApiError>) -> Void) {
-        let path = "/tv/\(tvId)/recommendations"
-        let url = URL(string: "\(baseURL)\(path)?api_key=\(apiKey)&language=es-ES")
-        let request = URLRequest(url: url!)
+        let url = buildPath(path: "/tv/\(tvId)/recommendations")
+        let request = URLRequest(url: url)
+        
+        self.fetch(type: T.self, with: request, completion: complete)
+    }
+    
+    func getTVShowsCast<T: Decodable>(type:T.Type, tvId : Int,complete: @escaping (Result<T, ApiError>) -> Void) {
+        let url = buildPath(path: "/tv/\(tvId)/credits")
+        let request = URLRequest(url: url)
         
         self.fetch(type: T.self, with: request, completion: complete)
     }
     
     func getTVShowsDetail<T: Decodable>(type:T.Type, tvId : Int,complete: @escaping (Result<T, ApiError>) -> Void) {
-        let path = "/tv/\(tvId)"
-        let url = URL(string: "\(baseURL)\(path)?api_key=\(apiKey)&language=es-ES")
-        let request = URLRequest(url: url!)
+        let url = buildPath(path: "/tv/\(tvId)")
+        let request = URLRequest(url: url)
         
         self.fetch(type: T.self, with: request, completion: complete)
     }
     
     func getMoviesRecomendationRegion<T: Decodable>(type:T.Type, codRegion : String,complete: @escaping (Result<T, ApiError>) -> Void) {
-        let path = "movie/popular"
-        let url = URL(string: "\(baseURL)\(path)?api_key=\(apiKey)&language=es-ES&region=\(codRegion)")
-        let request = URLRequest(url: url!)
+        let url = buildPath(path: "movie/popular")
+        let request = URLRequest(url: url)
         
         self.fetch(type: T.self, with: request, completion: complete)
     }
     
     func getGenreMovies<T: Decodable>(type:T.Type,complete: @escaping (Result<T, ApiError>) -> Void) {
-        let path = "genre/movie/list"
-        let url = URL(string: "\(baseURL)\(path)?api_key=\(apiKey)&language=es-ES")
-        let request = URLRequest(url: url!)
+        let url = buildPath(path: "genre/movie/list")
+        let request = URLRequest(url: url)
         
         self.fetch(type: T.self, with: request, completion: complete)
+    }
+    
+    private func buildPath(path : String) -> URL {
+        return URL(string: "\(baseURL)\(path)?api_key=\(apiKey)&language=es-ES")!
     }
 }

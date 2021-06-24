@@ -16,6 +16,8 @@ struct TVShow : Identifiable, Codable {
     var firstAirDate : String
     var voteAverage : Double
     var detail : TVShowDetail?
+    var recomendations : [TVShow]?
+    var cast : [TVShowCast]?
     
     enum CodingKeys: String, CodingKey {
         case id
@@ -25,7 +27,6 @@ struct TVShow : Identifiable, Codable {
         case posterPath = "poster_path"
         case firstAirDate = "first_air_date"
         case voteAverage = "vote_average"
-        case detail
     }
 }
 
@@ -55,5 +56,19 @@ struct Company : Codable {
         case id
         case name
         case logoPath = "logo_path"
+    }
+}
+
+struct TVShowCast : Identifiable, Codable {
+    var id : Int
+    var name : String
+    var character : String
+    var profilePath : String
+    
+    enum CodingKeys: String, CodingKey {
+        case id
+        case name
+        case character
+        case profilePath = "profile_path"
     }
 }
