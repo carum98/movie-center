@@ -28,6 +28,7 @@ struct MainMenu: View {
         }
         .navigationViewStyle(StackNavigationViewStyle())
         .environmentObject(TVShowViewModel())
+        .environmentObject(MoviesViewModel())
         
     }
 }

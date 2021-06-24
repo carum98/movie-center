@@ -13,7 +13,11 @@ struct Movies : Identifiable, Codable {
     var overview : String
     var backdropPath : String
     var posterPath : String
+    var releaseDate : String
+    var voteAverage : Float
     var generes : [Int]
+    var detail : MovieDataDetail?
+    var recomendations : [Movies]?
     
     enum CodingKeys: String, CodingKey {
         case id
@@ -21,6 +25,18 @@ struct Movies : Identifiable, Codable {
         case overview
         case backdropPath = "backdrop_path"
         case posterPath = "poster_path"
+        case releaseDate = "release_date"
+        case voteAverage = "vote_average"
         case generes =  "genre_ids"
+    }
+}
+
+struct MovieDataDetail : Codable {
+    var genres : [Genre]
+    var productionCompanies : [Company]
+    
+    enum CodingKeys: String, CodingKey {
+        case genres
+        case productionCompanies = "production_companies"
     }
 }

@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct MoviesList: View {
-    @ObservedObject var viewModel : MoviesViewModel = MoviesViewModel()
+    @EnvironmentObject var viewModel : MoviesViewModel
     @ObservedObject var Location : LocationViewModel = LocationViewModel()
     
     func goToRegionList() {
@@ -12,14 +12,16 @@ struct MoviesList: View {
             List {
                 ForEach(self.viewModel.movies, id: \.id) { item in
                     NavigationLink(
-                        destination: MovieDetail(movie: item, viewModel: viewModel) ,
+                        destination: MovieDetail(movie: item) ,
                         label: {
                             Text(item.originalTitle)
                         })
                 }
             }
             .onAppear {
-                viewModel.fetchMovies()
+                if (viewModel.movies.isEmpty) {
+                    viewModel.fetchMovies()
+                }
                 viewModel.fetchGenreMovies()
                 viewModel.fetchRegion(region: Location.region)
             }

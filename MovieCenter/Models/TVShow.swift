@@ -47,7 +47,7 @@ struct TVShowDetail : Codable {
     }
 }
 
-struct Company : Codable {
+struct Company : Codable, Identifiable {
     var id : Int
     var name : String
     var logoPath : String

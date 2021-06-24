@@ -9,7 +9,6 @@ import Foundation
 
 class MoviesViewModel : ObservableObject {
     @Published var movies = [Movies]()
-    @Published var recomendations = [Movies]()
     @Published var regionMovies = [Movies]()
     @Published var genres = [Genre]()
     
@@ -36,12 +35,28 @@ class MoviesViewModel : ObservableObject {
         client.getMoviesRecomendation(type: Results.self, movieId: movieId, complete: { result in
             switch result {
             case .success(let data):
-                self.recomendations = data.results
+                if let i = self.movies.firstIndex(where: { $0.id == movieId } ) {
+                    self.movies[i].recomendations = data.results
+                }
             case .failure(let error):
                 print(error)
             }
         })
     }
+    
+    func fetchDetail(movieId : Int) {
+        client.getMovieDetail(type: MovieDataDetail.self, movieId: movieId, complete: { result in
+            switch result {
+            case .success(let data):
+                if let i = self.movies.firstIndex(where: { $0.id == movieId } ) {
+                    self.movies[i].detail = data
+                }
+            case .failure(let error):
+                print(error)
+            }
+        })
+    }
+    
     func fetchRegion(region : String) {
         client.getMoviesRecomendationRegion(type: Results.self, codRegion: region, complete: { result in
             switch result {
