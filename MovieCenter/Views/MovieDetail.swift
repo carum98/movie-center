@@ -14,7 +14,7 @@ struct MovieDetail: View {
     var body: some View {
             ZStack(alignment: .leading) {
                 VStack {
-                    Image(uiImage: "https://image.tmdb.org/t/p/w500\(movie.backdropPath)".load())
+                    Image(uiImage: "https://image.tmdb.org/t/p/w200\(movie.backdropPath)".load())
                         .resizable()
                         .frame(width: 400, height: 300)
                     Text(movie.originalTitle)
@@ -23,14 +23,14 @@ struct MovieDetail: View {
                     ScrollView(.horizontal) {
                         LazyHStack(spacing: 20) {
                             ForEach(viewModel.recomendations) { item in
-                                Image(uiImage: "https://image.tmdb.org/t/p/w500\(item.posterPath)".load())
+                                Image(uiImage: "https://image.tmdb.org/t/p/w200\(item.posterPath)".load())
                                     .resizable()
                                     .frame(width: 200, height: 300, alignment: .center)
                             }
                         }
                     }
                 }
-                Image(uiImage: "https://image.tmdb.org/t/p/w500\(movie.posterPath)".load())
+                Image(uiImage: "https://image.tmdb.org/t/p/w200\(movie.posterPath)".load())
                     .resizable()
                     .frame(width: 200, height: 300, alignment: .center)
             

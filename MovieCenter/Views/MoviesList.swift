@@ -9,17 +9,10 @@ struct MoviesList: View {
     }
     var body: some View {
         TabView {
-//            List {
-////                ForEach(self.viewModel.movies, id: \.id) { item in
-////                    NavigationLink(
-////                        destination: MovieDetail(movie: item, viewModel: viewModel) ,
-////                        label: {
-////                            Text(item.originalTitle)
-////                        })
-////                }
-//                
-//            }
-            MoviesRegionList(viewModel: self.viewModel, laRegion:Location.region,generos: viewModel.genres, peliculas: viewModel.movies)
+            MoviesRegionList(viewModel: self.viewModel,
+                             laRegion:Location.region,
+                             generos: viewModel.genres,
+                             peliculas: viewModel.movies)
             .onAppear {
                 viewModel.fetchMovies()
                 viewModel.fetchGenreMovies()
@@ -32,9 +25,7 @@ struct MoviesList: View {
             })
             .tabItem {
                 Label("List", systemImage: "list.dash")
-            }
-            
-            
+            }                        
             Text("Lista Favoritos")
                 .tabItem {
                     Label("Favoritos", systemImage: "heart.fill")

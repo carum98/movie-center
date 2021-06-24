@@ -16,8 +16,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "8"
             endingLineNumber = "8"
-            landmarkName = "MoviesRegionList"
-            landmarkType = "14">
+            landmarkName = "ObtengaLasPeliculasPorGenero(lasPelicula:genero:)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

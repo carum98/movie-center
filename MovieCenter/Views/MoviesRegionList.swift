@@ -29,7 +29,7 @@ struct MoviesRegionList: View {
                                             destination: MovieDetail(movie: movie, viewModel: viewModel) ,
                                             label: {
                                                 LazyVStack(spacing: 1) {
-                                                    Image(uiImage: "https://image.tmdb.org/t/p/w500\(movie.posterPath)".load())
+                                                    Image(uiImage: "https://image.tmdb.org/t/p/w200\(movie.posterPath)".load())
                                                         .resizable()
                                                         .frame(width: 100, height: 150, alignment: .center)
                                                 }
