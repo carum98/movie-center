@@ -9,15 +9,17 @@ struct MoviesList: View {
     }
     var body: some View {
         TabView {
-            List {
-                ForEach(self.viewModel.movies, id: \.id) { item in
-                    NavigationLink(
-                        destination: MovieDetail(movie: item, viewModel: viewModel) ,
-                        label: {
-                            Text(item.originalTitle)
-                        })
-                }
-            }
+//            List {
+////                ForEach(self.viewModel.movies, id: \.id) { item in
+////                    NavigationLink(
+////                        destination: MovieDetail(movie: item, viewModel: viewModel) ,
+////                        label: {
+////                            Text(item.originalTitle)
+////                        })
+////                }
+//                
+//            }
+            MoviesRegionList(viewModel: self.viewModel, laRegion:Location.region,generos: viewModel.genres, peliculas: viewModel.movies)
             .onAppear {
                 viewModel.fetchMovies()
                 viewModel.fetchGenreMovies()
@@ -39,9 +41,14 @@ struct MoviesList: View {
                 }
             
             MoviesRegionList(viewModel: self.viewModel, laRegion:Location.region,generos: viewModel.genres, peliculas: viewModel.regionMovies)
-                .tabItem {
-                    Label("Ubicacion", systemImage: "network")
-                }
+            .tabItem {
+                Label("Ubicacion", systemImage: "network")
+                    .overlay(Group {
+                        if (self.viewModel.regionMovies.isEmpty || self.viewModel.genres.isEmpty){
+                            Loading()
+                        }
+                    })
+            }
         }
         .navigationTitle("Peliculas")
     }
