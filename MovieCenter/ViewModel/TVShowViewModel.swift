@@ -9,7 +9,6 @@ import Foundation
 
 class TVShowViewModel : ObservableObject {
     @Published var tvShows = [TVShow]()
-    @Published var recomendations = [TVShow]()
     
     var session = URLSession.shared
     var client:Client
@@ -33,7 +32,9 @@ class TVShowViewModel : ObservableObject {
         client.getTVShowsRecomendation(type: ResultTVShows.self, tvId: tvId, complete: { result in
             switch result {
             case .success(let data):
-                self.recomendations = data.results
+                if let i = self.tvShows.firstIndex(where: { $0.id == tvId } ) {
+                    self.tvShows[i].recomendations = data.results
+                }
             case .failure(let error):
                 print(error)
             }

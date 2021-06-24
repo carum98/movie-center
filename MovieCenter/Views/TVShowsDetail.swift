@@ -66,7 +66,7 @@ struct TVShowsDetail: View {
                         .font(.title)
                     ScrollView(.horizontal) {
                         LazyHStack(spacing: 20) {
-                            ForEach(viewModel.recomendations) { item in
+                            ForEach(tvShow.recomendations ?? []) { item in
                                 NavigationLink(
                                     destination: TVShowsDetail(tvShow: item) ,
                                     label: {
@@ -79,16 +79,22 @@ struct TVShowsDetail: View {
                             }
                         }
                     }
+                
+                TVShowInfo2(detail: tvShow.detail)
             }
             .navigationBarTitle(tvShow.originalName, displayMode: .inline)
         }
         
         .onAppear() {
-            viewModel.fetchRecomendation(tvId: tvShow.id)
-            viewModel.fetchDatail(tvId: tvShow.id)
-        }
-        .onDisappear() {
-            viewModel.recomendations.removeAll()
+            let index = viewModel.tvShows.firstIndex(where: { $0.id == tvShow.id })
+            
+            if ((viewModel.tvShows[index!].detail) == nil) {
+                viewModel.fetchRecomendation(tvId: tvShow.id)
+            }
+            
+            if ((viewModel.tvShows[index!].detail) == nil) {
+                viewModel.fetchDatail(tvId: tvShow.id)
+            }
         }
     }
 }
@@ -103,30 +109,30 @@ struct TVShowInfo: View {
             Text("Temporas: \(detail?.numberOfSeasons ?? 0)")
             Text("Episodios: \(detail?.numberOfEpisodes ?? 0)")
         
-            HStack {
-                Image(uiImage: "https://image.tmdb.org/t/p/w200\( detail?.networks[0].logoPath ?? "")".load())
-                    .resizable()
-                    .frame(width: 100, height: 50, alignment: .center)
-                    
-                Text("Network: \(detail?.networks[0].name ?? "")")
-            }
+
+        }
+    }
+}
+
+struct TVShowInfo2: View {
+    let detail : TVShowDetail?
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            Text("Productoras")
+                .font(.title)
+            Image(uiImage: "https://image.tmdb.org/t/p/w200\( detail?.networks[0].logoPath ?? "")".load())
             .padding(8)
             .background(
               RoundedRectangle(cornerRadius: 8)
                 .fill(Color.gray.opacity(0.2))
             )
-            HStack {
-                Image(uiImage: "https://image.tmdb.org/t/p/w200\( detail?.productionCompanies[0].logoPath ?? "")".load())
-                    .resizable()
-                    .frame(width: 150, height: 50, alignment: .center)
-                    
-                Text("Productora: \(detail?.productionCompanies[0].name ?? "")")
-            }
-                .padding(8)
-                .background(
-                  RoundedRectangle(cornerRadius: 8)
-                    .fill(Color.gray.opacity(0.2))
-                 )
+            Image(uiImage: "https://image.tmdb.org/t/p/w200\( detail?.productionCompanies[0].logoPath ?? "")".load())
+            .padding(8)
+            .background(
+              RoundedRectangle(cornerRadius: 8)
+                .fill(Color.gray.opacity(0.2))
+             )
         }
     }
 }
