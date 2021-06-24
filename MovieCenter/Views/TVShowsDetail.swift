@@ -19,29 +19,20 @@ struct TVShowsDetail: View {
                         .resizable()
                         .frame(width: 100, height: 150, alignment: .center)
                         .cornerRadius(30)
-                        
+
                         VStack {
-                            HStack {
-                                Spacer()
-                                HStack {
-                                    ForEach(0..<Int(tvShow.voteAverage)) { _ in
-                                        Image(systemName: "star.fill")
-                                            .foregroundColor(.yellow)
-                                    }
-                                }
-                            }
-                            Spacer()
                             HStack(alignment: .bottom) {
                                 VStack(alignment: .leading, spacing: 20) {
-                                    Text(tvShow.originalName)
-                                    Text(tvShow.firstAirDate)
+                                    Text("Año: \(String(Array(tvShow.firstAirDate)[0..<4]))")
+                                    Text("Temporas: \(tvShow.detail?.numberOfSeasons ?? 0)")
+                                    Text("Episodios: \(tvShow.detail?.numberOfEpisodes ?? 0)")
                                 }
                                 Spacer()
                                 Image(systemName: "star.fill")
                                     .padding(20)
                             }
                         }
-                        
+
 
                     }.padding(20)
                 
@@ -51,65 +42,38 @@ struct TVShowsDetail: View {
                               .padding(8)
                               .background(
                                 RoundedRectangle(cornerRadius: 8)
-                                  .fill(Color.gray.opacity(0.2))
-                               )
+                                  .fill(Color.gray.opacity(0.2)))
                         }
                     };
-                
-                    Text("Sinopsis")
-                        .font(.title)
-                    Text(tvShow.overview)
                     
-                    TVShowInfo(detail: tvShow.detail)
-                
-                    Text("Recomendaciones")
-                        .font(.title)
-                    ScrollView(.horizontal) {
-                        LazyHStack(spacing: 20) {
-                            ForEach(tvShow.recomendations ?? []) { item in
-                                NavigationLink(
-                                    destination: TVShowsDetail(tvShow: item) ,
-                                    label: {
-                                        Image(uiImage: "https://image.tmdb.org/t/p/w200\(item.posterPath)".load())
-                                            .resizable()
-                                            .frame(width: 150, height: 250, alignment: .center)
-                                            .cornerRadius(20)
-                                    })
-
-                            }
-                        }
+                    VStack(alignment: .leading) {
+                        Text("Sinopsis")
+                            .font(.title)
+                        Text(tvShow.overview)
                     }
+
+                    ListRecomendation(tvShow: tvShow)
                 
-                TVShowInfo2(detail: tvShow.detail)
+                    ListCast(tvShow: tvShow)
+                
+                    TVShowInfo2(detail: tvShow.detail)
             }
             .navigationBarTitle(tvShow.originalName, displayMode: .inline)
         }
-        
         .onAppear() {
             let index = viewModel.tvShows.firstIndex(where: { $0.id == tvShow.id })
-            
-            if ((viewModel.tvShows[index!].detail) == nil) {
+
+            if ((viewModel.tvShows[index!].recomendations) == nil) {
                 viewModel.fetchRecomendation(tvId: tvShow.id)
             }
-            
+
             if ((viewModel.tvShows[index!].detail) == nil) {
                 viewModel.fetchDatail(tvId: tvShow.id)
             }
-        }
-    }
-}
 
-struct TVShowInfo: View {
-    let detail : TVShowDetail?
-    
-    var body: some View {
-        VStack(alignment: .leading, spacing: 10) {
-            Text("Informacion")
-                .font(.title)
-            Text("Temporas: \(detail?.numberOfSeasons ?? 0)")
-            Text("Episodios: \(detail?.numberOfEpisodes ?? 0)")
-        
-
+            if ((viewModel.tvShows[index!].cast) == nil) {
+                viewModel.fetchCast(tvId: tvShow.id)
+            }
         }
     }
 }
@@ -133,6 +97,61 @@ struct TVShowInfo2: View {
               RoundedRectangle(cornerRadius: 8)
                 .fill(Color.gray.opacity(0.2))
              )
+        }
+    }
+}
+
+struct ListRecomendation: View {
+    let tvShow : TVShow
+    
+    var body: some View {
+        VStack(alignment: .leading) {
+            Text("Recomendaciones")
+                .font(.title)
+            ScrollView(.horizontal) {
+                LazyHStack(spacing: 20) {
+                    ForEach(tvShow.recomendations ?? []) { item in
+                        NavigationLink(
+                            destination: TVShowsDetail(tvShow: item) ,
+                            label: {
+                                Image(uiImage: "https://image.tmdb.org/t/p/w200\(item.posterPath)".load())
+                                    .resizable()
+                                    .frame(width: 150, height: 250, alignment: .center)
+                                    .cornerRadius(20)
+                            }
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
+
+struct ListCast: View {
+    let tvShow : TVShow
+    
+    var body: some View {
+        VStack(alignment: .leading) {
+            Text("Reparto")
+                .font(.title)
+            ScrollView(.horizontal) {
+                LazyHStack(spacing: 20) {
+                    ForEach(tvShow.cast ?? []) { item in
+                        VStack(alignment: .leading) {
+                            Image(uiImage: "https://image.tmdb.org/t/p/w200\(item.profilePath)".load())
+                                .resizable()
+                                .frame(width: 150, height: 250, alignment: .center)
+                                .cornerRadius(20)
+
+                            Text("\(item.name)")
+                                .font(.title3)
+                            Text("\(item.character)")
+                                .font(.subheadline)
+                        }
+                        .padding(.vertical, 20)
+                    }
+                }
+            }
         }
     }
 }
