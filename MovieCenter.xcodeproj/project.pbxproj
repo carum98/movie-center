@@ -13,6 +13,8 @@
 		849A39262682F4AA0028BB40 /* Genre.swift in Sources */ = {isa = PBXBuildFile; fileRef = 849A39252682F4AA0028BB40 /* Genre.swift */; };
 		D4219128268310E100F250C1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D4219127268310E100F250C1 /* LaunchScreen.storyboard */; };
 		D421912A268313D800F250C1 /* logo.png in Resources */ = {isa = PBXBuildFile; fileRef = D4219129268313D800F250C1 /* logo.png */; };
+		D4A851562685721100CA8A23 /* DataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = D4A851542685721100CA8A23 /* DataModel.xcdatamodeld */; };
+		D4A851582685767F00CA8A23 /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4A851572685767F00CA8A23 /* Persistence.swift */; };
 		F72C884A267C367F003119C8 /* Results.swift in Sources */ = {isa = PBXBuildFile; fileRef = F72C8849267C367F003119C8 /* Results.swift */; };
 		F72C884C267C3AB1003119C8 /* MovieDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = F72C884B267C3AB1003119C8 /* MovieDetail.swift */; };
 		F72C884F267C42B2003119C8 /* LoadImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = F72C884E267C42B2003119C8 /* LoadImage.swift */; };
@@ -41,6 +43,8 @@
 		849A39252682F4AA0028BB40 /* Genre.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Genre.swift; sourceTree = "<group>"; };
 		D4219127268310E100F250C1 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D4219129268313D800F250C1 /* logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = logo.png; sourceTree = "<group>"; };
+		D4A851552685721100CA8A23 /* DataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = DataModel.xcdatamodel; sourceTree = "<group>"; };
+		D4A851572685767F00CA8A23 /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
 		F72C8849267C367F003119C8 /* Results.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Results.swift; sourceTree = "<group>"; };
 		F72C884B267C3AB1003119C8 /* MovieDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDetail.swift; sourceTree = "<group>"; };
 		F72C884E267C42B2003119C8 /* LoadImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadImage.swift; sourceTree = "<group>"; };
@@ -176,6 +180,8 @@
 				F7D2A924267C25280035F173 /* Preview Content */,
 				D4219127268310E100F250C1 /* LaunchScreen.storyboard */,
 				D4219129268313D800F250C1 /* logo.png */,
+				D4A851542685721100CA8A23 /* DataModel.xcdatamodeld */,
+				D4A851572685767F00CA8A23 /* Persistence.swift */,
 			);
 			path = MovieCenter;
 			sourceTree = "<group>";
@@ -270,6 +276,7 @@
 				F72C884F267C42B2003119C8 /* LoadImage.swift in Sources */,
 				849A391D26819D020028BB40 /* LocationFetcher.swift in Sources */,
 				F75E8D24267C2D2F00940C62 /* Movie.swift in Sources */,
+				D4A851562685721100CA8A23 /* DataModel.xcdatamodeld in Sources */,
 				F75E8D1F267C2CA700940C62 /* Client.swift in Sources */,
 				F75E8D28267C2FA300940C62 /* MoviesViewModel.swift in Sources */,
 				F7EEA7402681887800F7DA9B /* TVShowViewModel.swift in Sources */,
@@ -277,6 +284,7 @@
 				F7EEA73E2681882500F7DA9B /* TVShowList.swift in Sources */,
 				849A392226822FEB0028BB40 /* MoviesRegionList.swift in Sources */,
 				F75E8D10267C287B00940C62 /* ApiError.swift in Sources */,
+				D4A851582685767F00CA8A23 /* Persistence.swift in Sources */,
 				F72C8851267C4C0A003119C8 /* Loading.swift in Sources */,
 				849A39262682F4AA0028BB40 /* Genre.swift in Sources */,
 				F7D2A91F267C25270035F173 /* MovieCenterApp.swift in Sources */,
@@ -468,6 +476,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		D4A851542685721100CA8A23 /* DataModel.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				D4A851552685721100CA8A23 /* DataModel.xcdatamodel */,
+			);
+			currentVersion = D4A851552685721100CA8A23 /* DataModel.xcdatamodel */;
+			path = DataModel.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = F7D2A913267C25270035F173 /* Project object */;
 }

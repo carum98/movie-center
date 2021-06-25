@@ -9,6 +9,12 @@ import SwiftUI
 
 struct TVShowList: View {
     @EnvironmentObject var viewModel : TVShowViewModel
+    @Environment(\.managedObjectContext) var managedObjectContext
+    @FetchRequest(
+        entity: Favoritos.entity(),
+        sortDescriptors: [NSSortDescriptor(keyPath: \Favoritos.nombre, ascending: true)],
+        predicate: NSPredicate(format: "tipo == %@", "TV")
+    )var items: FetchedResults<Favoritos>
     
     var body: some View {
         TabView {
@@ -35,8 +41,12 @@ struct TVShowList: View {
                 Label("List", systemImage: "list.dash")
             }
             
-            
-            Text("Lista Favoritos")
+            List{
+                ForEach(items, id:\.self){ item in
+                    Text("\(item.nombre ?? "Nada")")
+                }
+                .onDelete(perform: deleteMovie)
+            }
             .tabItem {
                 Label("Favoritos", systemImage: "heart.fill")
             }
@@ -47,6 +57,13 @@ struct TVShowList: View {
             }
         }
         .navigationBarTitle("Series")
+    }
+    
+    func deleteMovie(at offsets: IndexSet) {
+      offsets.forEach { index in
+        let movie = self.items[index]
+        PersistanceController.shared.eliminar(movie)
+      }
     }
 }
 

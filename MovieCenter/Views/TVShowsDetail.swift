@@ -10,7 +10,8 @@ import SwiftUI
 struct TVShowsDetail: View {
     @EnvironmentObject var viewModel : TVShowViewModel
     let tvShow : TVShow
-    
+    @Environment(\.managedObjectContext) var managedObjectContext
+    @State var favorito:Bool = false ;
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 40) {
@@ -28,8 +29,22 @@ struct TVShowsDetail: View {
                                     Text("Episodios: \(tvShow.detail?.numberOfEpisodes ?? 0)")
                                 }
                                 Spacer()
-                                Image(systemName: "star.fill")
+                                Image(systemName: favorito ? "star.fill" : "star")
+                                    .foregroundColor(favorito ? Color(UIColor.yellow) : Color(UIColor.white))
                                     .padding(20)
+                                    .onTapGesture {
+                                        if favorito {
+                                            let fav = Favoritos(context: managedObjectContext)
+                                            fav.nombre = tvShow.originalName
+                                            fav.id = Int32(tvShow.id)
+                                            fav.imagen = tvShow.posterPath
+                                            fav.tipo = "TV"
+                                            PersistanceController.shared.guardar()
+                                            favorito.toggle()
+                                        } else {
+                                            print("eliminar")
+                                        }
+                                    }
                             }
                         }
 

@@ -9,44 +9,36 @@ struct MoviesList: View {
     }
     var body: some View {
         TabView {
-            List {
-                ForEach(self.viewModel.movies, id: \.id) { item in
-                    NavigationLink(
-                        destination: MovieDetail(movie: item) ,
-                        label: {
-                            Text(item.originalTitle)
-                        })
+            MoviesRegionList(viewModel: self.viewModel, laRegion:Location.region, generos: viewModel.genres, peliculas: viewModel.movies)
+                .onAppear {
+                    if (viewModel.movies.isEmpty) {
+                        viewModel.fetchMovies()
+                    }
+                    viewModel.fetchGenreMovies()
+                    viewModel.fetchRegion(region: Location.region)
                 }
-            }
-            .onAppear {
-                if (viewModel.movies.isEmpty) {
-                    viewModel.fetchMovies()
+                .overlay(Group {
+                    if self.viewModel.movies.isEmpty {
+                        Loading()
+                    }
+                })
+                .tabItem {
+                    Label("List", systemImage: "list.dash")
                 }
-                viewModel.fetchGenreMovies()
-                viewModel.fetchRegion(region: Location.region)
-            }
-            .overlay(Group {
-                if self.viewModel.movies.isEmpty {
-                    Loading()
-                }
-            })
-            .tabItem {
-                Label("List", systemImage: "list.dash")
-            }                        
             Text("Lista Favoritos")
                 .tabItem {
                     Label("Favoritos", systemImage: "heart.fill")
                 }
             
             MoviesRegionList(viewModel: self.viewModel, laRegion:Location.region,generos: viewModel.genres, peliculas: viewModel.regionMovies)
-            .tabItem {
-                Label("Ubicacion", systemImage: "network")
-                    .overlay(Group {
-                        if (self.viewModel.regionMovies.isEmpty || self.viewModel.genres.isEmpty){
-                            Loading()
-                        }
-                    })
-            }
+                .tabItem {
+                    Label("Ubicacion", systemImage: "network")
+                        .overlay(Group {
+                            if (self.viewModel.regionMovies.isEmpty || self.viewModel.genres.isEmpty){
+                                Loading()
+                            }
+                        })
+                }
         }
         .navigationTitle("Peliculas")
     }
