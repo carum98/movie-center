@@ -10,6 +10,8 @@ import SwiftUI
 struct MovieDetail: View {
     @EnvironmentObject var viewModel : MoviesViewModel
     let movie : Movies
+    @Environment(\.managedObjectContext) var managedObjectContext
+    @State var favorito:Bool = true
     
     var body: some View {
         ScrollView {
@@ -27,8 +29,23 @@ struct MovieDetail: View {
                                 Text("Calificacion: \(String(format:"%.1f", movie.voteAverage)) / 10")
                             }
                             Spacer()
-                            Image(systemName: "star.fill")
+                            Image(systemName: favorito ? "star.fill" : "star")
+                                .foregroundColor(favorito ? Color(UIColor.yellow) : Color(UIColor.white))
                                 .padding(20)
+                                .onTapGesture {
+                                    let fav = Favoritos(context: managedObjectContext)
+                                    fav.nombre = movie.originalTitle
+                                    fav.id = Int32(movie.id)
+                                    fav.imagen = movie.posterPath
+                                    fav.tipo = "MV"
+                                    if !favorito {
+                                        PersistanceController.shared.guardar()
+                                        favorito.toggle()
+                                    } else {
+                                        PersistanceController.shared.eliminar(fav)
+                                        favorito.toggle()
+                                    }
+                                }
                         }
                     }
                 }.padding(20)

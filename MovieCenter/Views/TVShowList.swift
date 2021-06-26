@@ -21,7 +21,7 @@ struct TVShowList: View {
             List {
                 ForEach(viewModel.tvShows, id: \.id) { item in
                     NavigationLink(
-                        destination: TVShowsDetail(tvShow: item),
+                        destination: TVShowsDetail(tvShow: item, favorito: false),
                         label: {
                             Text(item.originalName)
                         })

@@ -9,69 +9,69 @@ import SwiftUI
 
 struct TVShowsDetail: View {
     @EnvironmentObject var viewModel : TVShowViewModel
-    let tvShow : TVShow
+    let tvShow: TVShow
     @Environment(\.managedObjectContext) var managedObjectContext
-    @State var favorito:Bool = false ;
+    @State var favorito:Bool
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 40) {
                 HStack(alignment: .bottom, spacing: 20) {
-                        Image(uiImage: "https://image.tmdb.org/t/p/w200\(tvShow.posterPath)".load())
-                        .resizable()
-                        .frame(width: 100, height: 150, alignment: .center)
-                        .cornerRadius(30)
+                    Image(uiImage: "https://image.tmdb.org/t/p/w200\(tvShow.posterPath)".load())
+                    .resizable()
+                    .frame(width: 100, height: 150, alignment: .center)
+                    .cornerRadius(30)
 
-                        VStack {
-                            HStack(alignment: .bottom) {
-                                VStack(alignment: .leading, spacing: 20) {
-                                    Text("Año: \(String(Array(tvShow.firstAirDate)[0..<4]))")
-                                    Text("Temporas: \(tvShow.detail?.numberOfSeasons ?? 0)")
-                                    Text("Episodios: \(tvShow.detail?.numberOfEpisodes ?? 0)")
-                                }
-                                Spacer()
-                                Image(systemName: favorito ? "star.fill" : "star")
-                                    .foregroundColor(favorito ? Color(UIColor.yellow) : Color(UIColor.white))
-                                    .padding(20)
-                                    .onTapGesture {
-                                        if favorito {
-                                            let fav = Favoritos(context: managedObjectContext)
-                                            fav.nombre = tvShow.originalName
-                                            fav.id = Int32(tvShow.id)
-                                            fav.imagen = tvShow.posterPath
-                                            fav.tipo = "TV"
-                                            PersistanceController.shared.guardar()
-                                            favorito.toggle()
-                                        } else {
-                                            print("eliminar")
-                                        }
-                                    }
+                    VStack {
+                        HStack(alignment: .bottom) {
+                            VStack(alignment: .leading, spacing: 20) {
+                                Text("Año: \(String(Array(tvShow.firstAirDate)[0..<4]))")
+                                Text("Temporas: \(tvShow.detail?.numberOfSeasons ?? 0)")
+                                Text("Episodios: \(tvShow.detail?.numberOfEpisodes ?? 0)")
                             }
+                            Spacer()
+                            Image(systemName: favorito ? "star.fill" : "star")
+                                .foregroundColor(favorito ? Color(UIColor.yellow) : Color(UIColor.white))
+                                .padding(20)
+                                .onTapGesture {
+                                    print(favorito)
+                                    let fav = Favoritos(context: managedObjectContext)
+                                    fav.nombre = tvShow.originalName
+                                    fav.id = Int32(tvShow.id)
+                                    fav.imagen = tvShow.posterPath
+                                    fav.tipo = "TV"
+                                    if !favorito {
+                                        PersistanceController.shared.guardar()
+                                        favorito.toggle()
+                                    } else {
+                                        PersistanceController.shared.eliminar(fav)
+                                        favorito.toggle()
+                                    }
+                                }
                         }
-
-
-                    }.padding(20)
-                
-                    HStack {
-                        ForEach(tvShow.detail?.genres ?? []) { item in
-                            Text(verbatim: item.name)
-                              .padding(8)
-                              .background(
-                                RoundedRectangle(cornerRadius: 8)
-                                  .fill(Color.gray.opacity(0.2)))
-                        }
-                    };
-                    
-                    VStack(alignment: .leading) {
-                        Text("Sinopsis")
-                            .font(.title)
-                        Text(tvShow.overview)
                     }
+                }.padding(20)
+            
+                HStack {
+                    ForEach(tvShow.detail?.genres ?? []) { item in
+                        Text(verbatim: item.name)
+                          .padding(8)
+                          .background(
+                            RoundedRectangle(cornerRadius: 8)
+                              .fill(Color.gray.opacity(0.2)))
+                    }
+                };
+                
+                VStack(alignment: .leading) {
+                    Text("Sinopsis")
+                        .font(.title)
+                    Text(tvShow.overview)
+                }
 
-                    ListRecomendation(tvShow: tvShow)
-                
-                    ListCast(tvShow: tvShow)
-                
-                    TVShowInfo2(detail: tvShow.detail)
+                ListRecomendation(tvShow: tvShow)
+            
+                ListCast(tvShow: tvShow)
+            
+                TVShowInfo2(detail: tvShow.detail)
             }
             .navigationBarTitle(tvShow.originalName, displayMode: .inline)
         }
@@ -89,7 +89,13 @@ struct TVShowsDetail: View {
             if ((viewModel.tvShows[index!].cast) == nil) {
                 viewModel.fetchCast(tvId: tvShow.id)
             }
+            
+            print("Antes de verificar")
+            print(favorito)
+            favorito = PersistanceController.shared.verificarFavorito(id: Int32(tvShow.id))
+            print("Despues verificar: \(favorito)")
         }
+        
     }
 }
 
@@ -127,7 +133,7 @@ struct ListRecomendation: View {
                 LazyHStack(spacing: 20) {
                     ForEach(tvShow.recomendations ?? []) { item in
                         NavigationLink(
-                            destination: TVShowsDetail(tvShow: item) ,
+                            destination: TVShowsDetail(tvShow: item, favorito: false),
                             label: {
                                 Image(uiImage: "https://image.tmdb.org/t/p/w200\(item.posterPath)".load())
                                     .resizable()
@@ -190,7 +196,7 @@ struct TVShowsDetail_Previews: PreviewProvider {
                         networks: [Company(id: 2, name: "Disney+", logoPath: "/gJ8VX6JSu3ciXHuC2dDGAo2lvwM.png")],
                         productionCompanies: [Company(id: 1, name: "Marvel Studios", logoPath: "/hUzeosd33nzE5MCNsZxCGEKTXaQ.png")]
                     )
-            ))
+            ), favorito: false)
             .preferredColorScheme(.dark)
             .environmentObject(TVShowViewModel())
     }

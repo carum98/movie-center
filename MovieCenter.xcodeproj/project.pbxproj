@@ -87,6 +87,13 @@
 			path = Util;
 			sourceTree = "<group>";
 		};
+		D4A851592686F37D00CA8A23 /* BD */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = BD;
+			sourceTree = "<group>";
+		};
 		F72C884D267C422C003119C8 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
@@ -166,6 +173,7 @@
 		F7D2A91D267C25270035F173 /* MovieCenter */ = {
 			isa = PBXGroup;
 			children = (
+				D4A851592686F37D00CA8A23 /* BD */,
 				849A391E2681A6C50028BB40 /* Util */,
 				F72C884D267C422C003119C8 /* Extensions */,
 				F75E8D2B267C31E900940C62 /* Views */,
@@ -418,6 +426,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"MovieCenter/Preview Content\"";
 				DEVELOPMENT_TEAM = YUUW8QNH75;
+				ENABLE_BITCODE = YES;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = MovieCenter/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
@@ -440,6 +449,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"MovieCenter/Preview Content\"";
 				DEVELOPMENT_TEAM = YUUW8QNH75;
+				ENABLE_BITCODE = YES;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = MovieCenter/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;

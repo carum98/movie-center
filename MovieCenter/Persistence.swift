@@ -39,4 +39,37 @@ struct PersistanceController {
         context.delete(object)
         guardar(completion: completion)
     }
+    
+    func obtenerFavoritos(tipo: String) -> [NSManagedObject]?{
+        let managedContext = container.viewContext
+        let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Favoritos")
+        fetchRequest.predicate = NSPredicate(format: "tipo == %@", tipo)
+        do {
+            let favoritos:[NSManagedObject] = try managedContext.fetch(fetchRequest)
+            return favoritos
+        } catch let error as NSError {
+            print(error)
+        }
+        
+        return nil
+    }
+    
+    func verificarFavorito(id: Int32) -> Bool{
+        var respuesta:Bool = false
+        let managedContext = container.viewContext
+        let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Favoritos")
+        fetchRequest.predicate = NSPredicate(format: "id == %i", id)
+        do {
+            let favoritos:[NSManagedObject] = try managedContext.fetch(fetchRequest)
+            print(favoritos)
+            if favoritos.count >= 1 {
+                respuesta = true
+            }
+        } catch let error as NSError {
+            print(error)
+        }
+        
+        return respuesta
+
+    }
 }
