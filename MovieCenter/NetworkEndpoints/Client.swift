@@ -40,6 +40,13 @@ class Client: NetworkGeneric {
         self.fetch(type: T.self, with: request, completion: complete)
     }
     
+    func getMovieCast<T: Decodable>(type:T.Type, movieId : Int,complete: @escaping (Result<T, ApiError>) -> Void) {
+        let url = buildPath(path: "/movie/\(movieId)/credits")
+        let request = URLRequest(url: url)
+        
+        self.fetch(type: T.self, with: request, completion: complete)
+    }
+    
     func getMovieDetail<T: Decodable>(type:T.Type, movieId : Int,complete: @escaping (Result<T, ApiError>) -> Void) {
         let url = buildPath(path: "/movie/\(movieId)")
         let request = URLRequest(url: url)

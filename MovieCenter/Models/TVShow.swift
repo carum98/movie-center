@@ -65,7 +65,7 @@ struct TVShowCast : Identifiable, Codable {
     var id : Int
     var name : String
     var character : String
-    var profilePath : String
+    var profilePath : String?
     
     enum CodingKeys: String, CodingKey {
         case id

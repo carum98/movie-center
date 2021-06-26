@@ -223,10 +223,12 @@ struct ListCast: View {
                 LazyHStack(spacing: 20) {
                     ForEach(cast ) { item in
                         VStack(alignment: .leading) {
-                            Image(uiImage: "https://image.tmdb.org/t/p/w200\(item.profilePath)".load())
-                                .resizable()
-                                .frame(width: 150, height: 250, alignment: .center)
-                                .cornerRadius(20)
+                            if let image = item.profilePath {
+                                Image(uiImage: "https://image.tmdb.org/t/p/w200\(image)".load())
+                                    .resizable()
+                                    .frame(width: 150, height: 250, alignment: .center)
+                                    .cornerRadius(20)
+                            }
 
                             Text("\(item.name)")
                                 .font(.title3)
