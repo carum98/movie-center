@@ -50,28 +50,35 @@ struct TVShowsDetail: View {
                         }
                     }
                 }.padding(20)
-            
-                HStack {
-                    ForEach(tvShow.detail?.genres ?? []) { item in
-                        Text(verbatim: item.name)
-                          .padding(8)
-                          .background(
-                            RoundedRectangle(cornerRadius: 8)
-                              .fill(Color.gray.opacity(0.2)))
-                    }
-                };
                 
                 VStack(alignment: .leading) {
                     Text("Sinopsis")
                         .font(.title)
                     Text(tvShow.overview)
                 }
-
-                ListRecomendation(tvShow: tvShow)
-            
-                ListCast(tvShow: tvShow)
-            
-                TVShowInfo2(detail: tvShow.detail)
+                
+                if let genres = tvShow.detail?.genres {
+                    ListGenres(genres: genres)
+                }
+                
+                if let seasons = tvShow.detail?.seasons {
+                    ListSeasons(seasons: seasons)
+                }
+                
+                
+                if let cast = tvShow.cast {
+                    ListCast(cast: cast)
+                }
+                
+                if let recomendations = tvShow.recomendations {
+                    ListRecomendation(recomendations: recomendations)
+                }
+                
+                if let company1 = tvShow.detail?.networks[0], let company2 = tvShow.detail?.productionCompanies[0] {
+                    TVShowCompany(company1: company1, company2: company2)
+                }
+                
+                
             }
             .navigationBarTitle(tvShow.originalName, displayMode: .inline)
         }
@@ -99,20 +106,37 @@ struct TVShowsDetail: View {
     }
 }
 
-struct TVShowInfo2: View {
-    let detail : TVShowDetail?
+struct ListGenres: View {
+    let genres : [Genre]
+    
+    var body: some View {
+        HStack {
+            ForEach(genres) { item in
+                Text(verbatim: item.name)
+                  .padding(8)
+                  .background(
+                    RoundedRectangle(cornerRadius: 8)
+                      .fill(Color.gray.opacity(0.2)))
+            }
+        };
+    }
+}
+
+struct TVShowCompany: View {
+    let company1 : Company
+    let company2 : Company
     
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
             Text("Productoras")
                 .font(.title)
-            Image(uiImage: "https://image.tmdb.org/t/p/w200\( detail?.networks[0].logoPath ?? "")".load())
+            Image(uiImage: "https://image.tmdb.org/t/p/w200\( company1.logoPath ?? "" )".load())
             .padding(8)
             .background(
               RoundedRectangle(cornerRadius: 8)
                 .fill(Color.gray.opacity(0.2))
             )
-            Image(uiImage: "https://image.tmdb.org/t/p/w200\( detail?.productionCompanies[0].logoPath ?? "")".load())
+            Image(uiImage: "https://image.tmdb.org/t/p/w200\( company2.logoPath ?? "")".load())
             .padding(8)
             .background(
               RoundedRectangle(cornerRadius: 8)
@@ -122,8 +146,37 @@ struct TVShowInfo2: View {
     }
 }
 
+struct ListSeasons: View {
+    let seasons : [Seasons]
+    
+    var body: some View {
+        VStack(alignment: .leading) {
+            Text("Temporadas")
+                .font(.title)
+            ScrollView(.horizontal) {
+                LazyHStack(spacing: 20) {
+                    ForEach(seasons) { item in
+                        if let image = item.posterPath {
+                            VStack(alignment: .leading) {
+                                Image(uiImage: "https://image.tmdb.org/t/p/w200\(image)".load())
+                                    .resizable()
+                                    .frame(width: 150, height: 250, alignment: .center)
+                                    .cornerRadius(20)
+                                Text("\(item.name)")
+                                    .font(.title3)
+                                Text("Episodios: \(item.episodeCount ?? 0)")
+                                    .font(.subheadline)
+                            }.padding(.vertical, 20)
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
 struct ListRecomendation: View {
-    let tvShow : TVShow
+    let recomendations : [TVShow]
     
     var body: some View {
         VStack(alignment: .leading) {
@@ -131,7 +184,7 @@ struct ListRecomendation: View {
                 .font(.title)
             ScrollView(.horizontal) {
                 LazyHStack(spacing: 20) {
-                    ForEach(tvShow.recomendations ?? []) { item in
+                    ForEach(recomendations) { item in
                         NavigationLink(
                             destination: TVShowsDetail(tvShow: item, favorito: false),
                             label: {
@@ -149,7 +202,7 @@ struct ListRecomendation: View {
 }
 
 struct ListCast: View {
-    let tvShow : TVShow
+    let cast : [TVShowCast]
     
     var body: some View {
         VStack(alignment: .leading) {
@@ -157,7 +210,7 @@ struct ListCast: View {
                 .font(.title)
             ScrollView(.horizontal) {
                 LazyHStack(spacing: 20) {
-                    ForEach(tvShow.cast ?? []) { item in
+                    ForEach(cast ) { item in
                         VStack(alignment: .leading) {
                             Image(uiImage: "https://image.tmdb.org/t/p/w200\(item.profilePath)".load())
                                 .resizable()
@@ -177,29 +230,29 @@ struct ListCast: View {
     }
 }
 
-struct TVShowsDetail_Previews: PreviewProvider {
-    static var previews: some View {
-        TVShowsDetail(
-            tvShow: TVShow(
-                id: 1,
-                originalName: "Loki",
-                overview: "Loki, el impredecible villano Loki (Hiddleston) regresa como el Dios del engaño en una nueva serie tras los acontecimientos de Avengers",
-                backdropPath: "/ykElAtsOBoArgI1A8ATVH0MNve0.jpg",
-                posterPath: "/kAHPDqUUciuObEoCgYtHttt6L2Q.jpg",
-                firstAirDate: "2021-02-13",
-                voteAverage: 3,
-                detail:
-                    TVShowDetail(
-                        genres: [Genre(id: 18, name: "Drama"), Genre(id: 20, name: "Sci-Fi & Fantasy")],
-                        numberOfEpisodes: 8,
-                        numberOfSeasons: 1,
-                        networks: [Company(id: 2, name: "Disney+", logoPath: "/gJ8VX6JSu3ciXHuC2dDGAo2lvwM.png")],
-                        productionCompanies: [Company(id: 1, name: "Marvel Studios", logoPath: "/hUzeosd33nzE5MCNsZxCGEKTXaQ.png")]
-                    )
-            ), favorito: false)
-            .preferredColorScheme(.dark)
-            .environmentObject(TVShowViewModel())
-    }
-}
+//struct TVShowsDetail_Previews: PreviewProvider {
+//    static var previews: some View {
+//        TVShowsDetail(
+//            tvShow: TVShow(
+//                id: 1,
+//                originalName: "Loki",
+//                overview: "Loki, el impredecible villano Loki (Hiddleston) regresa como el Dios del engaño en una nueva serie tras los acontecimientos de Avengers",
+//                backdropPath: "/ykElAtsOBoArgI1A8ATVH0MNve0.jpg",
+//                posterPath: "/kAHPDqUUciuObEoCgYtHttt6L2Q.jpg",
+//                firstAirDate: "2021-02-13",
+//                voteAverage: 3,
+//                detail:
+//                    TVShowDetail(
+//                        genres: [Genre(id: 18, name: "Drama"), Genre(id: 20, name: "Sci-Fi & Fantasy")],
+//                        numberOfEpisodes: 8,
+//                        numberOfSeasons: 1,
+//                        networks: [Company(id: 2, name: "Disney+", logoPath: "/gJ8VX6JSu3ciXHuC2dDGAo2lvwM.png")],
+//                        productionCompanies: [Company(id: 1, name: "Marvel Studios", logoPath: "/hUzeosd33nzE5MCNsZxCGEKTXaQ.png")]
+//                    )
+//            ), favorito: false)
+//            .preferredColorScheme(.dark)
+//            .environmentObject(TVShowViewModel())
+//    }
+//}
 
 
