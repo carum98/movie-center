@@ -90,6 +90,7 @@
 		D4A851592686F37D00CA8A23 /* BD */ = {
 			isa = PBXGroup;
 			children = (
+				D4A851572685767F00CA8A23 /* Persistence.swift */,
 			);
 			path = BD;
 			sourceTree = "<group>";
@@ -189,7 +190,6 @@
 				D4219127268310E100F250C1 /* LaunchScreen.storyboard */,
 				D4219129268313D800F250C1 /* logo.png */,
 				D4A851542685721100CA8A23 /* DataModel.xcdatamodeld */,
-				D4A851572685767F00CA8A23 /* Persistence.swift */,
 			);
 			path = MovieCenter;
 			sourceTree = "<group>";

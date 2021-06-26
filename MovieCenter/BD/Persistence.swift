@@ -61,7 +61,6 @@ struct PersistanceController {
         fetchRequest.predicate = NSPredicate(format: "id == %i", id)
         do {
             let favoritos:[NSManagedObject] = try managedContext.fetch(fetchRequest)
-            print(favoritos)
             if favoritos.count >= 1 {
                 respuesta = true
             }
@@ -70,6 +69,22 @@ struct PersistanceController {
         }
         
         return respuesta
-
+    }
+    
+    func eliminarFavoritoEspecifico(id: Int32, completion: @escaping(Error?) -> () = {_ in }){
+        let managedContext = container.viewContext
+        let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Favoritos")
+        fetchRequest.predicate = NSPredicate(format: "id == %i", id)
+        do {
+            let favoritos:[NSManagedObject] = try managedContext.fetch(fetchRequest)
+            if favoritos.count >= 1 {
+                for item in favoritos {
+                    managedContext.delete(item)
+                    guardar(completion: completion)
+                }
+            }
+        } catch let error as NSError {
+            print(error)
+        }
     }
 }

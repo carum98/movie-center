@@ -33,17 +33,18 @@ struct TVShowsDetail: View {
                                 .foregroundColor(favorito ? Color(UIColor.yellow) : Color(UIColor.white))
                                 .padding(20)
                                 .onTapGesture {
-                                    print(favorito)
                                     let fav = Favoritos(context: managedObjectContext)
                                     fav.nombre = tvShow.originalName
                                     fav.id = Int32(tvShow.id)
                                     fav.imagen = tvShow.posterPath
                                     fav.tipo = "TV"
+                                    print("Verificar estad favorito = \(favorito)")
                                     if !favorito {
                                         PersistanceController.shared.guardar()
                                         favorito.toggle()
                                     } else {
-                                        PersistanceController.shared.eliminar(fav)
+                                        print("Entro a eliminar")
+                                        PersistanceController.shared.eliminarFavoritoEspecifico(id: fav.id)
                                         favorito.toggle()
                                     }
                                 }
@@ -90,10 +91,7 @@ struct TVShowsDetail: View {
                 viewModel.fetchCast(tvId: tvShow.id)
             }
             
-            print("Antes de verificar")
-            print(favorito)
             favorito = PersistanceController.shared.verificarFavorito(id: Int32(tvShow.id))
-            print("Despues verificar: \(favorito)")
         }
         
     }
