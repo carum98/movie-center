@@ -14,71 +14,82 @@ struct TVShowsDetail: View {
     @State var favorito:Bool
     var body: some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: 40) {
-                HStack(alignment: .bottom, spacing: 20) {
-                    Image(uiImage: "https://image.tmdb.org/t/p/w200\(tvShow.posterPath)".load())
+            ZStack(alignment: .top) {
+                Image(uiImage: "https://image.tmdb.org/t/p/w200\(tvShow.backdropPath)".load())
                     .resizable()
-                    .frame(width: 100, height: 150, alignment: .center)
-                    .cornerRadius(30)
+                    .frame(height: 180)
+                    .blur(radius: 20)
+                
+                VStack(alignment: .leading, spacing: 40) {
+                    HStack(alignment: .bottom, spacing: 20) {
+                        Image(uiImage: "https://image.tmdb.org/t/p/w200\(tvShow.posterPath)".load())
+                        .resizable()
+                        .frame(width: 100, height: 150, alignment: .center)
+                        .cornerRadius(30)
 
-                    VStack {
-                        HStack(alignment: .bottom) {
-                            VStack(alignment: .leading, spacing: 20) {
-                                Text("Año: \(String(Array(tvShow.firstAirDate)[0..<4]))")
-                                Text("Temporas: \(tvShow.detail?.numberOfSeasons ?? 0)")
-                                Text("Episodios: \(tvShow.detail?.numberOfEpisodes ?? 0)")
-                            }
-                            Spacer()
-                            Image(systemName: favorito ? "star.fill" : "star")
-                                .foregroundColor(favorito ? Color(UIColor.yellow) : Color(UIColor.white))
-                                .padding(20)
-                                .onTapGesture {
-                                    let fav = Favoritos(context: managedObjectContext)
-                                    fav.nombre = tvShow.originalName
-                                    fav.id = Int32(tvShow.id)
-                                    fav.imagen = tvShow.posterPath
-                                    fav.tipo = "TV"
-                                    print("Verificar estad favorito = \(favorito)")
-                                    if !favorito {
-                                        PersistanceController.shared.guardar()
-                                        favorito.toggle()
-                                    } else {
-                                        print("Entro a eliminar")
-                                        PersistanceController.shared.eliminarFavoritoEspecifico(id: fav.id)
-                                        favorito.toggle()
-                                    }
+                        VStack {
+                            HStack(alignment: .bottom) {
+                                VStack(alignment: .leading, spacing: 20) {
+                                    Text("Año: \(String(Array(tvShow.firstAirDate)[0..<4]))")
+                                        .bold()
+                                    Text("Temporas: \(tvShow.detail?.numberOfSeasons ?? 0)")
+                                        .bold()
+                                    Text("Episodios: \(tvShow.detail?.numberOfEpisodes ?? 0)")
+                                        .bold()
                                 }
+                                Spacer()
+                                Image(systemName: favorito ? "star.fill" : "star")
+                                    .foregroundColor(favorito ? Color(UIColor.yellow) : Color(UIColor.white))
+                                    .padding(20)
+                                    .onTapGesture {
+                                        let fav = Favoritos(context: managedObjectContext)
+                                        fav.nombre = tvShow.originalName
+                                        fav.id = Int32(tvShow.id)
+                                        fav.imagen = tvShow.posterPath
+                                        fav.tipo = "TV"
+                                        print("Verificar estad favorito = \(favorito)")
+                                        if !favorito {
+                                            PersistanceController.shared.guardar()
+                                            favorito.toggle()
+                                        } else {
+                                            print("Entro a eliminar")
+                                            PersistanceController.shared.eliminarFavoritoEspecifico(id: fav.id)
+                                            favorito.toggle()
+                                        }
+                                    }
+                            }
                         }
+                    }.padding(20)
+                    
+                    VStack(alignment: .leading) {
+                        Text("Sinopsis")
+                            .font(.title)
+                        Text(tvShow.overview)
                     }
-                }.padding(20)
-                
-                VStack(alignment: .leading) {
-                    Text("Sinopsis")
-                        .font(.title)
-                    Text(tvShow.overview)
+                    
+                    if let genres = tvShow.detail?.genres {
+                        ListGenres(genres: genres)
+                    }
+                    
+                    if let seasons = tvShow.detail?.seasons {
+                        ListSeasons(seasons: seasons)
+                    }
+                    
+                    
+                    if let cast = tvShow.cast {
+                        ListCast(cast: cast)
+                    }
+                    
+                    if let recomendations = tvShow.recomendations {
+                        ListRecomendation(recomendations: recomendations)
+                    }
+                    
+                    if let company1 = tvShow.detail?.networks[0], let company2 = tvShow.detail?.productionCompanies[0] {
+                        TVShowCompany(company1: company1, company2: company2)
+                    }
+                    
+                    
                 }
-                
-                if let genres = tvShow.detail?.genres {
-                    ListGenres(genres: genres)
-                }
-                
-                if let seasons = tvShow.detail?.seasons {
-                    ListSeasons(seasons: seasons)
-                }
-                
-                
-                if let cast = tvShow.cast {
-                    ListCast(cast: cast)
-                }
-                
-                if let recomendations = tvShow.recomendations {
-                    ListRecomendation(recomendations: recomendations)
-                }
-                
-                if let company1 = tvShow.detail?.networks[0], let company2 = tvShow.detail?.productionCompanies[0] {
-                    TVShowCompany(company1: company1, company2: company2)
-                }
-                
                 
             }
             .navigationBarTitle(tvShow.originalName, displayMode: .inline)
@@ -108,15 +119,17 @@ struct ListGenres: View {
     let genres : [Genre]
     
     var body: some View {
-        HStack {
-            ForEach(genres) { item in
-                Text(verbatim: item.name)
-                  .padding(8)
-                  .background(
-                    RoundedRectangle(cornerRadius: 8)
-                      .fill(Color.gray.opacity(0.2)))
+        ScrollView(.horizontal, showsIndicators: false) {
+            HStack {
+                ForEach(genres) { item in
+                    Text(verbatim: item.name)
+                      .padding(8)
+                      .background(
+                        RoundedRectangle(cornerRadius: 8)
+                          .fill(Color.gray.opacity(0.2)))
+                }
             }
-        };
+        }
     }
 }
 
@@ -151,7 +164,7 @@ struct ListSeasons: View {
         VStack(alignment: .leading) {
             Text("Temporadas")
                 .font(.title)
-            ScrollView(.horizontal) {
+            ScrollView(.horizontal, showsIndicators: false) {
                 LazyHStack(spacing: 20) {
                     ForEach(seasons) { item in
                         if let image = item.posterPath {
@@ -180,7 +193,7 @@ struct ListRecomendation: View {
         VStack(alignment: .leading) {
             Text("Recomendaciones")
                 .font(.title)
-            ScrollView(.horizontal) {
+            ScrollView(.horizontal, showsIndicators: false) {
                 LazyHStack(spacing: 20) {
                     ForEach(recomendations) { item in
                         NavigationLink(
@@ -206,7 +219,7 @@ struct ListCast: View {
         VStack(alignment: .leading) {
             Text("Reparto")
                 .font(.title)
-            ScrollView(.horizontal) {
+            ScrollView(.horizontal, showsIndicators: false) {
                 LazyHStack(spacing: 20) {
                     ForEach(cast ) { item in
                         VStack(alignment: .leading) {
@@ -220,6 +233,7 @@ struct ListCast: View {
                             Text("\(item.character)")
                                 .font(.subheadline)
                         }
+                        .frame(maxWidth: 150)
                         .padding(.vertical, 20)
                     }
                 }
@@ -227,30 +241,3 @@ struct ListCast: View {
         }
     }
 }
-
-//struct TVShowsDetail_Previews: PreviewProvider {
-//    static var previews: some View {
-//        TVShowsDetail(
-//            tvShow: TVShow(
-//                id: 1,
-//                originalName: "Loki",
-//                overview: "Loki, el impredecible villano Loki (Hiddleston) regresa como el Dios del engaño en una nueva serie tras los acontecimientos de Avengers",
-//                backdropPath: "/ykElAtsOBoArgI1A8ATVH0MNve0.jpg",
-//                posterPath: "/kAHPDqUUciuObEoCgYtHttt6L2Q.jpg",
-//                firstAirDate: "2021-02-13",
-//                voteAverage: 3,
-//                detail:
-//                    TVShowDetail(
-//                        genres: [Genre(id: 18, name: "Drama"), Genre(id: 20, name: "Sci-Fi & Fantasy")],
-//                        numberOfEpisodes: 8,
-//                        numberOfSeasons: 1,
-//                        networks: [Company(id: 2, name: "Disney+", logoPath: "/gJ8VX6JSu3ciXHuC2dDGAo2lvwM.png")],
-//                        productionCompanies: [Company(id: 1, name: "Marvel Studios", logoPath: "/hUzeosd33nzE5MCNsZxCGEKTXaQ.png")]
-//                    )
-//            ), favorito: false)
-//            .preferredColorScheme(.dark)
-//            .environmentObject(TVShowViewModel())
-//    }
-//}
-
-
