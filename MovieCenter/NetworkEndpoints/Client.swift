@@ -82,6 +82,13 @@ class Client: NetworkGeneric {
         self.fetch(type: T.self, with: request, completion: complete)
     }
     
+    func getSeason<T: Decodable>(type:T.Type, tvId : Int, seasonNumber : Int, complete: @escaping (Result<T, ApiError>) -> Void) {
+        let url = buildPath(path: "/tv/\(tvId)/season/\(seasonNumber)")
+        let request = URLRequest(url: url)
+        
+        self.fetch(type: T.self, with: request, completion: complete)
+    }
+    
     func getMoviesRecomendationRegion<T: Decodable>(type:T.Type, codRegion : String,complete: @escaping (Result<T, ApiError>) -> Void) {
         let url = buildPath(path: "movie/popular",arg: "region=\(codRegion)")
         let request = URLRequest(url: (url))

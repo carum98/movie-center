@@ -69,6 +69,8 @@ struct Seasons : Identifiable, Codable {
     var overview : String
     var posterPath : String?
     var episodeCount : Int?
+    var seasonNumber : Int
+    var episodes : [Episodes]?
     
     enum CodingKeys: String, CodingKey {
         case id
@@ -76,5 +78,24 @@ struct Seasons : Identifiable, Codable {
         case overview
         case posterPath = "poster_path"
         case episodeCount = "episode_count"
+        case seasonNumber = "season_number"
+    }
+}
+
+struct Episodes : Identifiable, Codable {
+    var id : Int
+    var name : String
+    var overview : String
+    var episodeNumber : Int
+    var stillPath : String?
+    var airDate : String
+    
+    enum CodingKeys: String, CodingKey {
+        case id
+        case name
+        case overview
+        case episodeNumber = "episode_number"
+        case stillPath = "still_path"
+        case airDate = "air_date"
     }
 }

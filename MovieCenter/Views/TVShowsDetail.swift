@@ -72,7 +72,7 @@ struct TVShowsDetail: View {
                     }
                     
                     if let seasons = tvShow.detail?.seasons {
-                        ListSeasons(seasons: seasons)
+                        ListSeasons(seasons: seasons, tvShow: tvShow)
                     }
                     
                     
@@ -141,6 +141,7 @@ struct TVShowCompany: View {
 
 struct ListSeasons: View {
     let seasons : [Seasons]
+    let tvShow: TVShow
     
     var body: some View {
         VStack(alignment: .leading) {
@@ -150,16 +151,18 @@ struct ListSeasons: View {
                 LazyHStack(spacing: 20) {
                     ForEach(seasons) { item in
                         if let image = item.posterPath {
-                            VStack(alignment: .leading) {
-                                Image(uiImage: "https://image.tmdb.org/t/p/w200\(image)".load())
-                                    .resizable()
-                                    .frame(width: 150, height: 250, alignment: .center)
-                                    .cornerRadius(20)
-                                Text("\(item.name)")
-                                    .font(.title3)
-                                Text("Episodios: \(item.episodeCount ?? 0)")
-                                    .font(.subheadline)
-                            }.padding(.vertical, 20)
+                            NavigationLink(destination: SeasonDetail(season: item, tvShow: tvShow), label: {
+                                VStack(alignment: .leading) {
+                                    Image(uiImage: "https://image.tmdb.org/t/p/w200\(image)".load())
+                                        .resizable()
+                                        .frame(width: 150, height: 250, alignment: .center)
+                                        .cornerRadius(20)
+                                    Text("\(item.name)")
+                                        .font(.title3)
+                                    Text("Episodios: \(item.episodeCount ?? 0)")
+                                        .font(.subheadline)
+                                }.padding(.vertical, 20)
+                            }).buttonStyle(PlainButtonStyle())
                         }
                     }
                 }

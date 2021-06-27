@@ -121,6 +121,22 @@ class TVShowViewModel : ObservableObject {
         })
     }
     
+    func fetchSeason(tvId : Int, seasonNumber : Int) {
+        client.getSeason(type: ResultEpisodes.self, tvId: tvId, seasonNumber: seasonNumber,complete: { result in
+            switch result {
+            case .success(let data):
+                if let i = self.tvShows.firstIndex(where: { $0.id == tvId } ) {
+                    if let i2 = self.tvShows[i].detail?.seasons.firstIndex(where: { $0.seasonNumber == seasonNumber }) {
+                        print("Episodios \(data.episodes.count)")
+                        self.tvShows[i].detail?.seasons[i2].episodes = data.episodes
+                    }
+                }
+            case .failure(let error):
+                print(error)
+            }
+        })
+    }
+    
     func fetchFullTVShow(tvId : Int) {
         self.cargando = true
         client.getTVShowsDetail(type: TVShow.self, tvId: tvId, complete: { result in
