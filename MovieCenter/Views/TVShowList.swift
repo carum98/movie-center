@@ -42,8 +42,23 @@ struct TVShowList: View {
             }
             
             List{
-                ForEach(items, id:\.self){ item in
-                    Text("\(item.nombre ?? "Nada")")
+                let tvShowFav = viewModel.tvShows.filter { TVShow in
+                    return (
+                        items.contains(where: {
+                            favoritnuevo in if(favoritnuevo.id == TVShow.id){
+                                return true
+                            }
+                            return false
+                        })
+                    )
+                    
+                }
+                ForEach(tvShowFav, id: \.id) { item in
+                    NavigationLink(
+                        destination: TVShowsDetail(tvShow: item, favorito: false),
+                        label: {
+                            Text(item.originalName)
+                        })
                 }
                 .onDelete(perform: deleteMovie)
             }

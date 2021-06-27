@@ -26,7 +26,7 @@ struct MoviesRegionList: View {
                                 LazyHStack(spacing: 20) {
                                     ForEach(lasPeliculas, id: \.id){ movie in
                                         NavigationLink(
-                                            destination: MovieDetail(movie: movie) ,
+                                            destination: MovieDetail(movie: movie, favorito: false) ,
                                             label: {
                                                 LazyVStack(spacing: 1) {
                                                     Image(uiImage: "https://image.tmdb.org/t/p/w200\(movie.posterPath)".load())
