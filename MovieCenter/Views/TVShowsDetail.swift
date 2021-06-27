@@ -47,35 +47,15 @@ struct TVShowsDetail: View {
                                         fav.id = Int32(tvShow.id)
                                         fav.imagen = tvShow.posterPath
                                         fav.tipo = "TV"
-                                        print("Verificar estad favorito = \(favorito)")
                                         if !favorito {
                                             PersistanceController.shared.guardar()
                                             favorito.toggle()
                                         } else {
-                                            print("Entro a eliminar")
                                             PersistanceController.shared.eliminarFavoritoEspecifico(id: fav.id)
                                             favorito.toggle()
                                         }
                                     }
                             }
-                            Spacer()
-                            Image(systemName: favorito ? "star.fill" : "star")
-                                .foregroundColor(favorito ? Color(UIColor.yellow) : Color(UIColor.white))
-                                .padding(20)
-                                .onTapGesture {
-                                    let fav = Favoritos(context: managedObjectContext)
-                                    fav.nombre = tvShow.originalName
-                                    fav.id = Int32(tvShow.id)
-                                    fav.imagen = tvShow.posterPath
-                                    fav.tipo = "TV"
-                                    if !favorito {
-                                        PersistanceController.shared.guardar()
-                                        favorito.toggle()
-                                    } else {
-                                        PersistanceController.shared.eliminarFavoritoEspecifico(id: fav.id)
-                                        favorito.toggle()
-                                    }
-                                }
                         }
                     }.padding(20)
                     
