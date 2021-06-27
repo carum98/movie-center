@@ -8,57 +8,87 @@
 import SwiftUI
 
 struct MainMenu: View {
+    let array = ["bg1", "bg2", "bg3", "bg4"]
+    
     var body: some View {
         NavigationView {
-            VStack {
-                Spacer()
-                NavigationLink(
-                    destination: MoviesList(),
-                    label: {
-                        CustomButton(label: "Peliculas", icon: "film")
-                    })
-                Spacer()
-                NavigationLink(
-                    destination: TVShowList(),
-                    label: {
-                        CustomButton(label: "Series", icon: "tv")
-                    })
-                Spacer()
-            }.navigationTitle("MovieCenter")
+            ZStack {
+                Image(array.randomElement()!)
+                    .resizable()
+                    .scaledToFill()
+                    .edgesIgnoringSafeArea(.all)
+                Rectangle().foregroundColor(.clear).background(LinearGradient(gradient: Gradient(colors: [.clear, .black]), startPoint: .top, endPoint: .bottom)).scaledToFill()
+            }.overlay(
+                Group{
+                    Image("logo")
+                        .resizable()
+                        .frame(width: 200, height: 200, alignment: .center)
+                    NavigationLink(
+                        destination: MoviesList(),
+                        label: {
+                            CustomButton(label: "Peliculas", icon: "film")
+                        })
+
+                    NavigationLink(
+                        destination: TVShowList(),
+                        label: {
+                            CustomButton(label: "Series", icon: "tv")
+                        })
+                }
+            )
         }
-        .navigationViewStyle(StackNavigationViewStyle())
+        .navigationBarHidden(true)
         .environmentObject(TVShowViewModel())
         .environmentObject(MoviesViewModel())
+        
+//        Image("logo")
+//            .resizable()
+//            .frame(width: 200, height: 200, alignment: .center)
+//        NavigationView {
+//            VStack {
+//
+//                NavigationLink(
+//                    destination: MoviesList(),
+//                    label: {
+//                        CustomButton(label: "Peliculas", icon: "film")
+//                    })
+//
+//                NavigationLink(
+//                    destination: TVShowList(),
+//                    label: {
+//                        CustomButton(label: "Series", icon: "tv")
+//                    })
+//
+//            }
+//        }.navigationBarHidden(true)
+//        .navigationViewStyle(StackNavigationViewStyle())
+//        .environmentObject(TVShowViewModel())
+//        .environmentObject(MoviesViewModel())
         
     }
 }
 
-struct MainMenu_Previews: PreviewProvider {
-    static var previews: some View {
-        MainMenu()
-            .preferredColorScheme(.dark)
-            
-    }
-}
-
+//struct MainMenu_Previews: PreviewProvider {
+//    static var previews: some View {
+//        MainMenu()
+//            .preferredColorScheme(.dark)
+//    }
+//}
+//
 struct CustomButton: View {
     let label : String
     let icon : String
-    
+
     var body: some View {
         VStack {
-            Image(systemName: icon)
             Text(label)
                 .bold()
         }
-        .frame(width: 200.0)
-        .font(.system(size: 40))
-        .padding(40)
+        .font(.title)
+        .frame(minWidth: 0, maxWidth: 300)
+        .background(LinearGradient(gradient: Gradient(colors: [Color.red.opacity(0.8), Color.red.opacity(0.8)]), startPoint: .leading, endPoint: .trailing))
+        .foregroundColor(.white)
+        .padding()
         .cornerRadius(40)
-        .overlay(
-            RoundedRectangle(cornerRadius: 10.0)
-                .stroke(lineWidth: 2.0)
-                .shadow(color: .blue, radius: 10.0)
-    )
     }
 }

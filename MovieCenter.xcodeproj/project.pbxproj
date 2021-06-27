@@ -15,6 +15,7 @@
 		D421912A268313D800F250C1 /* logo.png in Resources */ = {isa = PBXBuildFile; fileRef = D4219129268313D800F250C1 /* logo.png */; };
 		D4A851562685721100CA8A23 /* DataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = D4A851542685721100CA8A23 /* DataModel.xcdatamodeld */; };
 		D4A851582685767F00CA8A23 /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4A851572685767F00CA8A23 /* Persistence.swift */; };
+		D4A8515D268851B900CA8A23 /* bg1.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = D4A8515C268851B900CA8A23 /* bg1.jpeg */; };
 		F70339E82687EC7C00D2090F /* CastDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = F70339E72687EC7C00D2090F /* CastDetail.swift */; };
 		F70339EA2687ECAE00D2090F /* Cast.swift in Sources */ = {isa = PBXBuildFile; fileRef = F70339E92687ECAE00D2090F /* Cast.swift */; };
 		F70339EC2687F89900D2090F /* CastViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F70339EB2687F89900D2090F /* CastViewModel.swift */; };
@@ -50,6 +51,7 @@
 		D4219129268313D800F250C1 /* logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = logo.png; sourceTree = "<group>"; };
 		D4A851552685721100CA8A23 /* DataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = DataModel.xcdatamodel; sourceTree = "<group>"; };
 		D4A851572685767F00CA8A23 /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
+		D4A8515C268851B900CA8A23 /* bg1.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = bg1.jpeg; sourceTree = "<group>"; };
 		F70339E72687EC7C00D2090F /* CastDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastDetail.swift; sourceTree = "<group>"; };
 		F70339E92687ECAE00D2090F /* Cast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cast.swift; sourceTree = "<group>"; };
 		F70339EB2687F89900D2090F /* CastViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastViewModel.swift; sourceTree = "<group>"; };
@@ -208,10 +210,11 @@
 				F7D2A91E267C25270035F173 /* MovieCenterApp.swift */,
 				F7D2A920267C25270035F173 /* ContentView.swift */,
 				F7D2A922267C25280035F173 /* Assets.xcassets */,
+				D4A8515C268851B900CA8A23 /* bg1.jpeg */,
+				D4219129268313D800F250C1 /* logo.png */,
 				F7D2A927267C25280035F173 /* Info.plist */,
 				F7D2A924267C25280035F173 /* Preview Content */,
 				D4219127268310E100F250C1 /* LaunchScreen.storyboard */,
-				D4219129268313D800F250C1 /* logo.png */,
 				D4A851542685721100CA8A23 /* DataModel.xcdatamodeld */,
 			);
 			path = MovieCenter;
@@ -282,6 +285,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D4A8515D268851B900CA8A23 /* bg1.jpeg in Resources */,
 				D421912A268313D800F250C1 /* logo.png in Resources */,
 				D4219128268310E100F250C1 /* LaunchScreen.storyboard in Resources */,
 				F7D2A926267C25280035F173 /* Preview Assets.xcassets in Resources */,
