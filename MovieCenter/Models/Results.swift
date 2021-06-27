@@ -16,7 +16,7 @@ struct ResultTVShows : Codable {
 }
 
 struct ResultTVShowCast : Codable {
-    let cast : [TVShowCast]
+    let cast : [Cast]
 }
 
 struct ResultGenre : Codable{

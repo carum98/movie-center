@@ -101,4 +101,16 @@ class MoviesViewModel : ObservableObject {
             }
         })
     }
+    func fetchCast(movieId : Int) {
+        client.getMovieCast(type: ResultTVShowCast.self, movieId: movieId, complete: { result in
+            switch result {
+            case .success(let data):
+                if let i = self.movies.firstIndex(where: { $0.id == movieId } ) {
+                    self.movies[i].cast = data.cast
+                }
+            case .failure(let error):
+                print(error)
+            }
+        })
+    }
 }
