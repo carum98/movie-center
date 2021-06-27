@@ -12,7 +12,7 @@ class MoviesViewModel : ObservableObject {
     @Published var regionMovies = [Movies]()
     @Published var genres = [Genre]()
     @Published var cargando:Bool = false
-    @Published var encontrada:Bool = false
+    @Published var noEncontrada:Bool = false
     var session = URLSession.shared
     var client:Client
     
@@ -88,15 +88,16 @@ class MoviesViewModel : ObservableObject {
     }
     func fetchSearch(name : String) {
         self.cargando = true
+        self.noEncontrada = true
         client.getSearchMovies(type: Results.self, name: name, complete: { result in
             switch result {
             case .success(let data):
                     self.movies = data.results
                     self.cargando = false
-                    self.encontrada = true
+                    self.noEncontrada = false
             case .failure(_):
-                    self.encontrada = false
-                    self.cargando = false
+                self.noEncontrada = true              
+                self.cargando = false
                     //print(error)
             }
         })

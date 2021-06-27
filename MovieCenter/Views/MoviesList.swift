@@ -11,10 +11,13 @@ struct MoviesList: View {
         predicate: NSPredicate(format: "tipo == %@", "MV")
     )var items: FetchedResults<Favoritos>
     @State var name:String = ""
+    @State var noEncontrado:Bool=false
     var body: some View {
         HStack{
             TextField("Buscar...", text: $name)
             Button {
+                self.noEncontrado = false
+                self.noEncontrado = viewModel.noEncontrada
                 viewModel.fetchSearch(name: name)
             } label: {
                 Text("Consultar")
@@ -25,20 +28,21 @@ struct MoviesList: View {
                 ScrollView(.vertical){
                     MoviesRegionList(viewModel: self.viewModel, laRegion:Location.region, generos: viewModel.genres, peliculas: viewModel.movies,favoritos: false)
                 }
-            }
+            }.alert(isPresented: self.$noEncontrado, content: {
+                Alert(title: Text("No encuentra el titulo que está buscando"))
+            })
             .onAppear {
                 if (viewModel.movies.isEmpty) {
                     viewModel.fetchMovies()
                 }
+           
+               
                 viewModel.fetchGenreMovies()
                 viewModel.fetchRegion(region: Location.region)
             }
             .overlay(Group {
                 if self.viewModel.cargando {
                     Loading()
-                }
-                if !self.viewModel.encontrada {
-                        
                 }
             })
             .tabItem {
