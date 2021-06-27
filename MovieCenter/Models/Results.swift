@@ -22,3 +22,7 @@ struct ResultTVShowCast : Codable {
 struct ResultGenre : Codable{
     let genres : [Genre]
 }
+
+struct ResultEpisodes : Codable {
+    let episodes : [Episodes]
+}
