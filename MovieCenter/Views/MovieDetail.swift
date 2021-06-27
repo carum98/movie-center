@@ -49,7 +49,7 @@ struct MovieDetail: View {
                                             PersistanceController.shared.guardar()
                                             favorito.toggle()
                                         } else {
-                                            PersistanceController.shared.eliminar(fav)
+                                            PersistanceController.shared.eliminarFavoritoEspecifico(id: fav.id)
                                             favorito.toggle()
                                         }
                                     }
