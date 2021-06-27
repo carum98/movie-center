@@ -15,62 +15,71 @@ struct MovieDetail: View {
     
     var body: some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: 40) {
-                HStack(alignment: .bottom, spacing: 20) {
-                    Image(uiImage: "https://image.tmdb.org/t/p/w200\(movie.posterPath)".load())
+            ZStack(alignment: .top) {
+                Image(uiImage: "https://image.tmdb.org/t/p/w200\(movie.backdropPath)".load())
                     .resizable()
-                    .frame(width: 100, height: 150, alignment: .center)
-                    .cornerRadius(30)
-                    
-                    VStack {
-                        HStack(alignment: .bottom) {
-                            VStack(alignment: .leading, spacing: 20) {
-                                Text("Año: \(String(Array(movie.releaseDate)[0..<4]))")
-                                Text("Calificacion: \(String(format:"%.1f", movie.voteAverage)) / 10")
-                            }
-                            Spacer()
-                            Image(systemName: favorito ? "star.fill" : "star")
-                                .foregroundColor(favorito ? Color(UIColor.yellow) : Color(UIColor.white))
-                                .padding(20)
-                                .onTapGesture {
-                                    let fav = Favoritos(context: managedObjectContext)
-                                    fav.nombre = movie.originalTitle
-                                    fav.id = Int32(movie.id)
-                                    fav.imagen = movie.posterPath
-                                    fav.tipo = "MV"
-                                    if !favorito {
-                                        PersistanceController.shared.guardar()
-                                        favorito.toggle()
-                                    } else {
-                                        PersistanceController.shared.eliminarFavoritoEspecifico(id: fav.id)
-                                        favorito.toggle()
-                                    }
+                    .frame(height: 180)
+                    .blur(radius: 20)
+             
+                VStack(alignment: .leading, spacing: 40) {
+                    HStack(alignment: .bottom, spacing: 20) {
+                        Image(uiImage: "https://image.tmdb.org/t/p/w200\(movie.posterPath)".load())
+                        .resizable()
+                        .frame(width: 100, height: 150, alignment: .center)
+                        .cornerRadius(30)
+                        
+                        VStack {
+                            HStack(alignment: .bottom) {
+                                VStack(alignment: .leading, spacing: 20) {
+                                    Text("Año: \(String(Array(movie.releaseDate)[0..<4]))").bold()
+                                    Text("Calificacion: \(String(format:"%.1f", movie.voteAverage)) / 10").bold()
                                 }
+                                Spacer()
+                                Image(systemName: favorito ? "star.fill" : "star")
+                                    .foregroundColor(favorito ? Color(UIColor.yellow) : Color(UIColor.white))
+                                    .padding(20)
+                                    .onTapGesture {
+                                        let fav = Favoritos(context: managedObjectContext)
+                                        fav.nombre = movie.originalTitle
+                                        fav.id = Int32(movie.id)
+                                        fav.imagen = movie.posterPath
+                                        fav.tipo = "MV"
+                                        if !favorito {
+                                            PersistanceController.shared.guardar()
+                                            favorito.toggle()
+                                        } else {
+                                            PersistanceController.shared.eliminar(fav)
+                                            favorito.toggle()
+                                        }
+                                    }
+                            }
                         }
+                    }.padding(20)
+                    
+                    VStack(alignment: .leading) {
+                        Text("Sinopsis")
+                            .font(.title)
+                        Text(movie.overview)
                     }
-                }.padding(20)
-                
-                HStack {
-                    ForEach(movie.detail?.genres ?? []) { item in
-                        Text(verbatim: item.name)
-                          .padding(8)
-                          .background(
-                            RoundedRectangle(cornerRadius: 8)
-                              .fill(Color.gray.opacity(0.2)))
+                    
+                    if let genres = movie.detail?.genres {
+                        ListGenres(genres: genres)
                     }
-                };
-                
-                VStack(alignment: .leading) {
-                    Text("Sinopsis")
-                        .font(.title)
-                    Text(movie.overview)
+                    
+                    if let cast = movie.cast {
+                        ListCast(cast: cast)
+                    }
+                    
+                    if let recomendations = movie.recomendations {
+                        ListRecomendationn(recomendations: recomendations)
+                    }
+                    
+                    if let companies = movie.detail?.productionCompanies {
+                        Production(companies: companies)
+                    }
                 }
-                
-                ListRecomendationn(movie: movie)
-                
-                Production(detail: movie.detail)
+                .navigationBarTitle(movie.originalTitle, displayMode: .inline)
             }
-            .navigationBarTitle(movie.originalTitle, displayMode: .inline)
         }
         .onAppear {
             let index = viewModel.movies.firstIndex(where: { $0.id == movie.id })
@@ -83,6 +92,9 @@ struct MovieDetail: View {
                 viewModel.fetchDetail(movieId: movie.id)
             }
             
+            if ((viewModel.movies[index!].cast) == nil) {
+                viewModel.fetchCast(movieId: movie.id)
+            }
             favorito = PersistanceController.shared.verificarFavorito(id: Int32(movie.id))
         }
     }
@@ -90,7 +102,7 @@ struct MovieDetail: View {
 
 
 struct ListRecomendationn: View {
-    let movie : Movies
+    let recomendations : [Movies]
 
     var body: some View {
         VStack(alignment: .leading) {
@@ -98,7 +110,7 @@ struct ListRecomendationn: View {
                 .font(.title)
             ScrollView(.horizontal) {
                 LazyHStack(spacing: 20) {
-                    ForEach(movie.recomendations ?? []) { item in
+                    ForEach(recomendations) { item in
                         Image(uiImage: "https://image.tmdb.org/t/p/w200\(item.posterPath)".load())
                             .resizable()
                             .frame(width: 150, height: 250, alignment: .center)
@@ -111,19 +123,21 @@ struct ListRecomendationn: View {
 }
 
 struct Production : View {
-    let detail : MovieDataDetail?
+    let companies : [Company]
     
     var body: some View {
         VStack {
             Text("Productoras")
                 .font(.title)
-            ForEach(detail?.productionCompanies ?? []) { item in
-                Image(uiImage: "https://image.tmdb.org/t/p/w200\(item.logoPath)".load())
-                .padding(8)
-                .background(
-                  RoundedRectangle(cornerRadius: 8)
-                    .fill(Color.gray.opacity(0.2))
-                )
+            ForEach(companies) { item in
+                if let image = item.logoPath {
+                    Image(uiImage: "https://image.tmdb.org/t/p/w200\(image)".load())
+                    .padding(8)
+                    .background(
+                      RoundedRectangle(cornerRadius: 8)
+                        .fill(Color.gray.opacity(0.2))
+                    )
+                }
             }
         }
     }
