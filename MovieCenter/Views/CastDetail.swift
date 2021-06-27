@@ -20,9 +20,7 @@ struct CastDetail: View {
                     .cornerRadius(30)
                     
                     VStack(alignment: .leading, spacing: 20) {
-                        Text("Actor")
-                            .bold()
-                        Text(viewModel.cast.detail?.birthday ?? "")
+                        Text("Nacimiento: \(viewModel.cast.detail?.birthday ?? "")")
                             .bold()
                         Text(viewModel.cast.detail?.place_of_birth ?? "")
                             .bold()

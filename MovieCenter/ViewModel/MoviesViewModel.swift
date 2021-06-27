@@ -33,6 +33,17 @@ class MoviesViewModel : ObservableObject {
         })
     }
     
+    func fetchMovie() {
+        client.getMovies(type: Movies.self, complete: { result in
+            switch result {
+            case .success(let data):
+                self.movies.append(data)
+            case .failure(let error):
+                print(error)
+            }
+        })
+    }
+    
     
     func fetchRecomendation(movieId : Int) {
         client.getMoviesRecomendation(type: Results.self, movieId: movieId, complete: { result in
@@ -40,6 +51,14 @@ class MoviesViewModel : ObservableObject {
             case .success(let data):
                 if let i = self.movies.firstIndex(where: { $0.id == movieId } ) {
                     self.movies[i].recomendations = data.results
+                    
+                    for data2 in data.results {
+                        let isContain : Bool = self.movies.contains(where: { $0.id == data2.id })
+
+                        if (!isContain) {
+                            self.movies.append(data2)
+                        }
+                    }
                 }
             case .failure(let error):
                 print(error)
