@@ -75,5 +75,18 @@ class TVShowViewModel : ObservableObject {
         })
     }
     
-   
+    func fetchFullTVShow(tvId : Int) {
+        client.getTVShowsDetail(type: TVShow.self, tvId: tvId, complete: { result in
+            switch result {
+            case .success(let data):
+                if let i = self.tvShows.firstIndex(where: { $0.id == tvId } ) {
+                    self.tvShows[i] = data
+                }else{
+                    self.tvShows.append(data)
+                }
+            case .failure(let error):
+                print(error)
+            }
+        })
+    }
 }

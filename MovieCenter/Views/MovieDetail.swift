@@ -12,7 +12,7 @@ struct MovieDetail: View {
     let movie : Movies
     
     @Environment(\.managedObjectContext) var managedObjectContext
-    @State var favorito:Bool = true
+    @State var favorito:Bool
     
     var body: some View {
         ScrollView {
@@ -96,6 +96,7 @@ struct MovieDetail: View {
             if ((viewModel.movies[index!].cast) == nil) {
                 viewModel.fetchCast(movieId: movie.id)
             }
+            favorito = PersistanceController.shared.verificarFavorito(id: Int32(movie.id))
         }
     }
 }
@@ -155,6 +156,6 @@ struct MovieDetail_Previews: PreviewProvider {
           overview: "\"Cruella\" se sumerge en la juventud rebelde de uno de los villanos más conocidos -y más de moda-, nada menos que la legendaria Cruella de Vil. Emma Stone encarna a Estella, alias Cruella, junto a Emma Thompson como la Baronesa, la directora de una prestigiosa firma de moda que convierte a Estella en una incipiente diseñadora. La cinta está ambientada en el contexto del punk-rock londinense de los 70.  ( https://stream4k.xyz/en/movie/337404/cruella )",
           backdropPath: "/6MKr3KgOLmzOP6MSuZERO41Lpkt.jpg",
           posterPath: "/qb28nkLZV0v6yJZZRpJYl0LE35N.jpg", releaseDate: "2021-06-17", voteAverage: 6,
-          generes: [38,25]))
+          generes: [38,25]), favorito: false)
     }
 }

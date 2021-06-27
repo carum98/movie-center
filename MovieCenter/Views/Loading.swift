@@ -9,7 +9,7 @@ import SwiftUI
 
 struct Loading: View {
     var body: some View {
-        ProgressView()
+        ProgressView().scaleEffect(5, anchor: .center)
     }
 }
 
