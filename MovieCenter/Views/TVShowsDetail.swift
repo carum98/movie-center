@@ -213,7 +213,7 @@ struct ListRecomendation: View {
 }
 
 struct ListCast: View {
-    let cast : [TVShowCast]
+    let cast : [Cast]
     
     var body: some View {
         VStack(alignment: .leading) {
@@ -222,21 +222,26 @@ struct ListCast: View {
             ScrollView(.horizontal, showsIndicators: false) {
                 LazyHStack(spacing: 20) {
                     ForEach(cast ) { item in
-                        VStack(alignment: .leading) {
-                            if let image = item.profilePath {
-                                Image(uiImage: "https://image.tmdb.org/t/p/w200\(image)".load())
-                                    .resizable()
-                                    .frame(width: 150, height: 250, alignment: .center)
-                                    .cornerRadius(20)
-                            }
+                        NavigationLink(
+                            destination: CastDetail(viewModel: CastViewModel(cast: item)),
+                            label: {
+                                VStack(alignment: .leading) {
+                                    if let image = item.profilePath {
+                                        Image(uiImage: "https://image.tmdb.org/t/p/w200\(image)".load())
+                                            .resizable()
+                                            .frame(width: 150, height: 250, alignment: .center)
+                                            .cornerRadius(20)
+                                    }
 
-                            Text("\(item.name)")
-                                .font(.title3)
-                            Text("\(item.character)")
-                                .font(.subheadline)
-                        }
-                        .frame(maxWidth: 150)
-                        .padding(.vertical, 20)
+                                    Text("\(item.name)")
+                                        .font(.title3)
+                                    Text("\(item.character)")
+                                        .font(.subheadline)
+                                }
+                                .frame(maxWidth: 150)
+                                .padding(.vertical, 20)
+                            }
+                        ).buttonStyle(PlainButtonStyle())
                     }
                 }
             }

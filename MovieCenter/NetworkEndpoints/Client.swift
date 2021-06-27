@@ -88,6 +88,13 @@ class Client: NetworkGeneric {
         
         self.fetch(type: T.self, with: request, completion: complete)
     }
+
+    func getCastDetail<T: Decodable>(type:T.Type, id : Int,complete: @escaping (Result<T, ApiError>) -> Void) {
+        let url = buildPath(path: "/person/\(id)")
+        let request = URLRequest(url: url)
+        
+        self.fetch(type: T.self, with: request, completion: complete)
+    }
     
     private func buildPath(path : String) -> URL {
         return URL(string: "\(baseURL)\(path)?api_key=\(apiKey)&language=es-ES")!

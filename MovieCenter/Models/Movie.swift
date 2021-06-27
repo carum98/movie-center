@@ -18,7 +18,7 @@ struct Movies : Identifiable, Codable {
     var generes : [Int]
     var detail : MovieDataDetail?
     var recomendations : [Movies]?
-    var cast : [TVShowCast]?
+    var cast : [Cast]?
     
     enum CodingKeys: String, CodingKey {
         case id
