@@ -11,7 +11,8 @@ class MoviesViewModel : ObservableObject {
     @Published var movies = [Movies]()
     @Published var regionMovies = [Movies]()
     @Published var genres = [Genre]()
-    
+    @Published var cargando:Bool = false
+    @Published var encontrada:Bool = false
     var session = URLSession.shared
     var client:Client
     
@@ -20,10 +21,12 @@ class MoviesViewModel : ObservableObject {
     }
    
     func fetchMovies() {
+        self.cargando = true
         client.getMovies(type: Results.self, complete: { result in
             switch result {
             case .success(let data):
                 self.movies = data.results
+                self.cargando = false
             case .failure(let error):
                 print(error)
             }
@@ -45,12 +48,14 @@ class MoviesViewModel : ObservableObject {
     }
     
     func fetchDetail(movieId : Int) {
+        self.cargando = true
         client.getMovieDetail(type: MovieDataDetail.self, movieId: movieId, complete: { result in
             switch result {
             case .success(let data):
                 if let i = self.movies.firstIndex(where: { $0.id == movieId } ) {
                     self.movies[i].detail = data
                 }
+                self.cargando = false
             case .failure(let error):
                 print(error)
             }
@@ -58,22 +63,41 @@ class MoviesViewModel : ObservableObject {
     }
     
     func fetchRegion(region : String) {
+        self.cargando = true
         client.getMoviesRecomendationRegion(type: Results.self, codRegion: region, complete: { result in
             switch result {
             case .success(let data):
                 self.regionMovies = data.results
+                self.cargando = false
             case .failure(let error):
                 print(error)
             }
         })
     }
     func fetchGenreMovies() {
+        self.cargando = true
         client.getGenreMovies(type: ResultGenre.self, complete: { result in
             switch result {
             case .success(let data):
                 self.genres = data.genres
+                self.cargando = false
             case .failure(let error):
                 print(error)
+            }
+        })
+    }
+    func fetchSearch(name : String) {
+        self.cargando = true
+        client.getSearchMovies(type: Results.self, name: name, complete: { result in
+            switch result {
+            case .success(let data):
+                    self.movies = data.results
+                    self.cargando = false
+                    self.encontrada = true
+            case .failure(_):
+                    self.encontrada = false
+                    self.cargando = false
+                    //print(error)
             }
         })
     }

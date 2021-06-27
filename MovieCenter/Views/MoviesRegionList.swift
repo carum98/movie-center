@@ -15,38 +15,36 @@ struct MoviesRegionList: View {
         return peliculas
     }
     var body: some View {
-        ScrollView(.vertical){
-            LazyVStack(spacing: 20) {
-                ForEach(generos, id: \.id){ genere in
-                    let lasPeliculas:[Movies] = ObtengaLasPeliculasPorGenero(lasPelicula: peliculas,genero: genere.id)
-                    if (lasPeliculas.count > 0){
-                        VStack(alignment: .leading, spacing: 6) {
-                        Text(genere.name).font(.title).frame(alignment: .leading)
-                            ScrollView(.horizontal){
-                                LazyHStack(spacing: 20) {
-                                    ForEach(lasPeliculas, id: \.id){ movie in
-                                        NavigationLink(
-                                            destination: MovieDetail(movie: movie) ,
-                                            label: {
-                                                LazyVStack(spacing: 1) {
-                                                    Image(uiImage: "https://image.tmdb.org/t/p/w200\(movie.posterPath)".load())
-                                                        .resizable()
-                                                        .frame(width: 100, height: 150, alignment: .center)
-                                                }
+        LazyVStack(spacing: 20) {
+            ForEach(generos, id: \.id){ genere in
+                let lasPeliculas:[Movies] = ObtengaLasPeliculasPorGenero(lasPelicula: peliculas,genero: genere.id)
+                if (lasPeliculas.count > 0){
+                    VStack(alignment: .leading, spacing: 6) {
+                    Text(genere.name).font(.title).frame(alignment: .leading)
+                        ScrollView(.horizontal){
+                            LazyHStack(spacing: 20) {
+                                ForEach(lasPeliculas, id: \.id){ movie in
+                                    NavigationLink(
+                                        destination: MovieDetail(movie: movie) ,
+                                        label: {
+                                            LazyVStack(spacing: 1) {
+                                                Image(uiImage: "https://image.tmdb.org/t/p/w200\(movie.posterPath)".load())
+                                                    .resizable()
+                                                    .frame(width: 100, height: 150, alignment: .center)
                                             }
-                                        )
-                                    }
+                                        }
+                                    )
                                 }
                             }
                         }
                     }
                 }
-            }
-        }.overlay(Group {
-            if self.peliculas.isEmpty {
-                Loading()
-            }
-        })
+            }.overlay(Group {
+                if self.peliculas.isEmpty {
+                    Loading()
+                }
+            })            
+        }
     }
 }
 

@@ -4,28 +4,41 @@ struct MoviesList: View {
     @EnvironmentObject var viewModel : MoviesViewModel
     @ObservedObject var Location : LocationViewModel = LocationViewModel()
     let items = PersistanceController.shared.obtenerFavoritos(tipo: "MV")
-    func goToRegionList() {
-        viewModel.fetchRegion(region: Location.region)
-    }
+    @State var name:String = ""
     var body: some View {
+        HStack{
+            TextField("Buscar...", text: $name)
+            Button {
+                viewModel.fetchSearch(name: name)
+            } label: {
+                Text("Consultar")
+            }
+        }
         TabView {
-            MoviesRegionList(viewModel: self.viewModel, laRegion:Location.region, generos: viewModel.genres, peliculas: viewModel.movies)
-                .onAppear {
-                    if (viewModel.movies.isEmpty) {
-                        viewModel.fetchMovies()
-                    }
-                    viewModel.fetchGenreMovies()
-                    viewModel.fetchRegion(region: Location.region)
+            List{
+                ScrollView(.vertical){
+                    MoviesRegionList(viewModel: self.viewModel, laRegion:Location.region, generos: viewModel.genres, peliculas: viewModel.movies)
                 }
-                .overlay(Group {
-                    if self.viewModel.movies.isEmpty {
-                        Loading()
-                    }
-                })
-                .tabItem {
-                    Label("List", systemImage: "list.dash")
+            }
+            .onAppear {
+                if (viewModel.movies.isEmpty) {
+                    viewModel.fetchMovies()
                 }
+                viewModel.fetchGenreMovies()
+                viewModel.fetchRegion(region: Location.region)
+            }
+            .overlay(Group {
+                if self.viewModel.cargando {
+                    Loading()
+                }
+                if !self.viewModel.encontrada {
                         
+                }
+            })
+            .tabItem {
+                Label("List", systemImage: "list.dash")
+            }
+            
             List{
                 ForEach(items!, id: \.self){ item in
                     Text((item.value(forKey: "nombre") as? String) ?? "")
@@ -50,11 +63,11 @@ struct MoviesList: View {
     }
     
     func deleteMovie(at offsets: IndexSet) {
-      offsets.forEach { index in
-        let movie = self.items![index]
-        print(movie)
-        PersistanceController.shared.eliminar(movie)
-      }
+        offsets.forEach { index in
+            let movie = self.items![index]
+            print(movie)
+            PersistanceController.shared.eliminar(movie)
+        }
     }
 }
 
