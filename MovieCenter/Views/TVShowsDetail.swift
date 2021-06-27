@@ -133,24 +133,6 @@ struct TVShowsDetail: View {
     }
 }
 
-struct ListGenres: View {
-    let genres : [Genre]
-    
-    var body: some View {
-        ScrollView(.horizontal, showsIndicators: false) {
-            HStack {
-                ForEach(genres) { item in
-                    Text(verbatim: item.name)
-                      .padding(8)
-                      .background(
-                        RoundedRectangle(cornerRadius: 8)
-                          .fill(Color.gray.opacity(0.2)))
-                }
-            }
-        }
-    }
-}
-
 struct TVShowCompany: View {
     let company1 : Company
     let company2 : Company
@@ -223,43 +205,6 @@ struct ListRecomendation: View {
                                     .cornerRadius(20)
                             }
                         )
-                    }
-                }
-            }
-        }
-    }
-}
-
-struct ListCast: View {
-    let cast : [Cast]
-    
-    var body: some View {
-        VStack(alignment: .leading) {
-            Text("Reparto")
-                .font(.title)
-            ScrollView(.horizontal, showsIndicators: false) {
-                LazyHStack(spacing: 20) {
-                    ForEach(cast ) { item in
-                        NavigationLink(
-                            destination: CastDetail(viewModel: CastViewModel(cast: item)),
-                            label: {
-                                VStack(alignment: .leading) {
-                                    if let image = item.profilePath {
-                                        Image(uiImage: "https://image.tmdb.org/t/p/w200\(image)".load())
-                                            .resizable()
-                                            .frame(width: 150, height: 250, alignment: .center)
-                                            .cornerRadius(20)
-                                    }
-
-                                    Text("\(item.name)")
-                                        .font(.title3)
-                                    Text("\(item.character)")
-                                        .font(.subheadline)
-                                }
-                                .frame(maxWidth: 150)
-                                .padding(.vertical, 20)
-                            }
-                        ).buttonStyle(PlainButtonStyle())
                     }
                 }
             }
