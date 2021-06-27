@@ -3,7 +3,13 @@ import SwiftUI
 struct MoviesList: View {
     @EnvironmentObject var viewModel : MoviesViewModel
     @ObservedObject var Location : LocationViewModel = LocationViewModel()
-    let items = PersistanceController.shared.obtenerFavoritos(tipo: "MV")
+    //let items = PersistanceController.shared.obtenerFavoritos(tipo: "MV")
+    @Environment(\.managedObjectContext) var managedObjectContext
+    @FetchRequest(
+        entity: Favoritos.entity(),
+        sortDescriptors: [NSSortDescriptor(keyPath: \Favoritos.nombre, ascending: true)],
+        predicate: NSPredicate(format: "tipo == %@", "MV")
+    )var items: FetchedResults<Favoritos>
     @State var name:String = ""
     @State var noEncontrado:Bool=false
     @State var buscando:Bool=false
@@ -41,8 +47,23 @@ struct MoviesList: View {
             }
             
             List{
-                ForEach(items!, id: \.self){ item in
-                    Text((item.value(forKey: "nombre") as? String) ?? "")
+                let movieFav = viewModel.movies.filter { movie in
+                    return (
+                        items.contains(where: {
+                            newMovieFav in if(newMovieFav.id == movie.id){
+                                return true
+                            }
+                            return false
+                        })
+                    )
+                    
+                }
+                ForEach(movieFav, id: \.id) { item in
+                    NavigationLink(
+                        destination: MovieDetail(movie: item, favorito: false),
+                        label: {
+                            Text(item.originalTitle)
+                        })
                 }
                 .onDelete(perform: deleteMovie)
             }
@@ -67,9 +88,8 @@ struct MoviesList: View {
     
     func deleteMovie(at offsets: IndexSet) {
         offsets.forEach { index in
-            let movie = self.items![index]
-            print(movie)
-            PersistanceController.shared.eliminar(movie)
+            let movie = self.items[index]
+            PersistanceController.shared.eliminarFavoritoEspecifico(id: movie.id)
         }
     }
 }

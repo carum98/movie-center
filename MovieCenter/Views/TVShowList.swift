@@ -76,8 +76,8 @@ struct TVShowList: View {
     
     func deleteMovie(at offsets: IndexSet) {
       offsets.forEach { index in
-        let movie = self.items[index]
-        PersistanceController.shared.eliminar(movie)
+        let tvShow = self.items[index]
+        PersistanceController.shared.eliminarFavoritoEspecifico(id: tvShow.id)
       }
     }
 }

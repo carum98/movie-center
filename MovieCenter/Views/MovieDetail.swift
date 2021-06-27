@@ -10,6 +10,7 @@ import SwiftUI
 struct MovieDetail: View {
     @EnvironmentObject var viewModel : MoviesViewModel
     let movie : Movies
+    
     @Environment(\.managedObjectContext) var managedObjectContext
     @State var favorito:Bool
     
@@ -48,7 +49,7 @@ struct MovieDetail: View {
                                             PersistanceController.shared.guardar()
                                             favorito.toggle()
                                         } else {
-                                            PersistanceController.shared.eliminar(fav)
+                                            PersistanceController.shared.eliminarFavoritoEspecifico(id: fav.id)
                                             favorito.toggle()
                                         }
                                     }
@@ -102,6 +103,7 @@ struct MovieDetail: View {
 
 
 struct ListRecomendationn: View {
+    @EnvironmentObject var viewModel : MoviesViewModel
     let recomendations : [Movies]
 
     var body: some View {
@@ -111,10 +113,14 @@ struct ListRecomendationn: View {
             ScrollView(.horizontal) {
                 LazyHStack(spacing: 20) {
                     ForEach(recomendations) { item in
-                        Image(uiImage: "https://image.tmdb.org/t/p/w200\(item.posterPath)".load())
-                            .resizable()
-                            .frame(width: 150, height: 250, alignment: .center)
-                            .cornerRadius(20)
+                        NavigationLink(
+                            destination: MovieDetail(movie: viewModel.movies.first(where: { data in data.id == item.id }) ?? viewModel.movies[0], favorito: false),
+                            label: {
+                                Image(uiImage: "https://image.tmdb.org/t/p/w200\(item.posterPath)".load())
+                                    .resizable()
+                                    .frame(width: 150, height: 250, alignment: .center)
+                                    .cornerRadius(20)
+                            })
                     }
                 }
             }

@@ -23,7 +23,6 @@ class CastViewModel: ObservableObject {
         client.getCastDetail(type: CastDetailData.self, id: cast.id, complete: { result in
             switch result {
             case .success(let data):
-                print(data)
                 self.cast.detail = data
             case .failure(let error):
                 print(error)
