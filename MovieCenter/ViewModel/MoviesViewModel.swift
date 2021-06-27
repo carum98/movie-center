@@ -88,15 +88,15 @@ class MoviesViewModel : ObservableObject {
     }
     func fetchSearch(name : String) {
         self.cargando = true
-        self.noEncontrada = true
+        self.noEncontrada = false
         client.getSearchMovies(type: Results.self, name: name, complete: { result in
             switch result {
             case .success(let data):
+                    self.noEncontrada = false
                     self.movies = data.results
                     self.cargando = false
-                    self.noEncontrada = false
             case .failure(_):
-                self.noEncontrada = true              
+                self.noEncontrada = true
                 self.cargando = false
                     //print(error)
             }

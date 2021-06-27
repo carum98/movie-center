@@ -6,12 +6,11 @@ struct MoviesList: View {
     let items = PersistanceController.shared.obtenerFavoritos(tipo: "MV")
     @State var name:String = ""
     @State var noEncontrado:Bool=false
+    @State var buscando:Bool=false
     var body: some View {
         HStack{
             TextField("Buscar...", text: $name)
             Button {
-                self.noEncontrado = false
-                self.noEncontrado = viewModel.noEncontrada
                 viewModel.fetchSearch(name: name)
             } label: {
                 Text("Consultar")
@@ -29,13 +28,11 @@ struct MoviesList: View {
                 if (viewModel.movies.isEmpty) {
                     viewModel.fetchMovies()
                 }
-           
-               
                 viewModel.fetchGenreMovies()
                 viewModel.fetchRegion(region: Location.region)
             }
             .overlay(Group {
-                if self.viewModel.cargando {
+                if(self.viewModel.cargando){
                     Loading()
                 }
             })
@@ -62,7 +59,9 @@ struct MoviesList: View {
                             }
                         })
                 }
-        }
+        }.onChange(of: self.viewModel.noEncontrada, perform: { Equatable in
+            noEncontrado = Equatable
+        })
         .navigationTitle("Peliculas")
     }
     
