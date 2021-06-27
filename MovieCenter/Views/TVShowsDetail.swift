@@ -10,8 +10,10 @@ import SwiftUI
 struct TVShowsDetail: View {
     @EnvironmentObject var viewModel : TVShowViewModel
     let tvShow: TVShow
+    
     @Environment(\.managedObjectContext) var managedObjectContext
     @State var favorito:Bool
+    
     var body: some View {
         ScrollView {
             ZStack(alignment: .top) {
@@ -169,6 +171,7 @@ struct ListSeasons: View {
 }
 
 struct ListRecomendation: View {
+    @EnvironmentObject var viewModel : TVShowViewModel
     let recomendations : [TVShow]
     
     var body: some View {
@@ -179,7 +182,7 @@ struct ListRecomendation: View {
                 LazyHStack(spacing: 20) {
                     ForEach(recomendations) { item in
                         NavigationLink(
-                            destination: TVShowsDetail(tvShow: item, favorito: false),
+                            destination: TVShowsDetail(tvShow: viewModel.tvShows.first(where: { data in data.id == item.id }) ?? viewModel.tvShows[0], favorito: false),
                             label: {
                                 Image(uiImage: "https://image.tmdb.org/t/p/w200\(item.posterPath)".load())
                                     .resizable()

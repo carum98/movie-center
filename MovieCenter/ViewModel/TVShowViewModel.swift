@@ -34,6 +34,14 @@ class TVShowViewModel : ObservableObject {
             case .success(let data):
                 if let i = self.tvShows.firstIndex(where: { $0.id == tvId } ) {
                     self.tvShows[i].recomendations = data.results
+                    
+                    for data2 in data.results {
+                        let isContain : Bool = self.tvShows.contains(where: { $0.id == data2.id })
+
+                        if (!isContain) {
+                            self.tvShows.append(data2)
+                        }
+                    }
                 }
             case .failure(let error):
                 print(error)
