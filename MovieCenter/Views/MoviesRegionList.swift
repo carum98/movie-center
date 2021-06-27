@@ -4,7 +4,8 @@ struct MoviesRegionList: View {
     var viewModel : MoviesViewModel
     var laRegion:String
     var generos:[Genre]
-    var peliculas:[Movies]  
+    var peliculas:[Movies]
+    var favoritos:Bool
     func ObtengaLasPeliculasPorGenero(lasPelicula:[Movies], genero:Int) -> [Movies]{
         let peliculas:[Movies] = lasPelicula.filter({ (movie) -> Bool in
             if(movie.generes.contains(genero)){
@@ -25,7 +26,7 @@ struct MoviesRegionList: View {
                             LazyHStack(spacing: 20) {
                                 ForEach(lasPeliculas, id: \.id){ movie in
                                     NavigationLink(
-                                        destination: MovieDetail(movie: movie) ,
+                                        destination: MovieDetail(movie: movie, favorito: favoritos) ,
                                         label: {
                                             LazyVStack(spacing: 1) {
                                                 Image(uiImage: "https://image.tmdb.org/t/p/w200\(movie.posterPath)".load())
@@ -67,7 +68,7 @@ struct MoviesRegionList_Previews: PreviewProvider {
                    backdropPath: "/6MKr3KgOLmzOP6MSuZERO41Lpkt.jpg",
                    posterPath: "/qb28nkLZV0v6yJZZRpJYl0LE35N.jpg", releaseDate: "2021-06-17", voteAverage: 7, generes:[1,2])
         ]
-        MoviesRegionList(viewModel: MoviesViewModel(), laRegion: "MX",generos:[Genre(id: 1,name: "Uno"),Genre(id: 2,name: "dos"),Genre(id: 3,name: "tres")], peliculas:theMovies)
+        MoviesRegionList(viewModel: MoviesViewModel(), laRegion: "MX",generos:[Genre(id: 1,name: "Uno"),Genre(id: 2,name: "dos"),Genre(id: 3,name: "tres")], peliculas:theMovies,favoritos: false)
     }
 }
 

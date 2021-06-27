@@ -89,8 +89,9 @@ class Client: NetworkGeneric {
     }
     func getSearchMovies<T: Decodable>(type:T.Type, name : String,complete: @escaping (Result<T, ApiError>) -> Void) {
         let url = buildPath(path: "search/movie",arg: "query=\(name)")
-        let request = URLRequest(url: (url))
-
+        let request = URLRequest(url: (url))        
+        self.fetch(type: T.self, with: request, completion: complete)
+    }
     func getCastDetail<T: Decodable>(type:T.Type, id : Int,complete: @escaping (Result<T, ApiError>) -> Void) {
         let url = buildPath(path: "/person/\(id)")
         let request = URLRequest(url: url)
