@@ -32,7 +32,7 @@ struct TVShowList: View {
                 TvShowRows(laRegion: Location.region,
                        generos: viewModel.genres,
                        series:viewModel.tvShows,
-                       favoritos: false)                             
+                       favoritos: false)
             }.alert(isPresented: self.$noEncontrado, content: {
                 Alert(title: Text("No encuentra el titulo que está buscando"))
             })
@@ -64,6 +64,10 @@ struct TVShowList: View {
                     )
                     
                 }
+//                TvShowRows(laRegion: Location.region,
+//                       generos: viewModel.genres,
+//                       series: tvShowFav,
+//                       favoritos: false)
                 ForEach(tvShowFav, id: \.id) { item in
                     NavigationLink(
                         destination: TVShowsDetail(tvShow: item, favorito: false),
@@ -77,7 +81,10 @@ struct TVShowList: View {
                 Label("Favoritos", systemImage: "heart.fill")
             }
             
-            Text("Ubicacion")
+            TvShowRows(laRegion: Location.region,
+                   generos: viewModel.genres,
+                   series:viewModel.tvShows,
+                   favoritos: false)
             .tabItem {
                 Label("Ubicacion", systemImage: "network")
             }
