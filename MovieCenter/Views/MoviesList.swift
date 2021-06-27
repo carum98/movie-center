@@ -12,7 +12,6 @@ struct MoviesList: View {
     )var items: FetchedResults<Favoritos>
     @State var name:String = ""
     @State var noEncontrado:Bool=false
-    @State var buscando:Bool=false
     var body: some View {
         HStack{
             TextField("Buscar...", text: $name)

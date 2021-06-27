@@ -9,31 +9,42 @@ import SwiftUI
 
 struct TVShowList: View {
     @EnvironmentObject var viewModel : TVShowViewModel
+    @ObservedObject var Location : LocationViewModel = LocationViewModel()
     @Environment(\.managedObjectContext) var managedObjectContext
     @FetchRequest(
         entity: Favoritos.entity(),
         sortDescriptors: [NSSortDescriptor(keyPath: \Favoritos.nombre, ascending: true)],
         predicate: NSPredicate(format: "tipo == %@", "TV")
     )var items: FetchedResults<Favoritos>
-    
+    @State var name:String = ""
+    @State var noEncontrado:Bool=false
     var body: some View {
-        TabView {
-            List {
-                ForEach(viewModel.tvShows, id: \.id) { item in
-                    NavigationLink(
-                        destination: TVShowsDetail(tvShow: item, favorito: false),
-                        label: {
-                            Text(item.originalName)
-                        })
-                }
+        HStack{
+            TextField("Buscar...", text: $name)
+            Button {
+                viewModel.fetchSearchTv(name: name)
+            } label: {
+                Text("Consultar")
             }
+        }
+        TabView {
+            ScrollView(.vertical){
+                TvShowRows(laRegion: Location.region,
+                       generos: viewModel.genres,
+                       series:viewModel.tvShows,
+                       favoritos: false)                             
+            }.alert(isPresented: self.$noEncontrado, content: {
+                Alert(title: Text("No encuentra el titulo que está buscando"))
+            })
             .onAppear {
                 if (viewModel.tvShows.isEmpty) {
                     viewModel.fetchTVShows()
                 }
+                viewModel.fetchGenreTVShow()
+                viewModel.fetchRegion(region: Location.region)
             }
             .overlay(Group {
-                if viewModel.tvShows.isEmpty {
+                if(self.viewModel.cargando){
                     Loading()
                 }
             })
@@ -70,7 +81,9 @@ struct TVShowList: View {
             .tabItem {
                 Label("Ubicacion", systemImage: "network")
             }
-        }
+        }.onChange(of: self.viewModel.noEncontrada, perform: { Equatable in
+            noEncontrado = Equatable
+        })
         .navigationBarTitle("Series")
     }
     

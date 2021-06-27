@@ -9,7 +9,10 @@ import Foundation
 
 class TVShowViewModel : ObservableObject {
     @Published var tvShows = [TVShow]()
-    
+    @Published var genres = [Genre]()
+    @Published var regionTV = [TVShow]()
+    @Published var cargando:Bool = false
+    @Published var noEncontrada:Bool = false
     var session = URLSession.shared
     var client:Client
     
@@ -18,16 +21,41 @@ class TVShowViewModel : ObservableObject {
     }
    
     func fetchTVShows() {
+        self.cargando = true
         client.getTVShows(type: ResultTVShows.self, complete: { result in
             switch result {
             case .success(let data):
                 self.tvShows = data.results
+                self.cargando = false
             case .failure(let error):
                 print(error)
             }
         })
     }
-    
+    func fetchGenreTVShow() {
+        self.cargando = true
+        client.getGenreTVShow(type: ResultGenre.self, complete: { result in
+            switch result {
+            case .success(let data):
+                self.genres = data.genres
+                self.cargando = false
+            case .failure(let error):
+                print(error)
+            }
+        })
+    }
+    func fetchRegion(region : String) {
+        self.cargando = true
+        client.getTvRecomendationRegion(type: ResultTVShows.self, codRegion: region, complete: { result in
+            switch result {
+            case .success(let data):
+                self.regionTV = data.results
+                self.cargando = false
+            case .failure(let error):
+                print(error)
+            }
+        })
+    }
     func fetchRecomendation(tvId : Int) {
         client.getTVShowsRecomendation(type: ResultTVShows.self, tvId: tvId, complete: { result in
             switch result {
@@ -48,13 +76,29 @@ class TVShowViewModel : ObservableObject {
             }
         })
     }
-    
+    func fetchSearchTv(name : String) {
+        self.cargando = true
+        self.noEncontrada = false
+        client.getSearchTv(type: ResultTVShows.self, name: name, complete: { result in
+            switch result {
+            case .success(let data):
+                    self.noEncontrada = false
+                    self.tvShows = data.results
+                    self.cargando = false
+            case .failure(_):
+                self.noEncontrada = true
+                self.cargando = false
+            }
+        })
+    }
     func fetchDatail(tvId : Int) {
+        self.cargando = true
         client.getTVShowsDetail(type: TVShowDetail.self, tvId: tvId, complete: { result in
             switch result {
             case .success(let data):
                 if let i = self.tvShows.firstIndex(where: { $0.id == tvId } ) {
                     self.tvShows[i].detail = data
+                    self.cargando = false
                 }
             case .failure(let error):
                 print(error)
@@ -63,11 +107,13 @@ class TVShowViewModel : ObservableObject {
     }
     
     func fetchCast(tvId : Int) {
+        self.cargando = true
         client.getTVShowsCast(type: ResultTVShowCast.self, tvId: tvId, complete: { result in
             switch result {
             case .success(let data):
                 if let i = self.tvShows.firstIndex(where: { $0.id == tvId } ) {
                     self.tvShows[i].cast = data.cast
+                    self.cargando = false
                 }
             case .failure(let error):
                 print(error)
@@ -76,6 +122,7 @@ class TVShowViewModel : ObservableObject {
     }
     
     func fetchFullTVShow(tvId : Int) {
+        self.cargando = true
         client.getTVShowsDetail(type: TVShow.self, tvId: tvId, complete: { result in
             switch result {
             case .success(let data):
@@ -84,6 +131,7 @@ class TVShowViewModel : ObservableObject {
                 }else{
                     self.tvShows.append(data)
                 }
+                self.cargando = false
             case .failure(let error):
                 print(error)
             }

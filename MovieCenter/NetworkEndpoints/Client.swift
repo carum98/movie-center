@@ -88,8 +88,20 @@ class Client: NetworkGeneric {
         
         self.fetch(type: T.self, with: request, completion: complete)
     }
+    func getTvRecomendationRegion<T: Decodable>(type:T.Type, codRegion : String,complete: @escaping (Result<T, ApiError>) -> Void) {
+        let url = buildPath(path: "tv/popular",arg: "region=\(codRegion)")
+        let request = URLRequest(url: (url))
+        
+        self.fetch(type: T.self, with: request, completion: complete)
+    }
     func getGenreMovies<T: Decodable>(type:T.Type,complete: @escaping (Result<T, ApiError>) -> Void) {
         let url = buildPath(path: "genre/movie/list")
+        let request = URLRequest(url: url)
+        
+        self.fetch(type: T.self, with: request, completion: complete)
+    }
+    func getGenreTVShow<T: Decodable>(type:T.Type,complete: @escaping (Result<T, ApiError>) -> Void) {
+        let url = buildPath(path: "genre/tv/list")
         let request = URLRequest(url: url)
         
         self.fetch(type: T.self, with: request, completion: complete)
@@ -97,6 +109,13 @@ class Client: NetworkGeneric {
     func getSearchMovies<T: Decodable>(type:T.Type, name : String,complete: @escaping (Result<T, ApiError>) -> Void) {
         let url = buildPath(path: "search/movie",arg: "query=\(name)")
         let request = URLRequest(url: (url))        
+        self.fetch(type: T.self, with: request, completion: complete)
+    }
+    func getSearchTv<T: Decodable>(type:T.Type, name : String,complete: @escaping (Result<T, ApiError>) -> Void) {
+        
+        let arg = name ///"\(name)" //.split(separator: " ").joined(separator: "%")
+        let url = buildPath(path: "search/tv",arg: "query=\(arg)")
+        let request = URLRequest(url: (url))
         self.fetch(type: T.self, with: request, completion: complete)
     }
     func getCastDetail<T: Decodable>(type:T.Type, id : Int,complete: @escaping (Result<T, ApiError>) -> Void) {
@@ -110,6 +129,7 @@ class Client: NetworkGeneric {
         return URL(string: "\(baseURL)\(path)?api_key=\(apiKey)&language=es-ES")!
     }
     private func buildPath(path : String, arg: String) -> URL {
+       print("\(baseURL)\(path)?api_key=\(apiKey)&language=es-ES&\(arg)")
         return URL(string: "\(baseURL)\(path)?api_key=\(apiKey)&language=es-ES&\(arg)")!
     }
     
