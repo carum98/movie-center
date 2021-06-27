@@ -41,40 +41,8 @@ struct MainMenu: View {
         .environmentObject(TVShowViewModel())
         .environmentObject(MoviesViewModel())
         
-//        Image("logo")
-//            .resizable()
-//            .frame(width: 200, height: 200, alignment: .center)
-//        NavigationView {
-//            VStack {
-//
-//                NavigationLink(
-//                    destination: MoviesList(),
-//                    label: {
-//                        CustomButton(label: "Peliculas", icon: "film")
-//                    })
-//
-//                NavigationLink(
-//                    destination: TVShowList(),
-//                    label: {
-//                        CustomButton(label: "Series", icon: "tv")
-//                    })
-//
-//            }
-//        }.navigationBarHidden(true)
-//        .navigationViewStyle(StackNavigationViewStyle())
-//        .environmentObject(TVShowViewModel())
-//        .environmentObject(MoviesViewModel())
-        
     }
 }
-
-//struct MainMenu_Previews: PreviewProvider {
-//    static var previews: some View {
-//        MainMenu()
-//            .preferredColorScheme(.dark)
-//    }
-//}
-//
 struct CustomButton: View {
     let label : String
     let icon : String
