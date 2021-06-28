@@ -33,8 +33,13 @@ struct MoviesList: View {
                 if (viewModel.movies.isEmpty) {
                     viewModel.fetchMovies()
                 }
-                viewModel.fetchGenreMovies()
-                viewModel.fetchRegion(region: Location.region)
+                
+                if (viewModel.genres.isEmpty) {
+                    viewModel.fetchGenreMovies()
+                }
+                if (viewModel.regionMovies.isEmpty) {
+                    viewModel.fetchRegion(region: Location.region)
+                }
             }
             .overlay(Group {
                 if(self.viewModel.cargando){

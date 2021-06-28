@@ -40,8 +40,12 @@ struct TVShowList: View {
                 if (viewModel.tvShows.isEmpty) {
                     viewModel.fetchTVShows()
                 }
-                viewModel.fetchGenreTVShow()
-                viewModel.fetchRegion(region: Location.region)
+                if (viewModel.genres.isEmpty) {
+                    viewModel.fetchGenreTVShow()
+                }
+                if (viewModel.regionTV.isEmpty) {
+                    viewModel.fetchRegion(region: Location.region)
+                }
             }
             .overlay(Group {
                 if(self.viewModel.cargando){
