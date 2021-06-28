@@ -24,8 +24,7 @@ struct TvShowRows: View {
                             LazyHStack(spacing: 20) {
                                 ForEach(lasSeries, id: \.id){ serie in
                                     NavigationLink(
-                                        destination:  TVShowList()
-                                            .environmentObject(TVShowViewModel()),
+                                        destination: TVShowsDetail(tvShow: serie, favorito: false),
                                         label: {
                                             LazyVStack(spacing: 1) {
                                                 Image(uiImage: "https://image.tmdb.org/t/p/w200\(serie.posterPath)".load())

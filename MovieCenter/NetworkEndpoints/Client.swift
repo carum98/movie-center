@@ -136,7 +136,7 @@ class Client: NetworkGeneric {
         return URL(string: "\(baseURL)\(path)?api_key=\(apiKey)&language=es-ES")!
     }
     private func buildPath(path : String, arg: String) -> URL {
-       print("\(baseURL)\(path)?api_key=\(apiKey)&language=es-ES&\(arg)")
+//       print("\(baseURL)\(path)?api_key=\(apiKey)&language=es-ES&\(arg)")
         return URL(string: "\(baseURL)\(path)?api_key=\(apiKey)&language=es-ES&\(arg)")!
     }
     

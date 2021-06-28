@@ -33,7 +33,7 @@ struct SeasonDetail: View {
             VStack(alignment: .leading) {
                 Text("Descripcion")
                     .font(.title)
-                Text(season.overview )
+                Text((season.overview == "") ? season.overview : "Sin descripcion")
             }
             
             VStack(alignment: .leading) {

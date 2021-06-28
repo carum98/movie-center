@@ -40,6 +40,7 @@ struct MainMenu: View {
         .navigationBarHidden(true)
         .environmentObject(TVShowViewModel())
         .environmentObject(MoviesViewModel())
+        .navigationViewStyle(StackNavigationViewStyle())
         
     }
 }
