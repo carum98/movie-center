@@ -12,13 +12,26 @@ struct MoviesList: View {
     )var items: FetchedResults<Favoritos>
     @State var name:String = ""
     @State var noEncontrado:Bool=false
+    @State var msn : String = "No encuentra el titulo que está buscando"
     var body: some View {
         HStack{
             TextField("Buscar...", text: $name)
             Button {
-                viewModel.fetchSearch(name: name)
+                if(!name.isEmpty){
+                    self.msn = "No encuentra el titulo que está buscando"
+                    viewModel.fetchSearch(name: name)
+                }else {
+                   noEncontrado=true
+                    self.msn = "Debe digitar un nombre para poder buscar"
+                }
+               
             } label: {
                 Text("Consultar")
+            }
+            Button {
+                viewModel.fetchMovies()                
+            } label: {
+                Text("Refrescar")
             }
         }
         TabView {
@@ -27,11 +40,11 @@ struct MoviesList: View {
                     MoviesRegionList(viewModel: self.viewModel, laRegion:Location.region, generos: viewModel.genres, peliculas: viewModel.movies,favoritos: false)
                 }
             }.alert(isPresented: self.$noEncontrado, content: {
-                Alert(title: Text("No encuentra el titulo que está buscando"))
+                Alert(title: Text(msn))
             })
             .onAppear {
                 if (viewModel.movies.isEmpty) {
-                    viewModel.fetchMovies()                 
+                    viewModel.fetchMovies()
                 }else{
                     self.viewModel.cargando = false
                 }

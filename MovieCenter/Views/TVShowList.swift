@@ -18,13 +18,25 @@ struct TVShowList: View {
     )var items: FetchedResults<Favoritos>
     @State var name:String = ""
     @State var noEncontrado:Bool=false
+    @State var msn : String = "No encuentra el titulo que está buscando"
     var body: some View {
         HStack{
             TextField("Buscar...", text: $name)
             Button {
-                viewModel.fetchSearchTv(name: name)
+                if(!name.isEmpty){
+                    self.msn = "No encuentra el titulo que está buscando"
+                    viewModel.fetchSearchTv(name: name)
+                }else {
+                   noEncontrado=true
+                    self.msn = "Debe digitar un nombre para poder buscar"
+                }
             } label: {
                 Text("Consultar")
+            }
+            Button {
+                viewModel.fetchTVShows()
+            } label: {
+                Text("Refrescar")
             }
         }
         TabView {
@@ -34,7 +46,7 @@ struct TVShowList: View {
                        series:viewModel.tvShows,
                        favoritos: false)
             }.alert(isPresented: self.$noEncontrado, content: {
-                Alert(title: Text("No encuentra el titulo que está buscando"))
+                Alert(title: Text(self.msn))
             })
             .onAppear {
                 if (viewModel.tvShows.isEmpty) {
