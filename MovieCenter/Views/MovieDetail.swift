@@ -17,14 +17,14 @@ struct MovieDetail: View {
     var body: some View {
         ScrollView {
             ZStack(alignment: .top) {
-                Image(uiImage: "https://image.tmdb.org/t/p/w200\(movie.backdropPath)".load())
+                Image(uiImage: "https://image.tmdb.org/t/p/w200\(String(describing: movie.backdropPath))".load())
                     .resizable()
                     .frame(height: 180)
                     .blur(radius: 20)
              
                 VStack(alignment: .leading, spacing: 40) {
                     HStack(alignment: .bottom, spacing: 20) {
-                        Image(uiImage: "https://image.tmdb.org/t/p/w200\(movie.posterPath)".load())
+                        Image(uiImage: "https://image.tmdb.org/t/p/w200\(String(describing: movie.posterPath))".load())
                         .resizable()
                         .frame(width: 100, height: 150, alignment: .center)
                         .cornerRadius(30)
@@ -32,8 +32,8 @@ struct MovieDetail: View {
                         VStack {
                             HStack(alignment: .bottom) {
                                 VStack(alignment: .leading, spacing: 20) {
-                                    Text("Año: \(String(Array(movie.releaseDate)[0..<4]))").bold()
-                                    Text("Calificacion: \(String(format:"%.1f", movie.voteAverage)) / 10").bold()
+                                    Text("Año: \(String(Array(movie.releaseDate ?? "")[0..<4]))").bold()
+                                    Text("Calificacion: \(String(format:"%.1f", movie.voteAverage!)) / 10").bold()
                                 }
                                 Spacer()
                                 Image(systemName: favorito ? "star.fill" : "star")
@@ -60,7 +60,7 @@ struct MovieDetail: View {
                     VStack(alignment: .leading) {
                         Text("Sinopsis")
                             .font(.title)
-                        Text(movie.overview)
+                        Text(movie.overview ?? "")
                     }
                     
                     if let genres = movie.detail?.genres {
@@ -116,7 +116,7 @@ struct ListRecomendationn: View {
                         NavigationLink(
                             destination: MovieDetail(movie: viewModel.movies.first(where: { data in data.id == item.id }) ?? viewModel.movies[0], favorito: false),
                             label: {
-                                Image(uiImage: "https://image.tmdb.org/t/p/w200\(item.posterPath)".load())
+                                Image(uiImage: "https://image.tmdb.org/t/p/w200\(String(describing: item.posterPath))".load())
                                     .resizable()
                                     .frame(width: 150, height: 250, alignment: .center)
                                     .cornerRadius(20)

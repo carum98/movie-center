@@ -17,14 +17,14 @@ struct TVShowsDetail: View {
     var body: some View {
         ScrollView {
             ZStack(alignment: .top) {
-                Image(uiImage: "https://image.tmdb.org/t/p/w200\(tvShow.backdropPath)".load())
+                Image(uiImage: "https://image.tmdb.org/t/p/w200\(tvShow.backdropPath ?? "")".load())
                     .resizable()
                     .frame(height: 180)
                     .blur(radius: 20)
                 
                 VStack(alignment: .leading, spacing: 40) {
                     HStack(alignment: .bottom, spacing: 20) {
-                        Image(uiImage: "https://image.tmdb.org/t/p/w200\(tvShow.posterPath)".load())
+                        Image(uiImage: "https://image.tmdb.org/t/p/w200\(tvShow.posterPath ?? "")".load())
                         .resizable()
                         .frame(width: 100, height: 150, alignment: .center)
                         .cornerRadius(30)
@@ -185,7 +185,7 @@ struct ListRecomendation: View {
                         NavigationLink(
                             destination: TVShowsDetail(tvShow: viewModel.tvShows.first(where: { data in data.id == item.id }) ?? viewModel.tvShows[0], favorito: false),
                             label: {
-                                Image(uiImage: "https://image.tmdb.org/t/p/w200\(item.posterPath)".load())
+                                Image(uiImage: "https://image.tmdb.org/t/p/w200\(item.posterPath ?? "")".load())
                                     .resizable()
                                     .frame(width: 150, height: 250, alignment: .center)
                                     .cornerRadius(20)

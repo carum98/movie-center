@@ -8,7 +8,7 @@ struct MoviesRegionList: View {
     var favoritos:Bool
     func ObtengaLasPeliculasPorGenero(lasPelicula:[Movies], genero:Int) -> [Movies]{
         let peliculas:[Movies] = lasPelicula.filter({ (movie) -> Bool in
-            if(movie.generes.contains(genero)){
+            if(movie.generes.contains(genero) && movie.backdropPath != nil && movie.posterPath != nil){
                 return true
             }
             return false
@@ -29,7 +29,7 @@ struct MoviesRegionList: View {
                                         destination: MovieDetail(movie: movie, favorito: favoritos) ,
                                         label: {
                                             LazyVStack(spacing: 1) {
-                                                Image(uiImage: "https://image.tmdb.org/t/p/w200\(movie.posterPath)".load())
+                                                Image(uiImage: "https://image.tmdb.org/t/p/w185\(movie.posterPath ?? "")".load())
                                                     .resizable()
                                                     .frame(width: 100, height: 150, alignment: .center)
                                             }

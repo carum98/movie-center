@@ -31,7 +31,9 @@ struct MoviesList: View {
             })
             .onAppear {
                 if (viewModel.movies.isEmpty) {
-                    viewModel.fetchMovies()
+                    viewModel.fetchMovies()                 
+                }else{
+                    self.viewModel.cargando = false
                 }
                 
                 if (viewModel.genres.isEmpty) {

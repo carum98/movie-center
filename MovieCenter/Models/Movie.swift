@@ -10,11 +10,11 @@ import Foundation
 struct Movies : Identifiable, Codable {
     var id: Int
     var originalTitle : String
-    var overview : String
-    var backdropPath : String
-    var posterPath : String
-    var releaseDate : String
-    var voteAverage : Float
+    var overview : String?
+    var backdropPath : String?
+    var posterPath : String?
+    var releaseDate : String?
+    var voteAverage : Float?
     var generes : [Int]
     var detail : MovieDataDetail?
     var recomendations : [Movies]?

@@ -11,8 +11,8 @@ struct TVShow : Identifiable, Codable {
     var id : Int
     var originalName : String
     var overview : String
-    var backdropPath : String
-    var posterPath : String
+    var backdropPath : String?
+    var posterPath : String?
     var firstAirDate : String
     var voteAverage : Double
     var detail : TVShowDetail?
