@@ -22,7 +22,7 @@ struct MainMenu: View {
                 Group{
                     Image("logo")
                         .resizable()
-                        .frame(width: 200, height: 200, alignment: .center)
+                        .frame(width: 300, height: 300, alignment: .center)
                     NavigationLink(
                         destination: MoviesList(),
                         label: {
@@ -51,13 +51,11 @@ struct CustomButton: View {
     var body: some View {
         VStack {
             Text(label)
-                .bold()
         }
-        .font(.title)
-        .frame(minWidth: 0, maxWidth: 300)
-        .background(LinearGradient(gradient: Gradient(colors: [Color.red.opacity(0.8), Color.red.opacity(0.8)]), startPoint: .leading, endPoint: .trailing))
-        .foregroundColor(.white)
         .padding()
+        .frame(minWidth: 0, maxWidth: 300)
+        .foregroundColor(.white)
+        .background(LinearGradient(gradient: Gradient(colors: [.black, .red]), startPoint: .leading, endPoint: .trailing))
         .cornerRadius(40)
     }
 }
