@@ -65,26 +65,41 @@ struct MoviesList: View {
                 Label("List", systemImage: "list.dash")
             }
             
-            List{
-                let movieFav = viewModel.movies.filter { movie in
-                    return (
-                        items.contains(where: {
-                            newMovieFav in if(newMovieFav.id == movie.id){
-                                return true
+            Group{
+                if(items.count == 0){
+                    VStack {
+                    Text("No hay favoritos")
+                  }
+                } else {
+                    List{
+                        let movieFav = viewModel.movies.filter { movie in
+                            return (
+                                items.contains(where: {
+                                    newMovieFav in if(newMovieFav.id == movie.id){
+                                        return true
+                                    }
+                                    return false
+                                })
+                            )
+                            
+                        }
+                        ForEach(movieFav, id: \.id) { item in
+                            HStack{
+                                Image(uiImage: "https://image.tmdb.org/t/p/w200\(item.posterPath ?? "")".load())
+                                    .resizable()
+                                    .frame(width: 50, height: 75, alignment: .center)
+                                    .cornerRadius(20)
+                                NavigationLink(
+                                    destination: MovieDetail(movie: item, favorito: false),
+                                    label: {
+                                        Text(item.originalTitle)
+                                    })
                             }
-                            return false
-                        })
-                    )
-                    
+                            
+                        }
+                        .onDelete(perform: deleteMovie)
+                    }
                 }
-                ForEach(movieFav, id: \.id) { item in
-                    NavigationLink(
-                        destination: MovieDetail(movie: item, favorito: false),
-                        label: {
-                            Text(item.originalTitle)
-                        })
-                }
-                .onDelete(perform: deleteMovie)
             }
             .tabItem {
                 Label("Favoritos", systemImage: "heart.fill")

@@ -68,30 +68,42 @@ struct TVShowList: View {
                 Label("List", systemImage: "list.dash")
             }
             
-            List{
-                let tvShowFav = viewModel.tvShows.filter { TVShow in
-                    return (
-                        items.contains(where: {
-                            favoritnuevo in if(favoritnuevo.id == TVShow.id){
-                                return true
+            Group{
+                if(items.count == 0){
+                    VStack {
+                    Text("No hay favoritos")
+                  }
+                } else {
+                    List{
+                        let tvShowFav = viewModel.tvShows.filter { TVShow in
+                            return (
+                                items.contains(where: {
+                                    favoritnuevo in if(favoritnuevo.id == TVShow.id){
+                                        return true
+                                    }
+                                    return false
+                                })
+                            )
+                            
+                        }
+                        ForEach(tvShowFav, id: \.id) { item in
+                            HStack{
+                                Image(uiImage: "https://image.tmdb.org/t/p/w200\(item.posterPath ?? "")".load())
+                                    .resizable()
+                                    .frame(width: 50, height: 75, alignment: .center)
+                                    .cornerRadius(20)
+                                NavigationLink(
+                                    destination: TVShowsDetail(tvShow: item, favorito: false),
+                                    label: {
+                                        Text(item.originalName)
+                                    }
+                                )
                             }
-                            return false
-                        })
-                    )
-                    
+                            
+                        }
+                        .onDelete(perform: deleteMovie)
+                    }
                 }
-//                TvShowRows(laRegion: Location.region,
-//                       generos: viewModel.genres,
-//                       series: tvShowFav,
-//                       favoritos: false)
-                ForEach(tvShowFav, id: \.id) { item in
-                    NavigationLink(
-                        destination: TVShowsDetail(tvShow: item, favorito: false),
-                        label: {
-                            Text(item.originalName)
-                        })
-                }
-                .onDelete(perform: deleteMovie)
             }
             .tabItem {
                 Label("Favoritos", systemImage: "heart.fill")
