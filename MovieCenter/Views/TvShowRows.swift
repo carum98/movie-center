@@ -14,6 +14,7 @@ struct TvShowRows: View {
         return series
     }
     var body: some View {
+        ScrollView(.vertical){
         LazyVStack(spacing: 20) {
             ForEach(generos, id: \.id){ genere in
                 let lasSeries:[TVShow] = ObtengaLasSeriesPorGenero(lasSeries: series,genero: genere.id)
@@ -30,6 +31,7 @@ struct TvShowRows: View {
                                                 Image(uiImage: "https://image.tmdb.org/t/p/w185\(serie.posterPath ?? "")".load())
                                                     .resizable()
                                                     .frame(width: 100, height: 150, alignment: .center)
+                                                    .cornerRadius(30)
                                             }
                                         }
                                     )
@@ -43,6 +45,7 @@ struct TvShowRows: View {
                     Loading()
                 }
             })
+        }
         }
     }
 }

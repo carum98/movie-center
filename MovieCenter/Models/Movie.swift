@@ -19,7 +19,7 @@ struct Movies : Identifiable, Codable {
     var detail : MovieDataDetail?
     var recomendations : [Movies]?
     var cast : [Cast]?
-    
+    var videos : ResultVideos?
     enum CodingKeys: String, CodingKey {
         case id
         case originalTitle = "original_title"

@@ -26,3 +26,6 @@ struct ResultGenre : Codable{
 struct ResultEpisodes : Codable {
     let episodes : [Episodes]
 }
+struct ResultVideos : Codable {
+    let results : [Videos]
+}

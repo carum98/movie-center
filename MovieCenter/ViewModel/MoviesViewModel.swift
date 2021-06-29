@@ -81,6 +81,20 @@ class MoviesViewModel : ObservableObject {
         })
     }
     
+    func fetchVideos(movieId : Int) {
+        self.cargando = true
+        client.getVideos(type: ResultVideos.self, movieId: movieId, complete: { result in
+            switch result {
+            case .success(let data):
+                if let i = self.movies.firstIndex(where: { $0.id == movieId } ) {
+                    self.movies[i].videos = data
+                }
+                self.cargando = false
+            case .failure(let error):
+                print(error)
+            }
+        })
+    }
     func fetchRegion(region : String) {
         self.cargando = true
         client.getMoviesRecomendationRegion(type: Results.self, codRegion: region, complete: { result in

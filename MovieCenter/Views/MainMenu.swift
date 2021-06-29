@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-
 struct MainMenu: View {
     let array = ["bg1", "bg2", "bg3", "bg4"]
     

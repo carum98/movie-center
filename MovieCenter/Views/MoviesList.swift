@@ -36,9 +36,9 @@ struct MoviesList: View {
         }
         TabView {
             List{
-                ScrollView(.vertical){
+               
                     MoviesRegionList(viewModel: self.viewModel, laRegion:Location.region, generos: viewModel.genres, peliculas: viewModel.movies,favoritos: false)
-                }
+             
             }.alert(isPresented: self.$noEncontrado, content: {
                 Alert(title: Text(msn))
             })

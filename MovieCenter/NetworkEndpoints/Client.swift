@@ -32,6 +32,12 @@ class Client: NetworkGeneric {
         
         self.fetch(type: T.self, with: request, completion: complete)
     }
+    func getVideos<T: Decodable>(type:T.Type, movieId : Int,complete: @escaping (Result<T, ApiError>) -> Void) {
+        let url = buildPath(path: "movie/\(movieId)/videos")
+        let request = URLRequest(url: url)
+        
+        self.fetch(type: T.self, with: request, completion: complete)
+    }
     
     func getTVShows<T: Decodable>(type:T.Type, complete: @escaping (Result<T, ApiError>) -> Void) {
         let url = buildPath(path: "tv/on_the_air")
@@ -120,7 +126,7 @@ class Client: NetworkGeneric {
     }
     func getSearchTv<T: Decodable>(type:T.Type, name : String,complete: @escaping (Result<T, ApiError>) -> Void) {
         
-        let arg = name ///"\(name)" //.split(separator: " ").joined(separator: "%")
+        let arg = "\(name)".split(separator: " ").joined(separator: "+")
         let url = buildPath(path: "search/tv",arg: "query=\(arg)")
         let request = URLRequest(url: (url))
         self.fetch(type: T.self, with: request, completion: complete)

@@ -56,7 +56,7 @@ struct MovieDetail: View {
                             }
                         }
                     }.padding(20)
-                    
+                
                     VStack(alignment: .leading) {
                         Text("Sinopsis")
                             .font(.title)
@@ -75,9 +75,15 @@ struct MovieDetail: View {
                         ListRecomendationn(recomendations: recomendations)
                     }
                     
+                    if let video = movie.videos?.results.first?.key {                     
+                        Triler(key: video).frame(height: 300, alignment: .center)
+                            
+                        
+                    }
                     if let companies = movie.detail?.productionCompanies {
                         Production(companies: companies)
                     }
+                 
                 }
                 .navigationBarTitle(movie.originalTitle, displayMode: .inline)
             }
@@ -96,12 +102,24 @@ struct MovieDetail: View {
             if ((viewModel.movies[index!].cast) == nil) {
                 viewModel.fetchCast(movieId: movie.id)
             }
+            if ((viewModel.movies[index!].videos) == nil) {
+                viewModel.fetchVideos(movieId: movie.id)
+            }
             favorito = PersistanceController.shared.verificarFavorito(id: Int32(movie.id))
         }
     }
 }
 
-
+struct Triler: View {
+    let key : String
+    var body: some View {
+        VStack(alignment: .leading) {
+            Text("Triler")
+                .font(.title)
+            youtube(videoID: key)
+        }
+    }
+}
 struct ListRecomendationn: View {
     @EnvironmentObject var viewModel : MoviesViewModel
     let recomendations : [Movies]
