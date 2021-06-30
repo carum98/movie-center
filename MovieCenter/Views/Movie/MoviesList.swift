@@ -11,37 +11,41 @@ struct MoviesList: View {
     )var items: FetchedResults<Favoritos>
     @State var name:String = ""
     @State var noEncontrado:Bool=false
+    @State var MostrarBusqueda:Bool=true
+    @State var selection = 1
     @State var msn : String = "No encuentra el titulo que está buscando"
     var body: some View {
-        HStack{
-            TextField("Buscar...", text: $name).frame(height: 80)
-            Button(action:{
-                if(!name.isEmpty){
-                    self.msn = "No encuentra el titulo que está buscando"
-                    viewModel.fetchSearch(name: name)
-                }else {
-                    noEncontrado=true
-                    self.msn = "Debe digitar un nombre para poder buscar"
+        if(MostrarBusqueda){
+            HStack{
+                TextField("Buscar...", text: $name).frame(height: 80)
+                Button(action:{
+                    if(!name.isEmpty){
+                        self.msn = "No encuentra el titulo que está buscando"
+                        viewModel.fetchSearch(name: name)
+                    }else {
+                        noEncontrado=true
+                        self.msn = "Debe digitar un nombre para poder buscar"
+                    }
+                }){
+                    HStack(spacing: 10) {
+                        Image(systemName: "magnifyingglass")
+                            .font(.largeTitle)
+                            .foregroundColor(.white)
+                    }
                 }
-            }){
-                HStack(spacing: 10) {
-                    Image(systemName: "magnifyingglass")
-                        .font(.largeTitle)
-                        .foregroundColor(.white)
+                Button(action: {
+                    viewModel.fetchMovies()
+                }){
+                    HStack(spacing: 10) {
+                        Image(systemName: "gobackward")
+                            .font(.largeTitle)
+                            .foregroundColor(.white)
+                    }
                 }
+                
             }
-            Button(action: {
-                viewModel.fetchMovies()
-            }){
-                HStack(spacing: 10) {
-                    Image(systemName: "gobackward")
-                        .font(.largeTitle)
-                        .foregroundColor(.white)
-                }
-            }
-            
         }
-        TabView {
+        TabView(selection:$selection) {
             List{
                 MoviesRegionList(viewModel: self.viewModel, laRegion:Location.region, generos: viewModel.genres, peliculas: viewModel.movies,favoritos: false)
                 
@@ -68,7 +72,7 @@ struct MoviesList: View {
             })
             .tabItem {
                 Label("List", systemImage: "list.dash")
-            }
+            }.tag(1)
             
             Group{
                 if(items.count == 0){
@@ -108,18 +112,24 @@ struct MoviesList: View {
             }
             .tabItem {
                 Label("Favoritos", systemImage: "heart.fill")
-            }
+            }.tag(2)
             
             MoviesRegionList(viewModel: self.viewModel,laRegion:Location.region,generos: viewModel.genres, peliculas: viewModel.regionMovies,favoritos: false)
                 .tabItem {
                     Label("Ubicacion", systemImage: "network")
-                }.overlay(Group {
-                    if (self.viewModel.regionMovies.isEmpty || self.viewModel.genres.isEmpty){
+                }.tag(3).overlay(Group {
+                    if (self.viewModel.regionMovies.isEmpty || self.viewModel.genres.isEmpty  || self.viewModel.cargando ){
                         Loading()
                     }
                 })
         }.onChange(of: self.viewModel.noEncontrada, perform: { Equatable in
             noEncontrado = Equatable
+        }).onChange(of: self.selection, perform: { laSeleccion in
+            if(laSeleccion==1){
+                MostrarBusqueda=true
+            }else{
+                MostrarBusqueda=false
+            }
         })
         .navigationTitle("Peliculas")
         

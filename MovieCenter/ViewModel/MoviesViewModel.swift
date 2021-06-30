@@ -98,6 +98,7 @@ class MoviesViewModel : ObservableObject {
             switch result {
             case .success(let data):
                 self.regionMovies = data.results
+                self.movies.append(contentsOf: data.results)
                 self.cargando = false
             case .failure(let error):
                 print(error)
@@ -130,7 +131,6 @@ class MoviesViewModel : ObservableObject {
                     self.noEncontrada = true
                     self.cargando = false
                 }
-                  
             case .failure(_):
                 self.noEncontrada = true
                 self.cargando = false

@@ -18,8 +18,11 @@ struct TVShowList: View {
     )var items: FetchedResults<Favoritos>
     @State var name:String = ""
     @State var noEncontrado:Bool=false
+    @State var MostrarBusqueda:Bool=true
+    @State var selection = 1
     @State var msn : String = "No encuentra el titulo que está buscando"
     var body: some View {
+        if(MostrarBusqueda){
         HStack{
             TextField("Buscar...", text: $name)
             Button(action: {
@@ -45,7 +48,8 @@ struct TVShowList: View {
                 }
             }
         }
-        TabView {
+        }
+        TabView(selection:$selection) {
             ScrollView(.vertical){
                 TvShowRows(laRegion: Location.region,
                        generos: viewModel.genres,
@@ -71,7 +75,7 @@ struct TVShowList: View {
             })
             .tabItem {
                 Label("List", systemImage: "list.dash")
-            }
+            }.tag(1)
             
             Group{
                 if(items.count == 0){
@@ -84,7 +88,7 @@ struct TVShowList: View {
             }
             .tabItem {
                 Label("Favoritos", systemImage: "heart.fill")
-            }
+            }.tag(2)
             ScrollView(.vertical){
                 TvShowRows(laRegion: Location.region,
                        generos: viewModel.genres,
@@ -93,9 +97,15 @@ struct TVShowList: View {
             }
             .tabItem {
                 Label("Ubicacion", systemImage: "network")
-            }
+            }.tag(3)
         }.onChange(of: self.viewModel.noEncontrada, perform: { Equatable in
             noEncontrado = Equatable
+        }).onChange(of: self.selection, perform: { laSeleccion in
+            if(laSeleccion==1){
+                MostrarBusqueda=true
+            }else{
+                MostrarBusqueda=false
+            }
         })
         .navigationBarTitle("Series")
     }

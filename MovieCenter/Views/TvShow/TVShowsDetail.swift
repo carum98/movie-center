@@ -99,29 +99,25 @@ struct TVShowsDetail: View {
                 }
                 .navigationBarTitle(tvShow.originalName, displayMode: .inline)
             }
-            if viewModel.cargaTotal < 4 {
+            if (tvShow.recomendations == nil || tvShow.detail == nil || tvShow.cast == nil || tvShow.videos == nil) {
                 Loading().frame(width: 50, height: 75, alignment: .center)
             }
         }
         .onAppear() {
-            let index = viewModel.tvShows.firstIndex(where: { $0.id == tvShow.id })
+                if ((tvShow.recomendations) == nil) {
+                    viewModel.fetchRecomendation(tvId: tvShow.id)
+                }
 
-            if ((viewModel.tvShows[index!].recomendations) == nil) {
-                viewModel.fetchRecomendation(tvId: tvShow.id)
-            } else {
-                viewModel.cargaTotal = 5
-            }
+                if ((tvShow.detail) == nil) {
+                    viewModel.fetchDatail(tvId: tvShow.id)
+                }
 
-            if ((viewModel.tvShows[index!].detail) == nil) {
-                viewModel.fetchDatail(tvId: tvShow.id)
-            }
-
-            if ((viewModel.tvShows[index!].cast) == nil) {
-                viewModel.fetchCast(tvId: tvShow.id)
-            }
-            if ((viewModel.tvShows[index!].videos) == nil) {
-                viewModel.fetchTvVideos(tvId: tvShow.id)
-            }
+                if ((tvShow.cast) == nil) {
+                    viewModel.fetchCast(tvId: tvShow.id)
+                }
+                if ((tvShow.videos) == nil) {
+                    viewModel.fetchTvVideos(tvId: tvShow.id)
+                }           
             favorito = PersistanceController.shared.verificarFavorito(id: Int32(tvShow.id))
         }
         
