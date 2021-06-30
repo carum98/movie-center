@@ -105,8 +105,6 @@ struct MovieDetail: View {
                     viewModel.fetchVideos(movieId: movie.id)
                 }      
             favorito = PersistanceController.shared.verificarFavorito(id: Int32(movie.id))
-        }.onDisappear{
-            self.viewModel.cargaTotal = 1
         }
     }
 }

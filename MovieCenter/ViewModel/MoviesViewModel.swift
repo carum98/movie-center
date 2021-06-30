@@ -6,7 +6,6 @@ class MoviesViewModel : ObservableObject {
     @Published var genres = [Genre]()
     @Published var cargando:Bool = false
     @Published var noEncontrada:Bool = false
-    @Published var cargaTotal: Int = 0
     var session = URLSession.shared
     var client:Client
     
@@ -29,7 +28,7 @@ class MoviesViewModel : ObservableObject {
     
     func fetchMovie() {
         self.cargando = true
-        client.getMovies(type: Movies.self, complete: { [self] result in
+        client.getMovies(type: Movies.self, complete: {  result in
             switch result {
             case .success(let data):
                 self.movies.append(data)
@@ -43,7 +42,7 @@ class MoviesViewModel : ObservableObject {
     
     func fetchRecomendation(movieId : Int) {
         self.cargando = true
-        client.getMoviesRecomendation(type: Results.self, movieId: movieId, complete: { [self] result in
+        client.getMoviesRecomendation(type: Results.self, movieId: movieId, complete: { result in
             switch result {
             case .success(let data):
                 if let i = self.movies.firstIndex(where: { $0.id == movieId } ) {
@@ -66,7 +65,7 @@ class MoviesViewModel : ObservableObject {
     
     func fetchDetail(movieId : Int) {
         self.cargando = true
-        client.getMovieDetail(type: MovieDataDetail.self, movieId: movieId, complete: { [self] result in
+        client.getMovieDetail(type: MovieDataDetail.self, movieId: movieId, complete: { result in
             switch result {
             case .success(let data):
                 if let i = self.movies.firstIndex(where: { $0.id == movieId } ) {
@@ -81,7 +80,7 @@ class MoviesViewModel : ObservableObject {
     
     func fetchVideos(movieId : Int) {
         self.cargando = true
-        client.getVideos(type: ResultVideos.self, movieId: movieId, complete: { [self] result in
+        client.getVideos(type: ResultVideos.self, movieId: movieId, complete: { result in
             switch result {
             case .success(let data):
                 if let i = self.movies.firstIndex(where: { $0.id == movieId } ) {
@@ -122,10 +121,16 @@ class MoviesViewModel : ObservableObject {
         self.noEncontrada = false
         client.getSearchMovies(type: Results.self, name: name, complete: { result in
             switch result {
-            case .success(let data):
+            case .success(let data):            
+                if(data.results.count > 0){
                     self.noEncontrada = false
                     self.movies = data.results
                     self.cargando = false
+                }else{
+                    self.noEncontrada = true
+                    self.cargando = false
+                }
+                  
             case .failure(_):
                 self.noEncontrada = true
                 self.cargando = false
