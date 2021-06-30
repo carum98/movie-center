@@ -8,8 +8,8 @@
 import SwiftUI
 struct MainMenu: View {
     let array = ["bg1", "bg2", "bg3", "bg4"]
-    
-    var body: some View {
+    @State var cargar:Bool = false
+    var body: some View {        
         NavigationView {
             ZStack {
                 Image(array.randomElement()!)
@@ -17,22 +17,32 @@ struct MainMenu: View {
                     .scaledToFill()
                     .edgesIgnoringSafeArea(.all)
                 Rectangle().foregroundColor(.clear).background(LinearGradient(gradient: Gradient(colors: [.clear, .black]), startPoint: .top, endPoint: .bottom)).scaledToFill()
-            }.overlay(
+                  
+            }.onAppear(
+                perform: {cargar = false}
+            ).overlay(
                 Group{
+                    ZStack(alignment: .center){
+                        if(cargar){
+                            Loading()
+                        }
+                    }
                     Image("logo")
                         .resizable()
                         .frame(width: 300, height: 300, alignment: .center)
                     NavigationLink(
-                        destination: MoviesList(),
+                        destination: MoviesList().environmentObject(MoviesViewModel()),
                         label: {
                             CustomButton(label: "Peliculas", icon: "film")
-                        })
-
+                        }).onTapGesture {
+                            cargar = true
+                        }
                     NavigationLink(
                         destination: TVShowList(),
                         label: {
                             CustomButton(label: "Series", icon: "tv")
                         })
+                      
                 }
             )
         }

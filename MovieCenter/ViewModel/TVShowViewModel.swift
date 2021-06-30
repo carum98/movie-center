@@ -44,6 +44,20 @@ class TVShowViewModel : ObservableObject {
             }
         })
     }
+    func fetchTvVideos(tvId : Int) {
+        self.cargando = true
+        client.getTvShowVideos(type: ResultVideos.self, tvId: tvId, complete: { result in
+            switch result {
+            case .success(let data):
+                if let i = self.tvShows.firstIndex(where: { $0.id == tvId } ) {
+                    self.tvShows[i].videos = data
+                }
+                self.cargando = false
+            case .failure(let error):
+                print(error)
+            }
+        })
+    }
     func fetchRegion(region : String) {
         self.cargando = true
         client.getTvRecomendationRegion(type: ResultTVShows.self, codRegion: region, complete: { result in

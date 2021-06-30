@@ -22,7 +22,7 @@ struct TVShowList: View {
     var body: some View {
         HStack{
             TextField("Buscar...", text: $name)
-            Button {
+            Button(action: {
                 if(!name.isEmpty){
                     self.msn = "No encuentra el titulo que está buscando"
                     viewModel.fetchSearchTv(name: name)
@@ -30,13 +30,19 @@ struct TVShowList: View {
                    noEncontrado=true
                     self.msn = "Debe digitar un nombre para poder buscar"
                 }
-            } label: {
-                Text("Consultar")
-            }
-            Button {
+            }){
+                Image(systemName: "magnifyingglass")
+                        .font(.largeTitle)
+                        .foregroundColor(.white)
+              }
+            Button(action: {
                 viewModel.fetchTVShows()
-            } label: {
-                Text("Refrescar")
+            }) {
+                HStack(spacing: 10) {
+                Image(systemName: "gobackward")
+                    .font(.largeTitle)
+                    .foregroundColor(.white)
+                }
             }
         }
         TabView {
@@ -58,10 +64,9 @@ struct TVShowList: View {
                 if (viewModel.regionTV.isEmpty) {
                     viewModel.fetchRegion(region: Location.region)
                 }
-            }
-            .overlay(Group {
-                if(self.viewModel.cargando){
-                    Loading()
+            }.overlay(Group {
+                if (self.viewModel.cargando)  {
+                    Loading().frame(width: 50, height: 75, alignment: .center)
                 }
             })
             .tabItem {
@@ -74,45 +79,18 @@ struct TVShowList: View {
                     Text("No hay favoritos")
                   }
                 } else {
-                    List{
-                        let tvShowFav = viewModel.tvShows.filter { TVShow in
-                            return (
-                                items.contains(where: {
-                                    favoritnuevo in if(favoritnuevo.id == TVShow.id){
-                                        return true
-                                    }
-                                    return false
-                                })
-                            )
-                            
-                        }
-                        ForEach(tvShowFav, id: \.id) { item in
-                            HStack{
-                                Image(uiImage: "https://image.tmdb.org/t/p/w200\(item.posterPath ?? "")".load())
-                                    .resizable()
-                                    .frame(width: 50, height: 75, alignment: .center)
-                                    .cornerRadius(20)
-                                NavigationLink(
-                                    destination: TVShowsDetail(tvShow: item, favorito: false),
-                                    label: {
-                                        Text(item.originalName)
-                                    }
-                                )
-                            }
-                            
-                        }
-                        .onDelete(perform: deleteMovie)
-                    }
+                    FavoriteTVShow(items: items)
                 }
             }
             .tabItem {
                 Label("Favoritos", systemImage: "heart.fill")
             }
-            
-            TvShowRows(laRegion: Location.region,
-                   generos: viewModel.genres,
-                   series:viewModel.tvShows,
-                   favoritos: false)
+            ScrollView(.vertical){
+                TvShowRows(laRegion: Location.region,
+                       generos: viewModel.genres,
+                       series:viewModel.tvShows,
+                       favoritos: false)
+            }
             .tabItem {
                 Label("Ubicacion", systemImage: "network")
             }

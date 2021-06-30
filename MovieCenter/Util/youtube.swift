@@ -20,7 +20,16 @@ struct youtube: UIViewRepresentable {
   
 }
 
-
+struct Trailer: View {
+    let key : String
+    var body: some View {
+        VStack(alignment: .leading) {
+            Text("Trailer")
+                .font(.title)
+            youtube(videoID: key)
+        }.frame(height: 300, alignment: .center)
+    }
+}
 //
 //  Videos.swift
 //  MovieCenter

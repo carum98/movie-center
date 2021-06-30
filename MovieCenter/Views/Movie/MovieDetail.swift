@@ -13,7 +13,6 @@ struct MovieDetail: View {
     
     @Environment(\.managedObjectContext) var managedObjectContext
     @State var favorito:Bool
-    
     var body: some View {
         ScrollView {
             ZStack(alignment: .top) {
@@ -76,9 +75,7 @@ struct MovieDetail: View {
                     }
                     
                     if let video = movie.videos?.results.first?.key {                     
-                        Triler(key: video).frame(height: 300, alignment: .center)
-                            
-                        
+                        Trailer(key: video)
                     }
                     if let companies = movie.detail?.productionCompanies {
                         Production(companies: companies)
@@ -87,39 +84,38 @@ struct MovieDetail: View {
                 }
                 .navigationBarTitle(movie.originalTitle, displayMode: .inline)
             }
+           
         }
         .onAppear {
-            let index = viewModel.movies.firstIndex(where: { $0.id == movie.id })
+            if let index = viewModel.movies.firstIndex(where: { $0.id == movie.id }){
             
-            if ((viewModel.movies[index!].recomendations) == nil) {
+            if ((viewModel.movies[index].recomendations) == nil) {
                 viewModel.fetchRecomendation(movieId: movie.id)
             }
             
-            if ((viewModel.movies[index!].detail) == nil) {
+            if ((viewModel.movies[index].detail) == nil) {
                 viewModel.fetchDetail(movieId: movie.id)
             }
             
-            if ((viewModel.movies[index!].cast) == nil) {
+            if ((viewModel.movies[index].cast) == nil) {
                 viewModel.fetchCast(movieId: movie.id)
             }
-            if ((viewModel.movies[index!].videos) == nil) {
+            if ((viewModel.movies[index].videos) == nil) {
                 viewModel.fetchVideos(movieId: movie.id)
             }
+            }
             favorito = PersistanceController.shared.verificarFavorito(id: Int32(movie.id))
-        }
+        }.onDisappear{
+            self.viewModel.cargaTotal = 0
+        }.overlay(Group {
+            if self.viewModel.cargaTotal < 6 {
+                Loading().frame(width: 50, height: 75, alignment: .center)
+            }
+        })
     }
 }
 
-struct Triler: View {
-    let key : String
-    var body: some View {
-        VStack(alignment: .leading) {
-            Text("Triler")
-                .font(.title)
-            youtube(videoID: key)
-        }
-    }
-}
+
 struct ListRecomendationn: View {
     @EnvironmentObject var viewModel : MoviesViewModel
     let recomendations : [Movies]
@@ -132,7 +128,7 @@ struct ListRecomendationn: View {
                 LazyHStack(spacing: 20) {
                     ForEach(recomendations) { item in
                         NavigationLink(
-                            destination: MovieDetail(movie: viewModel.movies.first(where: { data in data.id == item.id }) ?? viewModel.movies[0], favorito: false),
+                            destination: MovieDetail(movie:ObtengaLaPeliculaParaDetalle(elItem: item), favorito: false),
                             label: {
                                 Image(uiImage: "https://image.tmdb.org/t/p/w200\(item.posterPath ?? "")".load())
                                     .resizable()
@@ -143,6 +139,9 @@ struct ListRecomendationn: View {
                 }
             }
         }
+    }
+    func ObtengaLaPeliculaParaDetalle(elItem:Movies) -> Movies {
+        return viewModel.movies.first(where: { data in data.id == elItem.id }) ?? viewModel.movies[0]
     }
 }
 

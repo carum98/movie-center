@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct TvShowRows: View {
-   // var viewModel : TVShowViewModel
+    // var viewModel : TVShowViewModel
     @EnvironmentObject var viewModel : TVShowViewModel
     var laRegion:String
     var generos:[Genre]
@@ -9,18 +9,17 @@ struct TvShowRows: View {
     var favoritos:Bool
     func ObtengaLasSeriesPorGenero(lasSeries:[TVShow], genero:Int) -> [TVShow]{
         let series:[TVShow] = lasSeries.filter{ serie in
-          return (serie.generes.contains(genero) && serie.backdropPath != nil && serie.posterPath != nil)
+            return (serie.generes.contains(genero) && serie.backdropPath != nil && serie.posterPath != nil)
         }
         return series
     }
     var body: some View {
-        ScrollView(.vertical){
         LazyVStack(spacing: 20) {
             ForEach(generos, id: \.id){ genere in
                 let lasSeries:[TVShow] = ObtengaLasSeriesPorGenero(lasSeries: series,genero: genere.id)
                 if (lasSeries.count > 0){
                     VStack(alignment: .leading, spacing: 6) {
-                    Text(genere.name).font(.title).frame(alignment: .leading)
+                        Text(genere.name).font(.title).frame(alignment: .leading)
                         ScrollView(.horizontal){
                             LazyHStack(spacing: 20) {
                                 ForEach(lasSeries, id: \.id){ serie in
@@ -40,12 +39,7 @@ struct TvShowRows: View {
                         }
                     }
                 }
-            }.overlay(Group {
-                if self.series.isEmpty {
-                    Loading()
-                }
-            })
-        }
+            }
         }
     }
 }

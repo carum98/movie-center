@@ -7,15 +7,15 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "1682E693-166D-4BD2-8E6F-CB6E256F5A0E"
+            uuid = "8B9C6754-0E47-4C16-9ADE-D98427D736C0"
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "MovieCenter/Views/MoviesRegionList.swift"
+            filePath = "MovieCenter/Views/Movie/MovieDetail.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "23"
-            endingLineNumber = "23"
+            startingLineNumber = "123"
+            endingLineNumber = "123"
             landmarkName = "body"
             landmarkType = "24">
          </BreakpointContent>
@@ -23,49 +23,17 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "796C2E12-17E5-44E2-B5A0-641A0C05A932"
+            uuid = "A1A16583-7A10-4A65-BC0B-387CE7B631EC"
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "MovieCenter/ViewModel/MoviesViewModel.swift"
+            filePath = "MovieCenter/Views/Movie/MovieDetail.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "102"
-            endingLineNumber = "102"
-            landmarkName = "fetchVideos(movieId:)"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "796C2E12-17E5-44E2-B5A0-641A0C05A932 - 798b6c82094eb234"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 (Swift.Result&lt;MovieCenter.ResultVideo, MovieCenter.ApiError&gt;) -&gt; () in MovieCenter.MoviesViewModel.fetchVideo(movieId: Swift.Int) -&gt; ()"
-                  moduleName = "MovieCenter"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/usuario/Desktop/Proyectos%20Curso%20IOS/proyectoFinal/movie-center/MovieCenter/ViewModel/MoviesViewModel.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "88"
-                  endingLineNumber = "88"
-                  offsetFromSymbolStart = "396">
-               </Location>
-               <Location
-                  uuid = "796C2E12-17E5-44E2-B5A0-641A0C05A932 - 85fbe46c3de3154a"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 (MovieCenter.Movies) -&gt; Swift.Bool in closure #1 (Swift.Result&lt;MovieCenter.ResultVideo, MovieCenter.ApiError&gt;) -&gt; () in MovieCenter.MoviesViewModel.fetchVideo(movieId: Swift.Int) -&gt; ()"
-                  moduleName = "MovieCenter"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/usuario/Desktop/Proyectos%20Curso%20IOS/proyectoFinal/movie-center/MovieCenter/ViewModel/MoviesViewModel.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "88"
-                  endingLineNumber = "88"
-                  offsetFromSymbolStart = "28">
-               </Location>
-            </Locations>
+            startingLineNumber = "74"
+            endingLineNumber = "74"
+            landmarkName = "body"
+            landmarkType = "24">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

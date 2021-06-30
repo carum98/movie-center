@@ -13,6 +13,7 @@ class MoviesViewModel : ObservableObject {
     @Published var genres = [Genre]()
     @Published var cargando:Bool = false
     @Published var noEncontrada:Bool = false
+    @Published var cargaTotal: Int = 0
     var session = URLSession.shared
     var client:Client
     
@@ -34,10 +35,13 @@ class MoviesViewModel : ObservableObject {
     }
     
     func fetchMovie() {
+        self.cargando = true
         client.getMovies(type: Movies.self, complete: { result in
             switch result {
             case .success(let data):
                 self.movies.append(data)
+                self.cargando = false
+                self.cargaTotal += 1
             case .failure(let error):
                 print(error)
             }
@@ -46,6 +50,7 @@ class MoviesViewModel : ObservableObject {
     
     
     func fetchRecomendation(movieId : Int) {
+        self.cargando = true
         client.getMoviesRecomendation(type: Results.self, movieId: movieId, complete: { result in
             switch result {
             case .success(let data):
@@ -58,6 +63,8 @@ class MoviesViewModel : ObservableObject {
                         if (!isContain) {
                             self.movies.append(data2)
                         }
+                        self.cargando = false
+                        self.cargaTotal += 1
                     }
                 }
             case .failure(let error):
@@ -75,6 +82,7 @@ class MoviesViewModel : ObservableObject {
                     self.movies[i].detail = data
                 }
                 self.cargando = false
+                self.cargaTotal += 1
             case .failure(let error):
                 print(error)
             }
@@ -90,6 +98,7 @@ class MoviesViewModel : ObservableObject {
                     self.movies[i].videos = data
                 }
                 self.cargando = false
+                self.cargaTotal += 1
             case .failure(let error):
                 print(error)
             }
@@ -136,12 +145,16 @@ class MoviesViewModel : ObservableObject {
         })
     }
     func fetchCast(movieId : Int) {
+        self.cargando = true
         client.getMovieCast(type: ResultTVShowCast.self, movieId: movieId, complete: { result in
             switch result {
             case .success(let data):
                 if let i = self.movies.firstIndex(where: { $0.id == movieId } ) {
                     self.movies[i].cast = data.cast
+                    
                 }
+                self.cargando = false
+                self.cargaTotal += 1
             case .failure(let error):
                 print(error)
             }

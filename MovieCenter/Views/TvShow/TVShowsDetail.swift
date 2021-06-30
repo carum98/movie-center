@@ -17,14 +17,14 @@ struct TVShowsDetail: View {
     var body: some View {
         ScrollView {
             ZStack(alignment: .top) {
-                Image(uiImage: "https://image.tmdb.org/t/p/w200\(tvShow.backdropPath ?? "")".load())
+                Image(uiImage: "https://image.tmdb.org/t/p/w92\(tvShow.backdropPath ?? "")".load())
                     .resizable()
                     .frame(height: 180)
                     .blur(radius: 20)
                 
                 VStack(alignment: .leading, spacing: 40) {
                     HStack(alignment: .bottom, spacing: 20) {
-                        Image(uiImage: "https://image.tmdb.org/t/p/w200\(tvShow.posterPath ?? "")".load())
+                        Image(uiImage: "https://image.tmdb.org/t/p/w92\(tvShow.posterPath ?? "")".load())
                         .resizable()
                         .frame(width: 100, height: 150, alignment: .center)
                         .cornerRadius(30)
@@ -83,7 +83,11 @@ struct TVShowsDetail: View {
                     if let recomendations = tvShow.recomendations {
                         ListRecomendation(recomendations: recomendations)
                     }
-                    
+                    if let video = tvShow.videos?.results.first?.key {
+                        Trailer(key: video).frame(height: 300, alignment: .center)
+                            
+                        
+                    }
                     if let company1 = tvShow.detail?.networks[0], let company2 = tvShow.detail?.productionCompanies[0] {
                         TVShowCompany(company1: company1, company2: company2)
                     }
@@ -108,13 +112,14 @@ struct TVShowsDetail: View {
             if ((viewModel.tvShows[index!].cast) == nil) {
                 viewModel.fetchCast(tvId: tvShow.id)
             }
-            
+            if ((viewModel.tvShows[index!].videos) == nil) {
+                viewModel.fetchTvVideos(tvId: tvShow.id)
+            }
             favorito = PersistanceController.shared.verificarFavorito(id: Int32(tvShow.id))
         }
         
     }
 }
-
 struct TVShowCompany: View {
     let company1 : Company
     let company2 : Company
@@ -123,13 +128,13 @@ struct TVShowCompany: View {
         VStack(alignment: .leading, spacing: 10) {
             Text("Productoras")
                 .font(.title)
-            Image(uiImage: "https://image.tmdb.org/t/p/w200\( company1.logoPath ?? "" )".load())
+            Image(uiImage: "https://image.tmdb.org/t/p/w92\( company1.logoPath ?? "" )".load())
             .padding(8)
             .background(
               RoundedRectangle(cornerRadius: 8)
                 .fill(Color.gray.opacity(0.2))
             )
-            Image(uiImage: "https://image.tmdb.org/t/p/w200\( company2.logoPath ?? "")".load())
+            Image(uiImage: "https://image.tmdb.org/t/p/w92\( company2.logoPath ?? "")".load())
             .padding(8)
             .background(
               RoundedRectangle(cornerRadius: 8)
@@ -153,7 +158,7 @@ struct ListSeasons: View {
                         if let image = item.posterPath {
                             NavigationLink(destination: SeasonDetail(season: item, tvShow: tvShow), label: {
                                 VStack(alignment: .leading) {
-                                    Image(uiImage: "https://image.tmdb.org/t/p/w200\(image)".load())
+                                    Image(uiImage: "https://image.tmdb.org/t/p/w92\(image)".load())
                                         .resizable()
                                         .frame(width: 150, height: 250, alignment: .center)
                                         .cornerRadius(20)
@@ -185,7 +190,7 @@ struct ListRecomendation: View {
                         NavigationLink(
                             destination: TVShowsDetail(tvShow: viewModel.tvShows.first(where: { data in data.id == item.id }) ?? viewModel.tvShows[0], favorito: false),
                             label: {
-                                Image(uiImage: "https://image.tmdb.org/t/p/w200\(item.posterPath ?? "")".load())
+                                Image(uiImage: "https://image.tmdb.org/t/p/w185\(item.posterPath ?? "")".load())
                                     .resizable()
                                     .frame(width: 150, height: 250, alignment: .center)
                                     .cornerRadius(20)

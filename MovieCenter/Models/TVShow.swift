@@ -19,7 +19,7 @@ struct TVShow : Identifiable, Codable {
     var recomendations : [TVShow]?
     var cast : [Cast]?
     var generes : [Int]
-    
+    var videos : ResultVideos?
     enum CodingKeys: String, CodingKey {
         case id
         case originalName = "original_name"

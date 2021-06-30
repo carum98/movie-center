@@ -43,11 +43,7 @@ struct MoviesRegionList: View {
                         }
                     }
                 }
-            }.overlay(Group {
-                if self.peliculas.isEmpty {
-                    Loading()
-                }
-            })            
+            }
         }
     }
 }
