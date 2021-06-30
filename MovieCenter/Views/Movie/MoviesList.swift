@@ -69,7 +69,7 @@ struct MoviesList: View {
                     viewModel.fetchRegion(region: Location.region)
                 }
             }.overlay(Group {
-                if self.viewModel.cargando {
+                if self.viewModel.cargando ||  viewModel.movies.isEmpty {
                     Loading().frame(width: 50, height: 75, alignment: .center)
                 }
             })
