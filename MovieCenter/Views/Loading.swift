@@ -9,12 +9,24 @@ import SwiftUI
 
 struct Loading: View {
     var body: some View {
-        ProgressView().scaleEffect(5, anchor: .center)
+        ZStack {
+            Rectangle()
+                .frame(width: 150, height: 150, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
+                .opacity(0.8)
+                .cornerRadius(30)
+                .blur(radius: 6)
+            
+            ProgressView().scaleEffect(4, anchor: .center)
+                .progressViewStyle(CircularProgressViewStyle(tint: Color.blue)
+            )
+        }
+
     }
 }
 
 struct Loading_Previews: PreviewProvider {
     static var previews: some View {
         Loading()
+            .preferredColorScheme(.dark)
     }
 }

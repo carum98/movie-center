@@ -14,77 +14,82 @@ struct MovieDetail: View {
     @Environment(\.managedObjectContext) var managedObjectContext
     @State var favorito:Bool
     var body: some View {
-        ScrollView {
-            ZStack(alignment: .top) {
-                Image(uiImage: "https://image.tmdb.org/t/p/w200\(movie.backdropPath ?? "")".load())
-                    .resizable()
-                    .frame(height: 180)
-                    .blur(radius: 20)
-             
-                VStack(alignment: .leading, spacing: 40) {
-                    HStack(alignment: .bottom, spacing: 20) {
-                        Image(uiImage: "https://image.tmdb.org/t/p/w200\(movie.posterPath ?? "")".load())
+        ZStack {
+            ScrollView {
+                ZStack(alignment: .top) {
+                    Image(uiImage: "https://image.tmdb.org/t/p/w200\(movie.backdropPath ?? "")".load())
                         .resizable()
-                        .frame(width: 100, height: 150, alignment: .center)
-                        .cornerRadius(30)
-                        
-                        VStack {
-                            HStack(alignment: .bottom) {
-                                VStack(alignment: .leading, spacing: 20) {
-                                    Text("Año: \(String(Array(movie.releaseDate ?? "")[0..<4]))").bold()
-                                    Text("Calificacion: \(String(format:"%.1f", movie.voteAverage!)) / 10").bold()
-                                }
-                                Spacer()
-                                Image(systemName: favorito ? "star.fill" : "star")
-                                    .foregroundColor(favorito ? Color(UIColor.yellow) : Color(UIColor.white))
-                                    .padding(20)
-                                    .onTapGesture {
-                                        let fav = Favoritos(context: managedObjectContext)
-                                        fav.nombre = movie.originalTitle
-                                        fav.id = Int32(movie.id)
-                                        fav.imagen = movie.posterPath
-                                        fav.tipo = "MV"
-                                        if !favorito {
-                                            PersistanceController.shared.guardar()
-                                            favorito.toggle()
-                                        } else {
-                                            PersistanceController.shared.eliminarFavoritoEspecifico(id: fav.id)
-                                            favorito.toggle()
-                                        }
-                                    }
-                            }
-                        }
-                    }.padding(20)
-                
-                    VStack(alignment: .leading) {
-                        Text("Sinopsis")
-                            .font(.title)
-                        Text(movie.overview ?? "")
-                    }
-                    
-                    if let genres = movie.detail?.genres {
-                        ListGenres(genres: genres)
-                    }
-                    
-                    if let cast = movie.cast {
-                        ListCast(cast: cast)
-                    }
-                    
-                    if let recomendations = movie.recomendations {
-                        ListRecomendationn(recomendations: recomendations)
-                    }
-                    
-                    if let video = movie.videos?.results.first?.key {                     
-                        Trailer(key: video)
-                    }
-                    if let companies = movie.detail?.productionCompanies {
-                        Production(companies: companies)
-                    }
+                        .frame(height: 180)
+                        .blur(radius: 20)
                  
+                    VStack(alignment: .leading, spacing: 40) {
+                        HStack(alignment: .bottom, spacing: 20) {
+                            Image(uiImage: "https://image.tmdb.org/t/p/w200\(movie.posterPath ?? "")".load())
+                            .resizable()
+                            .frame(width: 100, height: 150, alignment: .center)
+                            .cornerRadius(30)
+                            
+                            VStack {
+                                HStack(alignment: .bottom) {
+                                    VStack(alignment: .leading, spacing: 20) {
+                                        Text("Año: \(String(Array(movie.releaseDate ?? "")[0..<4]))").bold()
+                                        Text("Calificacion: \(String(format:"%.1f", movie.voteAverage!)) / 10").bold()
+                                    }
+                                    Spacer()
+                                    Image(systemName: favorito ? "star.fill" : "star")
+                                        .foregroundColor(favorito ? Color(UIColor.yellow) : Color(UIColor.white))
+                                        .padding(20)
+                                        .onTapGesture {
+                                            let fav = Favoritos(context: managedObjectContext)
+                                            fav.nombre = movie.originalTitle
+                                            fav.id = Int32(movie.id)
+                                            fav.imagen = movie.posterPath
+                                            fav.tipo = "MV"
+                                            if !favorito {
+                                                PersistanceController.shared.guardar()
+                                                favorito.toggle()
+                                            } else {
+                                                PersistanceController.shared.eliminarFavoritoEspecifico(id: fav.id)
+                                                favorito.toggle()
+                                            }
+                                        }
+                                }
+                            }
+                        }.padding(20)
+                    
+                        VStack(alignment: .leading) {
+                            Text("Sinopsis")
+                                .font(.title)
+                            Text(movie.overview ?? "")
+                        }
+                        
+                        if let genres = movie.detail?.genres {
+                            ListGenres(genres: genres)
+                        }
+                        
+                        if let cast = movie.cast {
+                            ListCast(cast: cast)
+                        }
+                        
+                        if let recomendations = movie.recomendations {
+                            ListRecomendationn(recomendations: recomendations)
+                        }
+                        
+                        if let video = movie.videos?.results.first?.key {
+                            Trailer(key: video)
+                        }
+                        if let companies = movie.detail?.productionCompanies {
+                            Production(companies: companies)
+                        }
+                     
+                    }
+                    .navigationBarTitle(movie.originalTitle, displayMode: .inline)
                 }
-                .navigationBarTitle(movie.originalTitle, displayMode: .inline)
+               
             }
-           
+            if viewModel.cargaTotal < 6 {
+                Loading().frame(width: 50, height: 75, alignment: .center)
+            }
         }
         .onAppear {
             if let index = viewModel.movies.firstIndex(where: { $0.id == movie.id }){
@@ -99,7 +104,10 @@ struct MovieDetail: View {
             
             if ((viewModel.movies[index].cast) == nil) {
                 viewModel.fetchCast(movieId: movie.id)
+            } else {
+                viewModel.cargaTotal = 6
             }
+                
             if ((viewModel.movies[index].videos) == nil) {
                 viewModel.fetchVideos(movieId: movie.id)
             }
@@ -107,11 +115,7 @@ struct MovieDetail: View {
             favorito = PersistanceController.shared.verificarFavorito(id: Int32(movie.id))
         }.onDisappear{
             self.viewModel.cargaTotal = 0
-        }.overlay(Group {
-            if self.viewModel.cargaTotal < 6 {
-                Loading().frame(width: 50, height: 75, alignment: .center)
-            }
-        })
+        }
     }
 }
 
