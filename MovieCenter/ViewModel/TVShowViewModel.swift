@@ -1,10 +1,3 @@
-//
-//  TVShowViewModel.swift
-//  MovieCenter
-//
-//  Created by Carlos Eduardo Umaña Acevedo on 21/6/21.
-//
-
 import Foundation
 
 class TVShowViewModel : ObservableObject {
@@ -13,8 +6,6 @@ class TVShowViewModel : ObservableObject {
     @Published var regionTV = [TVShow]()
     @Published var cargando:Bool = false
     @Published var noEncontrada:Bool = false
-    @Published var cargaTotal: Int = 0
-    
     var session = URLSession.shared
     var client:Client
     
@@ -55,7 +46,6 @@ class TVShowViewModel : ObservableObject {
                     self.tvShows[i].videos = data
                 }
                 self.cargando = false
-                self.cargaTotal += 1
             case .failure(let error):
                 print(error)
             }
@@ -67,7 +57,9 @@ class TVShowViewModel : ObservableObject {
             switch result {
             case .success(let data):
                 self.regionTV = data.results
+                self.tvShows.append(contentsOf: data.results)
                 self.cargando = false
+                
             case .failure(let error):
                 print(error)
             }
@@ -87,7 +79,6 @@ class TVShowViewModel : ObservableObject {
                             self.tvShows.append(data2)
                         }
                     }
-                    self.cargaTotal += 1
                 }
             case .failure(let error):
                 print(error)
@@ -100,9 +91,14 @@ class TVShowViewModel : ObservableObject {
         client.getSearchTv(type: ResultTVShows.self, name: name, complete: { result in
             switch result {
             case .success(let data):
+                if(data.results.count > 0){
                     self.noEncontrada = false
                     self.tvShows = data.results
                     self.cargando = false
+                }else{
+                    self.noEncontrada = true
+                    self.cargando = false
+                }                  
             case .failure(_):
                 self.noEncontrada = true
                 self.cargando = false
@@ -117,7 +113,6 @@ class TVShowViewModel : ObservableObject {
                 if let i = self.tvShows.firstIndex(where: { $0.id == tvId } ) {
                     self.tvShows[i].detail = data
                     self.cargando = false
-                    self.cargaTotal += 1
                 }
             case .failure(let error):
                 print(error)
@@ -133,7 +128,6 @@ class TVShowViewModel : ObservableObject {
                 if let i = self.tvShows.firstIndex(where: { $0.id == tvId } ) {
                     self.tvShows[i].cast = data.cast
                     self.cargando = false
-                    self.cargaTotal += 1
                 }
             case .failure(let error):
                 print(error)

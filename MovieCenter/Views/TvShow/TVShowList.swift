@@ -92,7 +92,7 @@ struct TVShowList: View {
             ScrollView(.vertical){
                 TvShowRows(laRegion: Location.region,
                        generos: viewModel.genres,
-                       series:viewModel.tvShows,
+                       series:viewModel.regionTV,
                        favoritos: false)
             }
             .tabItem {

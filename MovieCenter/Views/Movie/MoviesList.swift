@@ -47,7 +47,10 @@ struct MoviesList: View {
         }
         TabView(selection:$selection) {
             List{
-                MoviesRegionList(viewModel: self.viewModel, laRegion:Location.region, generos: viewModel.genres, peliculas: viewModel.movies,favoritos: false)
+                MoviesRegionList(laRegion:Location.region,
+                                 generos: viewModel.genres,
+                                 peliculas: viewModel.movies,
+                                 favoritos: false)
                 
             }.alert(isPresented: self.$noEncontrado, content: {
                 Alert(title: Text(msn))
@@ -113,27 +116,29 @@ struct MoviesList: View {
             .tabItem {
                 Label("Favoritos", systemImage: "heart.fill")
             }.tag(2)
-            
-            MoviesRegionList(viewModel: self.viewModel,laRegion:Location.region,generos: viewModel.genres, peliculas: viewModel.regionMovies,favoritos: false)
-                .tabItem {
-                    Label("Ubicacion", systemImage: "network")
-                }.tag(3).overlay(Group {
-                    if (self.viewModel.regionMovies.isEmpty || self.viewModel.genres.isEmpty  || self.viewModel.cargando ){
-                        Loading()
-                    }
-                })
-        }.onChange(of: self.viewModel.noEncontrada, perform: { Equatable in
-            noEncontrado = Equatable
-        }).onChange(of: self.selection, perform: { laSeleccion in
-            if(laSeleccion==1){
-                MostrarBusqueda=true
-            }else{
-                MostrarBusqueda=false
-            }
-        })
-        .navigationTitle("Peliculas")
-        
-    }
+            MoviesRegionList(laRegion:Location.region,
+                             generos: viewModel.genres,
+                             peliculas: viewModel.regionMovies,
+                             favoritos: false)
+            .tabItem {
+                Label("Ubicacion", systemImage: "network")
+            }.tag(3).overlay(Group {
+                if (self.viewModel.regionMovies.isEmpty || self.viewModel.genres.isEmpty  || self.viewModel.cargando ){
+                    Loading()
+                }
+            })
+    }.onChange(of: self.viewModel.noEncontrada, perform: { Equatable in
+        noEncontrado = Equatable
+    }).onChange(of: self.selection, perform: { laSeleccion in
+        if(laSeleccion==1){
+            MostrarBusqueda=true
+        }else{
+            MostrarBusqueda=false
+        }
+    })
+    .navigationTitle("Peliculas")
+    
+}
     
     func deleteMovie(at offsets: IndexSet) {
         offsets.forEach { index in

@@ -62,48 +62,57 @@ struct MovieDetail: View {
                                 .font(.title)
                             Text(movie.overview ?? "")
                         }
-                        
-                        if let genres = movie.detail?.genres {
-                            ListGenres(genres: genres)
+                        if  let index = viewModel.movies.firstIndex(where: { $0.id == movie.id }){
+                            if let genres = viewModel.movies[index].detail?.genres {
+                                ListGenres(genres: genres)
+                            }
+                            
+                            if let cast = viewModel.movies[index].cast {
+                                ListCast(cast: cast)
+                            }
+                            
+                            if let recomendations = viewModel.movies[index].recomendations {
+                                ListRecomendationn(recomendations: recomendations)
+                            }
+                            
+                            if let video = viewModel.movies[index].videos?.results.first?.key {
+                                Trailer(key: video)
+                            }
+                            if let companies = viewModel.movies[index].detail?.productionCompanies {
+                                Production(companies: companies)
+                            }
                         }
-                        
-                        if let cast = movie.cast {
-                            ListCast(cast: cast)
-                        }
-                        
-                        if let recomendations = movie.recomendations {
-                            ListRecomendationn(recomendations: recomendations)
-                        }
-                        
-                        if let video = movie.videos?.results.first?.key {
-                            Trailer(key: video)
-                        }
-                        if let companies = movie.detail?.productionCompanies {
-                            Production(companies: companies)
-                        }
-                     
                     }
                     .navigationBarTitle(movie.originalTitle, displayMode: .inline)
                 }
                
             }
-            if (movie.recomendations == nil || movie.detail == nil || movie.cast == nil || movie.videos == nil) {
+            if  let posicion = viewModel.movies.firstIndex(where: { $0.id == movie.id }){
+                if (viewModel.movies[posicion].recomendations == nil || viewModel.movies[posicion].detail == nil || viewModel.movies[posicion].cast == nil || viewModel.movies[posicion].videos == nil) {
+                    Loading().frame(width: 50, height: 75, alignment: .center)
+                }
+            }else{
                 Loading().frame(width: 50, height: 75, alignment: .center)
             }
+           
         }
         .onAppear {
-                if ((movie.recomendations) == nil) {
+            
+             
+            if  let index = viewModel.movies.firstIndex(where: { $0.id == movie.id }){
+                if ((viewModel.movies[index].recomendations) == nil) {
                     viewModel.fetchRecomendation(movieId: movie.id)
                 }
-                if ((movie.detail) == nil) {
+                if ((viewModel.movies[index].detail) == nil) {
                     viewModel.fetchDetail(movieId: movie.id)
                 }
-                if ((movie.cast) == nil) {
+                if ((viewModel.movies[index].cast) == nil) {
                     viewModel.fetchCast(movieId: movie.id)
                 }
-                if ((movie.videos) == nil) {
+                if ((viewModel.movies[index].videos) == nil) {
                     viewModel.fetchVideos(movieId: movie.id)
-                }      
+                }
+           }
             favorito = PersistanceController.shared.verificarFavorito(id: Int32(movie.id))
         }
     }

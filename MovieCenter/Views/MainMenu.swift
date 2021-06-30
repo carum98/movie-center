@@ -34,9 +34,7 @@ struct MainMenu: View {
                         destination: MoviesList(),
                         label: {
                             CustomButton(label: "Peliculas", icon: "film")
-                        }).onTapGesture {
-                            cargar = true
-                        }
+                        })
                     NavigationLink(
                         destination: TVShowList(),
                         label: {

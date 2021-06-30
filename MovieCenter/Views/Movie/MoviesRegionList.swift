@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct MoviesRegionList: View {
-    var viewModel : MoviesViewModel
+    @EnvironmentObject var viewModel : MoviesViewModel
     var laRegion:String
     var generos:[Genre]
     var peliculas:[Movies]

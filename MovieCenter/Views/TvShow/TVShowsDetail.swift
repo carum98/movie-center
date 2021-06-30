@@ -67,57 +67,64 @@ struct TVShowsDetail: View {
                                 .font(.title)
                             Text(tvShow.overview)
                         }
-                        
-                        if let genres = tvShow.detail?.genres {
-                            ListGenres(genres: genres)
-                        }
-                        
-                        if let seasons = tvShow.detail?.seasons {
-                            ListSeasons(seasons: seasons, tvShow: tvShow)
-                        }
-                        
-                        
-                        if let cast = tvShow.cast {
-                            ListCast(cast: cast)
-                        }
-                        
-                        if let recomendations = tvShow.recomendations {
-                            ListRecomendation(recomendations: recomendations)
-                        }
-                        if let video = tvShow.videos?.results.first?.key {
-                            Trailer(key: video).frame(height: 300, alignment: .center)
-                                
+                        if  let index = viewModel.tvShows.firstIndex(where: { $0.id == tvShow.id }){
+                            if let genres = viewModel.tvShows[index].detail?.genres {
+                                ListGenres(genres: genres)
+                            }
                             
+                            if let seasons = viewModel.tvShows[index].detail?.seasons {
+                                ListSeasons(seasons: seasons, tvShow: tvShow)
+                            }
+                            
+                            
+                            if let cast = viewModel.tvShows[index].cast {
+                                ListCast(cast: cast)
+                            }
+                            
+                            if let recomendations = viewModel.tvShows[index].recomendations {
+                                ListRecomendation(recomendations: recomendations)
+                            }
+                            if let video = viewModel.tvShows[index].videos?.results.first?.key {
+                                Trailer(key: video).frame(height: 300, alignment: .center)
+                                    
+                                
+                            }
+                            if let company1 = viewModel.tvShows[index].detail?.networks[0], let company2 = tvShow.detail?.productionCompanies[0] {
+                                TVShowCompany(company1: company1, company2: company2)
+                            }
                         }
-                        if let company1 = tvShow.detail?.networks[0], let company2 = tvShow.detail?.productionCompanies[0] {
-                            TVShowCompany(company1: company1, company2: company2)
-                        }
-                        
                         
                     }
                     
                 }
                 .navigationBarTitle(tvShow.originalName, displayMode: .inline)
             }
-            if (tvShow.recomendations == nil || tvShow.detail == nil || tvShow.cast == nil || tvShow.videos == nil) {
+            if  let posicion = viewModel.tvShows.firstIndex(where: { $0.id == tvShow.id }){
+                if (viewModel.tvShows[posicion].recomendations == nil || viewModel.tvShows[posicion].detail == nil || viewModel.tvShows[posicion].cast == nil || viewModel.tvShows[posicion].videos == nil) {
+                    Loading().frame(width: 50, height: 75, alignment: .center)
+                }
+            }else{
                 Loading().frame(width: 50, height: 75, alignment: .center)
             }
         }
         .onAppear() {
-                if ((tvShow.recomendations) == nil) {
+            if  let index = viewModel.tvShows.firstIndex(where: { $0.id == tvShow.id }){
+          
+                if ((viewModel.tvShows[index].recomendations) == nil) {
                     viewModel.fetchRecomendation(tvId: tvShow.id)
                 }
 
-                if ((tvShow.detail) == nil) {
+                if ((viewModel.tvShows[index].detail) == nil) {
                     viewModel.fetchDatail(tvId: tvShow.id)
                 }
 
-                if ((tvShow.cast) == nil) {
+                if ((viewModel.tvShows[index].cast) == nil) {
                     viewModel.fetchCast(tvId: tvShow.id)
                 }
-                if ((tvShow.videos) == nil) {
+                if ((viewModel.tvShows[index].videos) == nil) {
                     viewModel.fetchTvVideos(tvId: tvShow.id)
-                }           
+                }
+            }
             favorito = PersistanceController.shared.verificarFavorito(id: Int32(tvShow.id))
         }
         
