@@ -87,34 +87,26 @@ struct MovieDetail: View {
                 }
                
             }
-            if viewModel.cargaTotal < 6 {
+            if (movie.recomendations == nil || movie.detail == nil || movie.cast == nil || movie.videos == nil) {
                 Loading().frame(width: 50, height: 75, alignment: .center)
             }
         }
         .onAppear {
-            if let index = viewModel.movies.firstIndex(where: { $0.id == movie.id }){
-            
-            if ((viewModel.movies[index].recomendations) == nil) {
-                viewModel.fetchRecomendation(movieId: movie.id)
-            }
-            
-            if ((viewModel.movies[index].detail) == nil) {
-                viewModel.fetchDetail(movieId: movie.id)
-            }
-            
-            if ((viewModel.movies[index].cast) == nil) {
-                viewModel.fetchCast(movieId: movie.id)
-            } else {
-                viewModel.cargaTotal = 6
-            }
-                
-            if ((viewModel.movies[index].videos) == nil) {
-                viewModel.fetchVideos(movieId: movie.id)
-            }
-            }
+                if ((movie.recomendations) == nil) {
+                    viewModel.fetchRecomendation(movieId: movie.id)
+                }
+                if ((movie.detail) == nil) {
+                    viewModel.fetchDetail(movieId: movie.id)
+                }
+                if ((movie.cast) == nil) {
+                    viewModel.fetchCast(movieId: movie.id)
+                }
+                if ((movie.videos) == nil) {
+                    viewModel.fetchVideos(movieId: movie.id)
+                }      
             favorito = PersistanceController.shared.verificarFavorito(id: Int32(movie.id))
         }.onDisappear{
-            self.viewModel.cargaTotal = 0
+            self.viewModel.cargaTotal = 1
         }
     }
 }

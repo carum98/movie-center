@@ -110,7 +110,7 @@ struct MoviesList: View {
                 Label("Favoritos", systemImage: "heart.fill")
             }
             
-            MoviesRegionList(viewModel: self.viewModel,                 laRegion:Location.region,generos: viewModel.genres, peliculas: viewModel.regionMovies,favoritos: false)
+            MoviesRegionList(viewModel: self.viewModel,laRegion:Location.region,generos: viewModel.genres, peliculas: viewModel.regionMovies,favoritos: false)
                 .tabItem {
                     Label("Ubicacion", systemImage: "network")
                         .overlay(Group {

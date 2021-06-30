@@ -31,7 +31,7 @@ struct MainMenu: View {
                         .resizable()
                         .frame(width: 300, height: 300, alignment: .center)
                     NavigationLink(
-                        destination: MoviesList().environmentObject(MoviesViewModel()),
+                        destination: MoviesList(),
                         label: {
                             CustomButton(label: "Peliculas", icon: "film")
                         }).onTapGesture {

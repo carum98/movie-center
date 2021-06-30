@@ -33,7 +33,7 @@ class Client: NetworkGeneric {
         self.fetch(type: T.self, with: request, completion: complete)
     }
     func getVideos<T: Decodable>(type:T.Type, movieId : Int,complete: @escaping (Result<T, ApiError>) -> Void) {
-        let url = buildPath(path: "movie/\(movieId)/videos")
+        let url = buildPath(path: "movie/\(movieId)/videos",arg: "language=es-CR")
         let request = URLRequest(url: url)
         
         self.fetch(type: T.self, with: request, completion: complete)
@@ -148,11 +148,9 @@ class Client: NetworkGeneric {
     }
     
     private func buildPath(path : String) -> URL {
-        //print("\(baseURL)\(path)?api_key=\(apiKey)&language=es-ES")
         return URL(string: "\(baseURL)\(path)?api_key=\(apiKey)&language=es-ES")!
     }
     private func buildPath(path : String, arg: String) -> URL {
-       //print("\(baseURL)\(path)?api_key=\(apiKey)&language=es-ES&\(arg)")
         return URL(string: "\(baseURL)\(path)?api_key=\(apiKey)&\(arg)")!
     }
     

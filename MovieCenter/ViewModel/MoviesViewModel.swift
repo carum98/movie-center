@@ -1,10 +1,3 @@
-//
-//  MoviesViewModel.swift
-//  MovieCenter
-//
-//  Created by Carlos Eduardo Umaña Acevedo on 17/6/21.
-//
-
 import Foundation
 
 class MoviesViewModel : ObservableObject {
@@ -36,12 +29,11 @@ class MoviesViewModel : ObservableObject {
     
     func fetchMovie() {
         self.cargando = true
-        client.getMovies(type: Movies.self, complete: { result in
+        client.getMovies(type: Movies.self, complete: { [self] result in
             switch result {
             case .success(let data):
                 self.movies.append(data)
                 self.cargando = false
-                self.cargaTotal += 1
             case .failure(let error):
                 print(error)
             }
@@ -51,7 +43,7 @@ class MoviesViewModel : ObservableObject {
     
     func fetchRecomendation(movieId : Int) {
         self.cargando = true
-        client.getMoviesRecomendation(type: Results.self, movieId: movieId, complete: { result in
+        client.getMoviesRecomendation(type: Results.self, movieId: movieId, complete: { [self] result in
             switch result {
             case .success(let data):
                 if let i = self.movies.firstIndex(where: { $0.id == movieId } ) {
@@ -64,7 +56,6 @@ class MoviesViewModel : ObservableObject {
                             self.movies.append(data2)
                         }
                         self.cargando = false
-                        self.cargaTotal += 1
                     }
                 }
             case .failure(let error):
@@ -75,14 +66,13 @@ class MoviesViewModel : ObservableObject {
     
     func fetchDetail(movieId : Int) {
         self.cargando = true
-        client.getMovieDetail(type: MovieDataDetail.self, movieId: movieId, complete: { result in
+        client.getMovieDetail(type: MovieDataDetail.self, movieId: movieId, complete: { [self] result in
             switch result {
             case .success(let data):
                 if let i = self.movies.firstIndex(where: { $0.id == movieId } ) {
                     self.movies[i].detail = data
                 }
                 self.cargando = false
-                self.cargaTotal += 1
             case .failure(let error):
                 print(error)
             }
@@ -91,14 +81,13 @@ class MoviesViewModel : ObservableObject {
     
     func fetchVideos(movieId : Int) {
         self.cargando = true
-        client.getVideos(type: ResultVideos.self, movieId: movieId, complete: { result in
+        client.getVideos(type: ResultVideos.self, movieId: movieId, complete: { [self] result in
             switch result {
             case .success(let data):
                 if let i = self.movies.firstIndex(where: { $0.id == movieId } ) {
                     self.movies[i].videos = data
                 }
                 self.cargando = false
-                self.cargaTotal += 1
             case .failure(let error):
                 print(error)
             }
@@ -140,7 +129,6 @@ class MoviesViewModel : ObservableObject {
             case .failure(_):
                 self.noEncontrada = true
                 self.cargando = false
-                    //print(error)
             }
         })
     }
@@ -154,7 +142,6 @@ class MoviesViewModel : ObservableObject {
                     
                 }
                 self.cargando = false
-                self.cargaTotal += 1
             case .failure(let error):
                 print(error)
             }
