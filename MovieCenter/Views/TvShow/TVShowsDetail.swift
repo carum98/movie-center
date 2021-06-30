@@ -15,94 +15,101 @@ struct TVShowsDetail: View {
     @State var favorito:Bool
     
     var body: some View {
-        ScrollView {
-            ZStack(alignment: .top) {
-                Image(uiImage: "https://image.tmdb.org/t/p/w92\(tvShow.backdropPath ?? "")".load())
-                    .resizable()
-                    .frame(height: 180)
-                    .blur(radius: 20)
-                
-                VStack(alignment: .leading, spacing: 40) {
-                    HStack(alignment: .bottom, spacing: 20) {
-                        Image(uiImage: "https://image.tmdb.org/t/p/w92\(tvShow.posterPath ?? "")".load())
+        ZStack {
+            ScrollView {
+                ZStack(alignment: .top) {
+                    Image(uiImage: "https://image.tmdb.org/t/p/w92\(tvShow.backdropPath ?? "")".load())
                         .resizable()
-                        .frame(width: 100, height: 150, alignment: .center)
-                        .cornerRadius(30)
+                        .frame(height: 180)
+                        .blur(radius: 20)
+                    
+                    VStack(alignment: .leading, spacing: 40) {
+                        HStack(alignment: .bottom, spacing: 20) {
+                            Image(uiImage: "https://image.tmdb.org/t/p/w92\(tvShow.posterPath ?? "")".load())
+                            .resizable()
+                            .frame(width: 100, height: 150, alignment: .center)
+                            .cornerRadius(30)
 
-                        VStack {
-                            HStack(alignment: .bottom) {
-                                VStack(alignment: .leading, spacing: 20) {
-                                    Text("Año: \(String(Array(tvShow.firstAirDate)[0..<4]))")
-                                        .bold()
-                                    Text("Temporas: \(tvShow.detail?.numberOfSeasons ?? 0)")
-                                        .bold()
-                                    Text("Episodios: \(tvShow.detail?.numberOfEpisodes ?? 0)")
-                                        .bold()
-                                }
-                                Spacer()
-                                Image(systemName: favorito ? "star.fill" : "star")
-                                    .foregroundColor(favorito ? Color(UIColor.yellow) : Color(UIColor.white))
-                                    .padding(20)
-                                    .onTapGesture {
-                                        let fav = Favoritos(context: managedObjectContext)
-                                        fav.nombre = tvShow.originalName
-                                        fav.id = Int32(tvShow.id)
-                                        fav.imagen = tvShow.posterPath
-                                        fav.tipo = "TV"
-                                        if !favorito {
-                                            PersistanceController.shared.guardar()
-                                            favorito.toggle()
-                                        } else {
-                                            PersistanceController.shared.eliminarFavoritoEspecifico(id: fav.id)
-                                            favorito.toggle()
-                                        }
+                            VStack {
+                                HStack(alignment: .bottom) {
+                                    VStack(alignment: .leading, spacing: 20) {
+                                        Text("Año: \(String(Array(tvShow.firstAirDate)[0..<4]))")
+                                            .bold()
+                                        Text("Temporas: \(tvShow.detail?.numberOfSeasons ?? 0)")
+                                            .bold()
+                                        Text("Episodios: \(tvShow.detail?.numberOfEpisodes ?? 0)")
+                                            .bold()
                                     }
+                                    Spacer()
+                                    Image(systemName: favorito ? "star.fill" : "star")
+                                        .foregroundColor(favorito ? Color(UIColor.yellow) : Color(UIColor.white))
+                                        .padding(20)
+                                        .onTapGesture {
+                                            let fav = Favoritos(context: managedObjectContext)
+                                            fav.nombre = tvShow.originalName
+                                            fav.id = Int32(tvShow.id)
+                                            fav.imagen = tvShow.posterPath
+                                            fav.tipo = "TV"
+                                            if !favorito {
+                                                PersistanceController.shared.guardar()
+                                                favorito.toggle()
+                                            } else {
+                                                PersistanceController.shared.eliminarFavoritoEspecifico(id: fav.id)
+                                                favorito.toggle()
+                                            }
+                                        }
+                                }
                             }
+                        }.padding(20)
+                        
+                        VStack(alignment: .leading) {
+                            Text("Sinopsis")
+                                .font(.title)
+                            Text(tvShow.overview)
                         }
-                    }.padding(20)
-                    
-                    VStack(alignment: .leading) {
-                        Text("Sinopsis")
-                            .font(.title)
-                        Text(tvShow.overview)
-                    }
-                    
-                    if let genres = tvShow.detail?.genres {
-                        ListGenres(genres: genres)
-                    }
-                    
-                    if let seasons = tvShow.detail?.seasons {
-                        ListSeasons(seasons: seasons, tvShow: tvShow)
-                    }
-                    
-                    
-                    if let cast = tvShow.cast {
-                        ListCast(cast: cast)
-                    }
-                    
-                    if let recomendations = tvShow.recomendations {
-                        ListRecomendation(recomendations: recomendations)
-                    }
-                    if let video = tvShow.videos?.results.first?.key {
-                        Trailer(key: video).frame(height: 300, alignment: .center)
+                        
+                        if let genres = tvShow.detail?.genres {
+                            ListGenres(genres: genres)
+                        }
+                        
+                        if let seasons = tvShow.detail?.seasons {
+                            ListSeasons(seasons: seasons, tvShow: tvShow)
+                        }
+                        
+                        
+                        if let cast = tvShow.cast {
+                            ListCast(cast: cast)
+                        }
+                        
+                        if let recomendations = tvShow.recomendations {
+                            ListRecomendation(recomendations: recomendations)
+                        }
+                        if let video = tvShow.videos?.results.first?.key {
+                            Trailer(key: video).frame(height: 300, alignment: .center)
+                                
                             
+                        }
+                        if let company1 = tvShow.detail?.networks[0], let company2 = tvShow.detail?.productionCompanies[0] {
+                            TVShowCompany(company1: company1, company2: company2)
+                        }
+                        
                         
                     }
-                    if let company1 = tvShow.detail?.networks[0], let company2 = tvShow.detail?.productionCompanies[0] {
-                        TVShowCompany(company1: company1, company2: company2)
-                    }
-                    
                     
                 }
-                
+                .navigationBarTitle(tvShow.originalName, displayMode: .inline)
             }
-            .navigationBarTitle(tvShow.originalName, displayMode: .inline)
+            if viewModel.cargaTotal < 4 {
+                Loading().frame(width: 50, height: 75, alignment: .center)
+            }
         }
         .onAppear() {
             let index = viewModel.tvShows.firstIndex(where: { $0.id == tvShow.id })
 
             if ((viewModel.tvShows[index!].recomendations) == nil) {
                 viewModel.fetchRecomendation(tvId: tvShow.id)
+            } else {
+                viewModel.cargaTotal = 5
             }
 
             if ((viewModel.tvShows[index!].detail) == nil) {
